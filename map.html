@@ -97,7 +97,7 @@
 
     @keyframes magicAuraPulse {
       0% { r: 5px; opacity: 0.95; }
-      100% { r: 26px; opacity: 0; }
+      100% { r: 24px; opacity: 0; }
     }
     .magic-aura-pulse {
       animation: magicAuraPulse 2.2s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
@@ -218,22 +218,22 @@
         <span id="headerSubNotice" class="hidden sm:inline">국제 포트키 원정대 해외 특파 일지</span>
       </div>
       <div class="flex items-center gap-2">
-        <span id="headerChronicleTag">2024~2026 통합판</span>
-        <span class="px-1.5 py-0.2 bg-[#841c1c] text-[#fbf7ee] text-[9px] font-bold rounded-sm tracking-widest">7 GALLEONS</span>
+        <span id="headerChronicleTag">1000일간의 연대기</span>
+        <span class="px-1.5 py-0.2 bg-[#841c1c] text-[#fbf7ee] text-[9px] font-bold rounded-sm tracking-widest">11 GALLEONS</span>
       </div>
     </div>
 
     <div class="flex flex-col md:flex-row items-center justify-between gap-2 py-1">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-full border-2 border-[#3b2513] bg-[#3b2513] text-[#f4ecd8] flex items-center justify-center font-prophet text-2xl shadow-md">
-          <span>𝕯</span>
+          <span>𝕸</span>
         </div>
         <div>
           <h1 class="font-prophet text-2xl sm:text-3xl md:text-4xl text-[#1a1106] tracking-tighter leading-none">
-            The Daily Prophet
+            The Marauder's Map
           </h1>
           <p class="font-headline italic text-[11px] sm:text-xs text-[#523d27] font-semibold tracking-wide">
-            예언자 일보: 머글 세계 방랑 일지와 마법 발자국
+            호그와트 비밀지도: 머글 세계 방랑 일지와 마법 발자국
           </p>
         </div>
       </div>
@@ -282,6 +282,13 @@
       <!-- D3 Interactive SVG Canvas -->
       <svg id="mapSvg" class="w-full h-full cursor-grab active:cursor-grabbing block"></svg>
 
+      <!-- Scratchable Ink Parchment Veil Canvas -->
+      <canvas id="inkVeilCanvas" class="absolute inset-0 w-full h-full pointer-events-none z-10 transition-opacity duration-1000 hidden touch-none"></canvas>
+      <div id="inkVeilHint" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none bg-[#fbf5e6]/95 border-2 border-[#841c1c] px-4 py-2.5 rounded-sm shadow-2xl text-[#841c1c] font-headline text-xs font-bold transition-opacity duration-700 hidden flex items-center gap-2">
+        <span class="text-base animate-bounce">🪄</span>
+        <span>손가락(터치)이나 마우스로 양피지를 문질러 숨겨진 지도를 밝혀내세요!</span>
+      </div>
+
       <!-- Prominent "Mischief Managed" Floating Stamp Button -->
       <button id="hideMapBtn" class="absolute top-3 right-3 z-20 group flex items-center gap-1.5 px-3 py-1.5 bg-[#841c1c] hover:bg-[#661111] text-[#fbf7ee] rounded-sm border-2 border-[#4a0d0d] shadow-[0_4px_12px_rgba(0,0,0,0.45)] hover:shadow-[0_4px_16px_rgba(132,28,28,0.6)] transition-all transform hover:scale-105 active:scale-95 font-headline font-black text-xs tracking-wider" title="지도를 다시 백지로 봉인합니다 (Mischief Managed)">
         <span class="text-sm transition-transform group-hover:rotate-12">📜</span>
@@ -316,9 +323,9 @@
         <div class="bg-[#2b1a0e] text-[#e8d5b5] px-2 py-0.5 text-[8.5px] sm:text-[10px] font-bold uppercase tracking-wider flex items-center justify-between border-t-2 border-x-2 border-[#543b22] rounded-t-sm shadow-md">
           <span class="flex items-center gap-1 truncate">
             <span>✦</span>
-            <span id="carouselHeaderTitle" class="truncate">호그와트 & 호그스미드 근교 마법 여정 색인</span>
+            <span id="carouselHeaderTitle" class="truncate">국제 포트키 대원정 해외 여정 전면 색인</span>
           </span>
-          <span id="carouselCountBadge" class="text-[#d97706] text-[8px] sm:text-[10px] font-mono shrink-0 ml-1">● 10 Spots</span>
+          <span id="carouselCountBadge" class="hidden text-[#d97706] text-[8px] sm:text-[10px] font-mono shrink-0 ml-1"></span>
         </div>
         <div id="destCarousel" class="flex overflow-x-auto gap-1 sm:gap-1.5 p-1 sm:p-2 bg-[#ede0c4]/98 border-2 border-[#2b1a0e] shadow-2xl parchment-scrollbar">
           <!-- Dynamic cards populated here -->
@@ -410,7 +417,7 @@
             <!-- Dynamic Cards -->
           </div>
           <p class="text-[9px] text-[#785b3f] mt-1.5 text-center italic font-serif">
-            * 사진 또는 영상을 클릭하면 마법 확대 렌즈로 감상할 수 있습니다.
+            * 사진을 클릭하면 마법 확대 렌즈로 감상할 수 있습니다.
           </p>
         </div>
 
@@ -586,9 +593,10 @@
     }
 
     const SEOUL_COORDS = [126.9780, 37.5665];
-    let currentRealm = 'overseas'; // Start with overseas first
+    let currentRealm = 'overseas'; // Overseas first
     let currentProjectionType = '2d';
     let worldGeoJsonData = null;
+    let koreaGeoJsonData = null; // High-detail South Korea Provinces
     let selectedSpot = null;
     let isAutoRotating = false;
     let rotationTimer = null;
@@ -656,7 +664,8 @@
     }
 
     // ============================================================
-    // 🇰🇷 DATASET 1: DOMESTIC DESTINATIONS (10 SPOTS)
+    // 🇰🇷 DATASET 1: DOMESTIC DESTINATIONS (13 SPOTS)
+    // Non-overlapping 8-direction Callouts with Leader Lines
     // ============================================================
     const DOMESTIC_SPOTS = [
       {
@@ -664,13 +673,14 @@
         nameKo: "평창 휘닉스파크",
         nameEn: "Phoenix Pyeongchang - Official Quidditch Base",
         badge: "홈 시즌 슬로프",
-        milestone: "수도 없이 많이 간 우리의 성지",
+        milestone: "우리의 겨울 베이스캠프",
         flag: "🏂",
         coords: [128.3242, 37.5815],
-        labelOffset: { x: 12, y: -4 },
+        // 용평 옆쪽(북서-상단)으로 명확히 분리하여 겹침 방지
+        callout: { dx: -16, dy: -14, textAnchor: "end" },
         spots: ["몽블랑 정상 뷰", "익스트림 파크", "야간 라이딩 설원", "베이스 카페 & 핫초코"],
-        desc: "수도 없이 찾아가 눈밭을 가른 우리의 대표 홈그라운드 시즌 스키장! 파우더 스노 위를 가르는 빗자루(스노보드) 훈련이 매 시즌 끊이지 않는 둘만의 비밀 훈련 기지.",
-        letter: "“헤아릴 수 없을 만큼 수없이 달렸던 휘닉스파크의 눈부신 슬로프. 매서운 칼바람도 신나게 활주하던 열정 앞에서는 시원하기만 했지. 야간 보딩 후 먹던 따끈한 간식과 그곳의 설경은 우리에겐 영원한 겨울의 집이야.”",
+        desc: "새하얀 설원 위를 가르는 빗자루(스노보드) 활주가 시즌마다 펼쳐지는 둘만의 공식 홈그라운드 겨울 안식처.",
+        letter: "“헤아릴 수 없이 즐겨 찾았던 휘닉스파크의 눈부신 슬로프. 매서운 칼바람도 신나게 활주하던 열정 앞에서는 시원하기만 했지. 야간 보딩 후 먹던 따끈한 간식과 그곳의 설경은 우리에겐 영원한 겨울의 집이야.”",
         photos: [
           { type: "image", url: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=600&auto=format&fit=crop", caption: "몽블랑 정상 눈꽃 설원" },
           { type: "image", url: "https://images.unsplash.com/photo-1517411032315-54ef2cb783bb?w=600&auto=format&fit=crop", caption: "새하얀 슬로프 라이딩" }
@@ -680,13 +690,14 @@
         id: "yongpyong",
         nameKo: "평창 용평리조트",
         nameEn: "Yongpyong Ski Resort - Peak Expedition",
-        badge: "고산 원정 1회",
-        milestone: "발왕산 설산 정복",
+        badge: "고산 설산 슬로프",
+        milestone: "발왕산 설산 탐험",
         flag: "❄️",
         coords: [128.6811, 37.6439],
-        labelOffset: { x: 12, y: 12 },
+        // 휘닉스파크 동쪽으로 자연스럽게 배치
+        callout: { dx: 14, dy: 14, textAnchor: "start" },
         spots: ["발왕산 케이블카", "레인보우 슬로프", "스카이워크 전망대"],
-        desc: "발왕산 자락의 웅장한 설원을 몸소 경험하기 위해 도전했던 잊지 못할 1회의 원정 스키장.",
+        desc: "발왕산 자락의 웅장한 설원을 몸소 경험하며 가슴 벅찬 활주를 즐겼던 고산 원정 스키장.",
         letter: "“발왕산 정상의 차가운 눈꽃 바람을 맞으며 섰던 그날의 설렘! 휘팍과는 또 다른 웅장함과 압도적인 산세를 함께 마주하며 즐겁게 눈 위를 달렸던 특별한 원정.”",
         photos: [
           { type: "image", url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&auto=format&fit=crop", caption: "발왕산 고산 설경" }
@@ -696,14 +707,14 @@
         id: "gangneung",
         nameKo: "강원도 강릉",
         nameEn: "Gangneung - Siren Coast & Alchemic Roastery",
-        badge: "2회 탐방 완료",
-        milestone: "바다 & 미식 순례",
+        badge: "동해 해안 순례",
+        milestone: "바다 & 커피 투어",
         flag: "🌊",
         coords: [128.8761, 37.7519],
-        labelOffset: { x: 12, y: 2 },
+        callout: { dx: 14, dy: -8, textAnchor: "start" },
         spots: ["안목해변 커피거리", "초당 순두부 마을", "강문해변 포토존", "주문진 파도"],
-        desc: "동해 바다의 시원한 파도와 초당 순두부, 마법의 커피 향이 어우러진 해안 성지순례 여정 (총 2회 방문).",
-        letter: "“두 번이나 찾아갔던 강릉의 푸른 바닷가. 바닷바람을 맞으며 맛본 초당순두부의 고소한 풍미와, 안목해변 카페 창가에 앉아 파도 소리를 들으며 나눈 깊은 이야기들이 생생해.”",
+        desc: "동해 바다의 시원한 파도와 초당 순두부, 마법의 커피 향이 어우러진 푸른 해안 성지순례 여정.",
+        letter: "“시원하게 펼쳐진 강릉의 푸른 바닷가. 바닷바람을 맞으며 맛본 초당순두부의 고소한 풍미와, 안목해변 카페 창가에 앉아 파도 소리를 들으며 나눈 깊은 이야기들이 생생해.”",
         photos: [
           { type: "image", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop", caption: "강릉 동해안 에메랄드 파도" }
         ]
@@ -712,11 +723,11 @@
         id: "seonjaedo",
         nameKo: "인천 선재도",
         nameEn: "Seonjaedo - Parting Sea Miracle",
-        badge: "신비한 섬 탐방",
+        badge: "신비한 바닷길",
         milestone: "모세의 기적 목섬",
         flag: "🏝️",
         coords: [126.5367, 37.2347],
-        labelOffset: { x: -85, y: -8 },
+        callout: { dx: -16, dy: 14, textAnchor: "end" },
         spots: ["목섬 모랫길", "뻘다방 이국적 카페", "서해 낙조 전망대"],
         desc: "조수간만의 차에 따라 하루에 두 번 바닷물이 갈라지는 목섬의 신비한 모랫길을 걸었던 서해의 낭만 은신처.",
         letter: "“물이 빠지며 서서히 모습을 드러내던 목섬의 황금빛 모랫길! 뻘다방에서 바라보던 붉은 서해 노을은 마치 남국의 섬에 온 것 같은 착각을 주었지.”",
@@ -728,11 +739,11 @@
         id: "asan_dogo",
         nameKo: "아산 파라다이스 도고",
         nameEn: "Asan Dogo Hot Springs - Elixir Spa",
-        badge: "원기 회복 스파",
-        milestone: "치유의 유황 온천",
+        badge: "치유의 유황 온천",
+        milestone: "원기 회복 스파",
         flag: "♨️",
         coords: [126.9075, 36.7578],
-        labelOffset: { x: 12, y: 8 },
+        callout: { dx: 14, dy: 14, textAnchor: "start" },
         spots: ["야외 유황 스파풀", "나이트 스파", "파이어 이벤트 탕"],
         desc: "마법 포션처럼 피로를 단숨에 씻어내어 준 따뜻한 노천 온천수 스파.",
         letter: "“추운 공기 속에서 김이 모락모락 피어오르는 따뜻한 온천수에 몸을 담그고, 머리는 상쾌하고 몸은 나른하게 힐링했던 시간. 일상의 피로가 거짓말처럼 녹아내렸어.”",
@@ -744,13 +755,13 @@
         id: "busan",
         nameKo: "부산 (해운대 & 기장 아난티)",
         nameEn: "Busan - Coastal Fortress & Ananti Cove",
-        badge: "2회 탐방 완료",
-        milestone: "해운대 1회 + 아난티 1회",
+        badge: "남부 해안 휴양",
+        milestone: "해운대 & 기장 아난티",
         flag: "⛵",
         coords: [129.1585, 35.1587],
-        labelOffset: { x: 12, y: 0 },
+        callout: { dx: 14, dy: 4, textAnchor: "start" },
         spots: ["해운대 해수욕장 백사장", "기장 아난티 코브 & 워터하우스", "해동용궁사 해안", "광안대교 야경"],
-        desc: "남부 항구 도시 급행 여정! 활기찬 해운대 바다를 만끽한 1회, 그리고 바다 절벽 위 럭셔리 휴양지 아난티 코브에서 머물렀던 1회의 완벽한 2회 탐방.",
+        desc: "남부 항구 도시 급행 여정! 활기찬 해운대 백사장과 바다 절벽 위 럭셔리 휴양지 아난티 코브에서 머물렀던 완벽한 힐링.",
         letter: "“해운대 파도 소리를 들으며 모래사장을 걷던 추억과, 기장 아난티의 아늑한 서재와 오션뷰 테라스에서 끝없는 바다를 보며 힐링했던 황홀한 휴식.”",
         photos: [
           { type: "image", url: "https://images.unsplash.com/photo-1590559899731-a372a1464e29?w=600&auto=format&fit=crop", caption: "부산 해운대와 해안 야경" }
@@ -760,11 +771,11 @@
         id: "bukhansan_caravan",
         nameKo: "북한산 카라반",
         nameEn: "Bukhansan Caravan - Forbidden Forest Camp",
-        badge: "숲속 야영",
+        badge: "금지된 숲 야영",
         milestone: "별빛 글램핑",
         flag: "🏕️",
         coords: [126.9850, 37.6608],
-        labelOffset: { x: -80, y: -14 },
+        callout: { dx: 0, dy: -18, textAnchor: "middle" },
         spots: ["숲속 카라반 글램핑", "바비큐 & 불멍", "북한산 둘레길 아침 산책"],
         desc: "도심 바로 곁 금지된 숲 자락의 마법 텐트처럼, 북한산 기슭 맑은 공기 속에서 즐긴 낭만 카라반 캠핑.",
         letter: "“밤이 깊어지면 타닥타닥 타오르는 모닥불 앞에서 마시멜로를 굽고 장작 타는 냄새를 맡으며 나누던 이야기들. 아침새 소리에 눈뜨던 숲속 힐링.”",
@@ -773,30 +784,16 @@
         ]
       },
       {
-        id: "hanam_starfield",
-        nameKo: "하남 스타필드",
-        nameEn: "Hanam Starfield - Grand Muggle Bazaar",
-        badge: "쇼핑 & 미식",
-        milestone: "대형 실내 아지트",
-        flag: "🛍️",
-        coords: [127.2244, 37.5455],
-        labelOffset: { x: 12, y: 14 },
-        spots: ["아쿠아필드 힐링", "고메스트리트 맛집 투어", "스포츠몬스터 & 쇼핑몰"],
-        desc: "사계절 날씨에 구애받지 않고 맛있는 음식과 쇼핑, 엔터테인먼트를 알차게 누렸던 거대 실내 보물창고.",
-        letter: "“비가 오거나 날이 궂을 때마다 손잡고 신나게 돌아다니던 하남 스타필드. 맛있는 거 잔뜩 먹고 소소한 구경거리에 함께 웃었던 다정한 일상들.”",
-        photos: [
-          { type: "image", url: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&auto=format&fit=crop", caption: "활기찬 마켓 플레이스" }
-        ]
-      },
-      {
         id: "hyehwa",
-        nameKo: "대학로 혜화 데이트",
+        nameKo: "대학로 혜화",
         nameEn: "Hyehwa Art Stage - 100 Date Milestone",
-        badge: "❤️ 100회 달성 대기록",
+        badge: "❤️ 100번",
         milestone: "100번의 마법 같은 막",
         flag: "🎭",
         coords: [127.0017, 37.5822],
-        labelOffset: { x: 14, y: -10 },
+        callout: { dx: 14, dy: -12, textAnchor: "start" },
+        isMilestone: true,
+        milestoneCount: "100번",
         spots: ["마로니에 공원", "대학로 소극장 연극 투어", "낙산공원 성곽길 야경", "골목 단골 카페"],
         desc: "무려 100번의 만남이 각인된 둘만의 영원한 메인 아지트! 연극과 예술, 사계절의 낭만이 모든 골목마다 숨 쉬는 곳.",
         letter: "“100번이라는 믿기지 않는 숫자만큼 쌓여있는 우리의 웃음소리. 연극의 감동을 나누며 걷던 마로니에 공원, 낙산공원 성곽길에서 내려다본 서울의 밤 불빛... 혜화의 모든 길목이 우리의 무대였어.”",
@@ -805,19 +802,89 @@
         ]
       },
       {
+        id: "wolgok",
+        nameKo: "월곡 데이트",
+        nameEn: "Wolgok Sanctuary - 200 Date Milestone",
+        badge: "🌙 200번",
+        milestone: "200번의 포근한 일상",
+        flag: "🌙",
+        coords: [127.0414, 37.6027],
+        callout: { dx: 16, dy: 0, textAnchor: "start" },
+        isMilestone: true,
+        milestoneCount: "200번",
+        spots: ["월곡역 & 동덕여대 골목길", "단골 카페와 골목 맛집", "달빛 산책로", "포근한 동네 아지트"],
+        desc: "무려 200번의 발걸음이 각인된 둘만의 다정하고 포근한 일상 안식처! 사계절의 온기를 가장 가까이에서 나누었던 소중한 동네 아지트.",
+        letter: "“200번이라는 시간 동안 함께 걸었던 월곡의 골목길들. 화려한 명소보다 더 따뜻하게 우리를 맞아주던 단골 가게들과 소소한 저녁 산책길... 언제 찾아가도 가장 마음 편한 우리만의 비밀 기지.”",
+        photos: [
+          { type: "image", url: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&auto=format&fit=crop", caption: "월곡 골목 단골 카페의 온기" },
+          { type: "image", url: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=600&auto=format&fit=crop", caption: "골목길 달빛 산책" }
+        ]
+      },
+      {
         id: "seoul_all",
         nameKo: "서울 데이트 전역",
         nameEn: "Seoul Metropolitan Heart - 300 Date Milestone",
-        badge: "👑 300회 대기록",
+        badge: "👑 300번",
         milestone: "300번의 찬란한 역사",
         flag: "✨",
         coords: [126.9780, 37.5665],
-        labelOffset: { x: -85, y: 12 },
+        callout: { dx: -16, dy: 0, textAnchor: "end" },
+        isMilestone: true,
+        milestoneCount: "300번",
         spots: ["한강 텐트 피크닉 & 라면", "성수·한남 트렌디 골목", "남산타워 뷰", "익선동 & 북촌 한옥길"],
         desc: "서울 하늘 아래 300번이 넘는 계절을 함께 통과하며 사랑을 쌓아 올린 둘만의 거대한 수도 결계망.",
         letter: "“봄날의 벚꽃, 여름날의 한강 밤도깨비, 가을의 고궁 돌담길, 겨울의 반짝이는 빌딩 숲... 300번의 하루하루가 모여 만들어낸 우리만의 가장 눈부신 마법의 수도.”",
         photos: [
           { type: "image", url: "https://images.unsplash.com/photo-1538485399081-7191377e8241?w=600&auto=format&fit=crop", caption: "서울 도심의 황홀한 야경" }
+        ]
+      },
+      {
+        id: "sanbon_pyeongchon",
+        nameKo: "산본 & 평촌",
+        nameEn: "Sanbon & Pyeongchon - Cozy Alley Romance",
+        badge: "도심 아지트",
+        milestone: "산본 중심상가 & 평촌 공원",
+        flag: "☕",
+        coords: [126.9385, 37.3620],
+        callout: { dx: -16, dy: 8, textAnchor: "end" },
+        spots: ["산본 로데오 중심상가", "평촌 중앙공원 잔디 산책", "범계 로데오 맛집 골목", "아늑한 동네 카페"],
+        desc: "산본 중심상가의 북적이는 맛집과 평촌 중앙공원의 여유로운 잔디 산책로를 오가며 편안하고 달콤한 일상을 나눈 우리만의 아늑한 거점.",
+        letter: "“산본과 평촌의 익숙하고 다정한 거리들! 맛있는 음식을 먹고 평촌 공원을 천천히 거닐며 나눈 수많은 이야기들 속에서 우리의 계절이 소담하게 깊어졌지.”",
+        photos: [
+          { type: "image", url: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&auto=format&fit=crop", caption: "따뜻한 카페와 골목 풍경" }
+        ]
+      },
+      {
+        id: "hanam_starfield",
+        nameKo: "하남 스타필드",
+        nameEn: "Hanam Starfield - Grand Muggle Bazaar",
+        badge: "실내 보물창고",
+        milestone: "대형 몰 탐방",
+        flag: "🛍️",
+        coords: [127.2244, 37.5455],
+        callout: { dx: 16, dy: -6, textAnchor: "start" },
+        spots: ["아쿠아필드 힐링", "고메스트리트 맛집 투어", "스포츠몬스터 & 쇼핑몰"],
+        desc: "사계절 날씨에 구애받지 않고 맛있는 음식과 쇼핑, 엔터테인먼트를 알차게 누렸던 거대 실내 보물창고.",
+        letter: "“비가 오거나 날이 궂을 때마다 손잡고 신나게 돌아다니던 하남 스타필드. 맛있는 거 잔뜩 먹고 소소한 구경거리에 함께 웃었던 다정한 일상들.”",
+        photos: [
+          { type: "image", url: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&auto=format&fit=crop", caption: "활기찬 마켓 플레이스" }
+        ]
+      },
+      {
+        id: "everland",
+        nameKo: "용인 에버랜드",
+        nameEn: "Yongin Everland - Fantastic Beasts Realm",
+        badge: "환상 테마파크",
+        milestone: "신비한 동물 & 롤러코스터",
+        flag: "🎡",
+        coords: [127.2013, 37.2939],
+        callout: { dx: 16, dy: 16, textAnchor: "start" },
+        spots: ["티익스프레스 마법 롤러코스터", "로스트밸리 & 사파리 월드", "포시즌스 가든 꽃축제", "문라이트 야간 퍼레이드"],
+        desc: "신비한 동물들과 아찔한 마법 열차(티익스프레스)가 허공을 질주하는 머글 세계 최대 규모의 환상 테마파크 원정.",
+        letter: "“티익스프레스를 타고 최고점에서 수직 낙하할 때의 짜릿한 비명과 웃음! 사파리에서 만난 귀여운 동물들과 밤하늘을 수놓던 화려한 퍼레이드와 불꽃까지 동화 같았던 하루.”",
+        photos: [
+          { type: "image", url: "https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?w=600&auto=format&fit=crop", caption: "환상의 테마파크와 롤러코스터" },
+          { type: "image", url: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&auto=format&fit=crop", caption: "화려한 야간 축제와 불빛" }
         ]
       }
     ];
@@ -834,7 +901,7 @@
         milestone: "설국 홋카이도 파우더 스노",
         flag: "🇯🇵",
         coords: [141.0, 43.0],
-        labelOffset: { x: 12, y: -6 },
+        callout: { dx: 14, dy: -6, textAnchor: "start" },
         cities: ["니세코", "오타루", "삿포로"],
         spots: ["그랜드 히라후 스키장", "요테이산 설경", "오타루 운하", "삿포로 미식"],
         desc: "새하얀 설경이 남아있던 니세코의 파우더 스노부터 낭만적인 오타루 운하, 활기찬 삿포로 시내까지 홋카이도의 봄과 겨울 매력을 모두 만끽한 여정.",
@@ -852,7 +919,7 @@
         milestone: "남국의 에메랄드 바캉스",
         flag: "🇻🇳",
         coords: [103.9630, 10.2899],
-        labelOffset: { x: 12, y: 4 },
+        callout: { dx: 14, dy: 4, textAnchor: "start" },
         cities: ["푸꾸옥 섬 일주"],
         spots: ["사오비치", "혼똔섬 해상 케이블카", "그랜드월드", "즈엉동 야시장"],
         desc: "에메랄드빛 바다와 황홀한 일몰, 맛있는 해산물과 함께 여유롭게 쉬어갔던 한여름의 푸꾸옥 휴양.",
@@ -869,7 +936,7 @@
         milestone: "겨울 알프스 만년설 일주",
         flag: "🇨🇭",
         coords: [8.15, 46.7],
-        labelOffset: { x: 12, y: -4 },
+        callout: { dx: 14, dy: -4, textAnchor: "start" },
         cities: ["체르마트", "그린델발트", "인터라켄", "루체른", "취리히"],
         spots: ["마테호른 뷰 (체르마트)", "융프라우요흐", "피르스트 클리프워크", "루체른 카펠교", "취리히 구시가지"],
         desc: "체르마트의 황금빛 마테호른부터 아이거 북벽 아래 그린델발트, 호수 품은 인터라켄, 낭만의 루체른, 번화한 취리히까지 이어진 꿈같은 스위스 겨울 대장정.",
@@ -886,7 +953,7 @@
         milestone: "봄 미식 & 문화 탐방",
         flag: "🇯🇵",
         coords: [135.5023, 34.6937],
-        labelOffset: { x: -80, y: 14 },
+        callout: { dx: 14, dy: 16, textAnchor: "start" },
         cities: ["오사카", "도톤보리"],
         spots: ["도톤보리 네온사인", "유니버설 스튜디오 USJ", "오사카성 봄 풍경"],
         desc: "봄기운이 시작될 무렵 다녀온 오사카. 맛있는 간사이 음식들을 즐기고 USJ 해리포터 성을 직접 마주했던 설레는 여정.",
@@ -903,7 +970,7 @@
         milestone: "여름 메가시티 탐방",
         flag: "🇯🇵",
         coords: [139.6917, 35.6895],
-        labelOffset: { x: 12, y: -8 },
+        callout: { dx: 14, dy: -8, textAnchor: "start" },
         cities: ["도쿄"],
         spots: ["시부야 스크램블", "도쿄타워 야경", "신주쿠", "긴자"],
         desc: "도쿄의 화려한 여름밤 야경과 트렌디한 골목길, 다채로운 도심 문화를 탐방했던 여행.",
@@ -914,13 +981,13 @@
       },
       {
         id: "canada",
-        nameKo: "캐나다 (오로라·휘슬러)",
-        nameEn: "Canada (Yellowknife · Whistler · Vancouver)",
+        nameKo: "캐나다 (옐로나이프, 휘슬러)",
+        nameEn: "Canada (Yellowknife · Whistler)",
         badge: "2025.12",
         milestone: "로키 설경 & 오로라 대탐험",
         flag: "🇨🇦",
         coords: [-119.5, 54.0],
-        labelOffset: { x: 12, y: 0 },
+        callout: { dx: 14, dy: 0, textAnchor: "start" },
         cities: ["옐로나이프", "휘슬러", "빅토리아", "밴쿠버"],
         spots: ["옐로나이프 오로라 빌리지", "휘슬러 블랙콤 스키", "밴쿠버 개스타운"],
         desc: "북극권 밤하늘에서 초록빛 커튼을 흔드는 오로라와 세계적인 설산 휘슬러, 밴쿠버까지 누빈 캐나다 윈터 대탐험.",
@@ -937,7 +1004,7 @@
         milestone: "열대 낭만 & 비경 휴양",
         flag: "🇮🇩",
         coords: [115.35, -8.62],
-        labelOffset: { x: 12, y: 2 },
+        callout: { dx: 14, dy: 2, textAnchor: "start" },
         cities: ["우붓", "누사페니다", "스미냑"],
         spots: ["우붓 계단식 논과 정글", "누사페니다 공룡능선 절벽", "스미냑 선셋 비치"],
         desc: "정글 감성의 우붓, 경이로운 바다 절벽의 누사페니다 섬, 트렌디한 해변과 황홀한 노을의 스미냑까지 만끽한 신들의 섬 발리 일주.",
@@ -962,9 +1029,11 @@
     arcMerge.append("feMergeNode").attr("in", "blur");
     arcMerge.append("feMergeNode").attr("in", "SourceGraphic");
 
+    // Map Layers
     const oceanGroup = svg.append("g").attr("class", "ocean-layer");
     const graticuleGroup = svg.append("g").attr("class", "graticule-layer");
     const landGroup = svg.append("g").attr("class", "land-layer");
+    const decorGroup = svg.append("g").attr("class", "decor-layer");
     const routeGroup = svg.append("g").attr("class", "route-layer");
     const markerGroup = svg.append("g").attr("class", "marker-layer");
     const planeSimGroup = svg.append("g").attr("class", "plane-sim-layer");
@@ -974,13 +1043,11 @@
 
     function createProjection(realm, projType) {
       if (realm === 'domestic') {
-        // Detailed Zoomed-in Mercator Map for South Korea
         return d3.geoMercator()
-          .center([127.8, 36.3])
-          .scale(Math.min(width, height) * 6.5)
+          .center([127.7, 36.35])
+          .scale(Math.min(width, height) * 7.4)
           .translate([width / 2, height / 2]);
       } else {
-        // Overseas
         if (projType === '3d') {
           return d3.geoOrthographic()
             .scale(Math.min(width, height) / 2.3)
@@ -1058,15 +1125,19 @@
             landGroup.attr("transform", event.transform);
             oceanGroup.attr("transform", event.transform);
             graticuleGroup.attr("transform", event.transform);
+            decorGroup.attr("transform", event.transform);
             routeGroup.attr("transform", event.transform);
             markerGroup.attr("transform", event.transform);
             planeSimGroup.attr("transform", event.transform);
+
+            // Inversive dynamic scale calculation to completely prevent text collision
+            const effectiveScale = Math.max(0.48, Math.min(1.2, 1 / Math.pow(currentZoomScale, 0.78)));
 
             markerGroup.selectAll(".marker-node")
               .attr("transform", function() {
                 const ox = d3.select(this).attr("data-ox");
                 const oy = d3.select(this).attr("data-oy");
-                return `translate(${ox}, ${oy}) scale(${1 / currentZoomScale})`;
+                return `translate(${ox}, ${oy}) scale(${effectiveScale})`;
               });
           });
         svg.call(zoomBehavior).on("dblclick.zoom", null);
@@ -1107,6 +1178,7 @@
       landGroup.attr("transform", null);
       oceanGroup.attr("transform", null);
       graticuleGroup.attr("transform", null);
+      decorGroup.attr("transform", null);
       routeGroup.attr("transform", null);
       markerGroup.attr("transform", null);
       planeSimGroup.attr("transform", null);
@@ -1133,21 +1205,36 @@
         .datum(graticule)
         .attr("d", pathGenerator)
         .attr("fill", "none")
-        .attr("stroke", "rgba(90, 60, 30, 0.14)")
-        .attr("stroke-width", 0.9)
+        .attr("stroke", "rgba(90, 60, 30, 0.12)")
+        .attr("stroke-width", 0.8)
         .attr("stroke-dasharray", "4,3");
 
-      const paths = landGroup.selectAll(".country-path").data(worldGeoJsonData.features);
-      paths.enter()
-        .append("path")
-        .attr("class", "country-path")
-        .merge(paths)
-        .attr("d", pathGenerator)
-        .attr("fill", "#f7efdc")
-        .attr("stroke", "#4a331c")
-        .attr("stroke-width", currentRealm === 'domestic' ? 1.2 : 0.7);
-      paths.exit().remove();
+      landGroup.selectAll("*").remove();
 
+      if (currentRealm === 'domestic' && koreaGeoJsonData) {
+        landGroup.selectAll(".province-path")
+          .data(koreaGeoJsonData.features)
+          .enter()
+          .append("path")
+          .attr("class", "province-path")
+          .attr("d", pathGenerator)
+          .attr("fill", "#f8f1df")
+          .attr("stroke", "#5a3d24")
+          .attr("stroke-width", 0.9);
+      } else {
+        const paths = landGroup.selectAll(".country-path").data(worldGeoJsonData.features);
+        paths.enter()
+          .append("path")
+          .attr("class", "country-path")
+          .merge(paths)
+          .attr("d", pathGenerator)
+          .attr("fill", "#f7efdc")
+          .attr("stroke", "#4a331c")
+          .attr("stroke-width", currentRealm === 'domestic' ? 1.3 : 0.7);
+        paths.exit().remove();
+      }
+
+      renderVintageDecorations();
       renderMarkersAndRoutes();
     }
 
@@ -1159,8 +1246,78 @@
           .attr("cy", projection.translate()[1]);
       }
       graticuleGroup.selectAll("path").attr("d", pathGenerator);
-      landGroup.selectAll(".country-path").attr("d", pathGenerator);
+      landGroup.selectAll("path").attr("d", pathGenerator);
+      renderVintageDecorations();
       renderMarkersAndRoutes();
+    }
+
+    function renderVintageDecorations() {
+      decorGroup.selectAll("*").remove();
+
+      if (currentRealm === 'domestic') {
+        const rivers = [
+          [[126.65, 37.75], [126.97, 37.53], [127.20, 37.54], [127.50, 37.51], [127.90, 37.30]],
+          [[128.92, 35.10], [128.70, 35.50], [128.45, 36.00], [128.30, 36.60]],
+          [[126.68, 36.00], [127.05, 36.25], [127.35, 36.45]]
+        ];
+
+        rivers.forEach(rCoords => {
+          const rLine = { type: "LineString", coordinates: rCoords };
+          const p = pathGenerator(rLine);
+          if (p) {
+            decorGroup.append("path")
+              .datum(rLine)
+              .attr("d", p)
+              .attr("fill", "none")
+              .attr("stroke", "rgba(100, 130, 150, 0.45)")
+              .attr("stroke-width", 1.4)
+              .attr("stroke-dasharray", "3, 1.5");
+          }
+        });
+
+        const seaLabels = [
+          { name: "EAST SEA (동해)", coords: [129.8, 37.4], angle: -12 },
+          { name: "WEST SEA (서해)", coords: [125.4, 36.6], angle: 8 },
+          { name: "SOUTH SEA (남해)", coords: [128.1, 34.3], angle: 0 },
+          { name: "DOKDO (독도)", coords: [131.86, 37.24], angle: 0 },
+          { name: "ULLEUNGDO (울릉도)", coords: [130.90, 37.50], angle: 0 }
+        ];
+
+        seaLabels.forEach(s => {
+          const pt = projection(s.coords);
+          if (pt) {
+            const g = decorGroup.append("g")
+              .attr("transform", `translate(${pt[0]}, ${pt[1]}) rotate(${s.angle})`);
+
+            g.append("text")
+              .attr("text-anchor", "middle")
+              .attr("font-family", "'Cinzel', 'Noto Serif KR', serif")
+              .attr("font-size", s.name.includes("SEA") ? "13px" : "10px")
+              .attr("font-weight", "700")
+              .attr("letter-spacing", "2px")
+              .attr("fill", "rgba(110, 85, 55, 0.38)")
+              .text(s.name);
+          }
+        });
+
+        const compassPt = [width - 65, 80];
+        const cg = decorGroup.append("g")
+          .attr("transform", `translate(${compassPt[0]}, ${compassPt[1]})`)
+          .attr("opacity", 0.55);
+
+        cg.append("circle").attr("r", 26).attr("fill", "none").attr("stroke", "#63482f").attr("stroke-width", 1).attr("stroke-dasharray", "2,2");
+        cg.append("circle").attr("r", 22).attr("fill", "none").attr("stroke", "#63482f").attr("stroke-width", 0.7);
+
+        cg.append("polygon").attr("points", "0,-22 4,-5 0,-2 -4,-5").attr("fill", "#841c1c");
+        cg.append("polygon").attr("points", "0,22 4,5 0,2 -4,5").attr("fill", "#63482f");
+        cg.append("polygon").attr("points", "-22,0 -5,-4 -2,0 -5,4").attr("fill", "#63482f");
+        cg.append("polygon").attr("points", "22,0 5,-4 2,0 5,4").attr("fill", "#63482f");
+
+        cg.append("text").attr("y", -25).attr("text-anchor", "middle").attr("font-family", "Cinzel").attr("font-size", "10px").attr("font-weight", "900").attr("fill", "#841c1c").text("N");
+        cg.append("text").attr("y", 32).attr("text-anchor", "middle").attr("font-family", "Cinzel").attr("font-size", "9px").attr("font-weight", "700").attr("fill", "#63482f").text("S");
+        cg.append("text").attr("x", 28).attr("y", 3).attr("text-anchor", "middle").attr("font-family", "Cinzel").attr("font-size", "9px").attr("font-weight", "700").attr("fill", "#63482f").text("E");
+        cg.append("text").attr("x", -28).attr("y", 3).attr("text-anchor", "middle").attr("font-family", "Cinzel").attr("font-size", "9px").attr("font-weight", "700").attr("fill", "#63482f").text("W");
+      }
     }
 
     function renderMarkersAndRoutes() {
@@ -1169,9 +1326,9 @@
 
       const dataset = currentRealm === 'domestic' ? DOMESTIC_SPOTS : OVERSEAS_SPOTS;
       const is3D = currentRealm === 'overseas' && currentProjectionType === '3d';
-      const scaleFactor = is3D ? 1 : (1 / currentZoomScale);
+      const scaleFactor = is3D ? 1 : Math.max(0.48, Math.min(1.2, 1 / Math.pow(currentZoomScale, 0.78)));
 
-      // 1. Draw Routes
+      // 1. Draw Flight Routes
       if (currentRealm === 'overseas') {
         dataset.forEach(dest => {
           const isSelected = selectedSpot && selectedSpot.id === dest.id;
@@ -1190,7 +1347,6 @@
           }
         });
       } else {
-        // Domestic: Connecting links to Seoul
         dataset.forEach(dest => {
           if (dest.id === 'seoul_all') return;
           const isSelected = selectedSpot && selectedSpot.id === dest.id;
@@ -1201,7 +1357,7 @@
               .datum(geoLine)
               .attr("d", pData)
               .attr("fill", "none")
-              .attr("stroke", isSelected ? "#841c1c" : "rgba(180, 83, 9, 0.25)")
+              .attr("stroke", isSelected ? "#841c1c" : "rgba(180, 83, 9, 0.22)")
               .attr("stroke-width", isSelected ? 1.5 : 0.7)
               .attr("stroke-dasharray", isSelected ? "4,3" : "2,2")
               .attr("class", isSelected ? "magic-flight-active" : "");
@@ -1209,7 +1365,7 @@
         });
       }
 
-      // 2. Draw Pins and Badges
+      // 2. Draw Pins, Leader Lines, and Labels
       dataset.forEach(dest => {
         const isSelected = selectedSpot && selectedSpot.id === dest.id;
         const coords = projection(dest.coords);
@@ -1225,9 +1381,21 @@
           .attr("data-ox", coords[0])
           .attr("data-oy", coords[1])
           .attr("transform", `translate(${coords[0]}, ${coords[1]}) scale(${scaleFactor})`)
-          .on("click", () => selectSpot(dest))
+          .style("pointer-events", "all")
+          .on("click", (event) => {
+            if (event.defaultPrevented) return;
+            event.stopPropagation();
+            selectSpot(dest);
+          })
           .on("mouseenter", (e) => showTooltip(e, dest))
           .on("mouseleave", hideTooltip);
+
+        // Click Hitbox
+        g.append("circle")
+          .attr("r", 20)
+          .attr("fill", "transparent")
+          .attr("stroke", "transparent")
+          .style("cursor", "pointer");
 
         // Pulse Ring
         if (isSelected) {
@@ -1236,43 +1404,73 @@
             .attr("fill", "none")
             .attr("stroke", "#841c1c")
             .attr("stroke-width", 2.2)
-            .attr("class", "magic-aura-pulse");
+            .attr("class", "magic-aura-pulse")
+            .style("pointer-events", "none");
         }
 
         // Center Pin
+        const isMilestone = dest.isMilestone;
         g.append("circle")
-          .attr("r", isSelected ? 7 : (dest.id === 'seoul_all' || dest.id === 'hyehwa' ? 6 : 4.8))
-          .attr("fill", isSelected ? "#841c1c" : (dest.id.includes('hyehwa') || dest.id.includes('seoul') ? "#dc2626" : "#b45309"))
-          .attr("stroke", "#ffffff")
-          .attr("stroke-width", isSelected ? 2 : 1.5);
+          .attr("r", isSelected ? 6.5 : (isMilestone ? 5.5 : 4.2))
+          .attr("fill", isSelected ? "#841c1c" : (isMilestone ? "#c2410c" : "#7c2d12"))
+          .attr("stroke", isMilestone ? "#fef3c7" : "#ffffff")
+          .attr("stroke-width", isSelected ? 2 : 1.5)
+          .style("cursor", "pointer");
 
-        // Text Badge Label
-        const lOffset = dest.labelOffset || { x: 10, y: 4 };
-        const labelText = `${dest.flag} ${dest.nameKo}`;
+        // Callout coordinates & Direction
+        const callout = dest.callout || { dx: 12, dy: 4, textAnchor: "start" };
+        const lOffset = { x: callout.dx, y: callout.dy };
+        const anchor = callout.textAnchor || "start";
 
-        // Glow Outline
+        // Leader Line (인출선): 핀에서 텍스트 시작점까지 얇은 양피지풍 점선 연결
+        if (Math.abs(lOffset.x) > 8 || Math.abs(lOffset.y) > 8) {
+          g.append("line")
+            .attr("x1", 0)
+            .attr("y1", 0)
+            .attr("x2", lOffset.x * 0.85)
+            .attr("y2", lOffset.y * 0.85)
+            .attr("stroke", isSelected ? "#841c1c" : "rgba(80, 50, 25, 0.45)")
+            .attr("stroke-width", isSelected ? 1.4 : 1)
+            .attr("stroke-dasharray", "2.5, 2")
+            .style("pointer-events", "none");
+        }
+
+        let labelTitle = `${dest.flag} ${dest.nameKo}`;
+        if (dest.milestoneCount) {
+          labelTitle += ` [${dest.milestoneCount}]`;
+        }
+
+        const baseFontSize = isSelected ? 12 : (isMilestone ? 11 : 10.5);
+        const foreColor = isSelected ? "#841c1c" : (isMilestone ? "#9a3412" : "#24170d");
+
+        // Halo Outline for supreme legibility (배경 양피지와 대비되는 선명한 윤곽선)
         g.append("text")
           .attr("x", lOffset.x)
           .attr("y", lOffset.y)
+          .attr("text-anchor", anchor)
+          .attr("dominant-baseline", "central")
           .attr("fill", "#fbf7ee")
           .attr("stroke", "#fbf7ee")
-          .attr("stroke-width", 3.5)
+          .attr("stroke-width", 4)
           .attr("stroke-linejoin", "round")
-          .attr("stroke-linecap", "round")
-          .attr("font-size", isSelected ? "13px" : "11.5px")
+          .attr("font-size", `${baseFontSize}px`)
           .attr("font-weight", "900")
           .attr("font-family", "'Noto Serif KR', serif")
-          .text(labelText);
+          .style("cursor", "pointer")
+          .text(labelTitle);
 
         // Fore Text
         g.append("text")
           .attr("x", lOffset.x)
           .attr("y", lOffset.y)
-          .attr("fill", isSelected ? "#841c1c" : "#1f1309")
-          .attr("font-size", isSelected ? "13px" : "11.5px")
+          .attr("text-anchor", anchor)
+          .attr("dominant-baseline", "central")
+          .attr("fill", foreColor)
+          .attr("font-size", `${baseFontSize}px`)
           .attr("font-weight", "900")
           .attr("font-family", "'Noto Serif KR', serif")
-          .text(labelText);
+          .style("cursor", "pointer")
+          .text(labelTitle);
       });
     }
 
@@ -1422,17 +1620,25 @@
       closeDrawer();
     });
 
-    // Build Bottom Carousel
     function buildCarousel() {
       const carousel = document.getElementById("destCarousel");
       const titleEl = document.getElementById("carouselHeaderTitle");
       const countEl = document.getElementById("carouselCountBadge");
       const dataset = currentRealm === 'domestic' ? DOMESTIC_SPOTS : OVERSEAS_SPOTS;
 
-      titleEl.textContent = currentRealm === 'domestic' 
-        ? "호그와트 & 호그스미드 근교 마법 여정 전면 색인" 
-        : "국제 포트키 대원정 해외 여정 전면 색인";
-      countEl.textContent = `● ${dataset.length} Spots`;
+      if (currentRealm === 'domestic') {
+        titleEl.textContent = "호그와트 & 호그스미드 근교 마법 여정 전면 색인";
+        if (countEl) {
+          countEl.textContent = "";
+          countEl.classList.add("hidden");
+        }
+      } else {
+        titleEl.textContent = "국제 포트키 대원정 해외 여정 전면 색인";
+        if (countEl) {
+          countEl.classList.remove("hidden");
+          countEl.textContent = `● ${dataset.length} Spots`;
+        }
+      }
 
       carousel.innerHTML = dataset.map(s => `
         <div class="dest-card shrink-0 px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-sm bg-[#fbf5e6] hover:bg-[#fffcf5] border sm:border-2 border-[#543b22] cursor-pointer shadow transition-all duration-150 min-w-[125px] sm:min-w-[140px]" data-id="${s.id}">
@@ -1557,18 +1763,162 @@
       }
     });
 
-    // Marauder Cover Overlay
     const maraudersOverlay = document.getElementById("maraudersOverlay");
     const marauderTeaser = document.getElementById("marauderTeaser");
     const marauderSpell = document.getElementById("marauderSpell");
     const marauderCloseSpell = document.getElementById("marauderCloseSpell");
     const hideMapBtn = document.getElementById("hideMapBtn");
+    const inkVeilCanvas = document.getElementById("inkVeilCanvas");
+    const inkVeilHint = document.getElementById("inkVeilHint");
     let isMapRevealed = false;
+    let isInkVeilActive = false;
+    const SCRATCH_GRID_COLS = 40;
+    const SCRATCH_GRID_ROWS = 30;
+    const TOTAL_SCRATCH_CELLS = SCRATCH_GRID_COLS * SCRATCH_GRID_ROWS;
+    let scratchGrid = new Uint8Array(TOTAL_SCRATCH_CELLS);
+    let scratchClearedCount = 0;
+
+    function resetInkVeil() {
+      if (!inkVeilCanvas || !containerEl) return;
+      const rect = containerEl.getBoundingClientRect();
+      inkVeilCanvas.width = rect.width;
+      inkVeilCanvas.height = rect.height;
+      const ctx = inkVeilCanvas.getContext("2d");
+      
+      ctx.fillStyle = "#dfcaa5";
+      ctx.fillRect(0, 0, rect.width, rect.height);
+
+      ctx.fillStyle = "rgba(70, 45, 15, 0.08)";
+      for (let i = 0; i < 700; i++) {
+        const x = Math.random() * rect.width;
+        const y = Math.random() * rect.height;
+        ctx.fillRect(x, y, 2, 2);
+      }
+
+      inkVeilCanvas.style.opacity = "1";
+      inkVeilCanvas.style.pointerEvents = "auto";
+      inkVeilCanvas.style.touchAction = "none";
+      inkVeilCanvas.classList.remove("hidden");
+      if (inkVeilHint) {
+        inkVeilHint.style.opacity = "1";
+        inkVeilHint.classList.remove("hidden");
+      }
+
+      scratchGrid.fill(0);
+      scratchClearedCount = 0;
+      isInkVeilActive = true;
+    }
+
+    function revealInkAt(clientX, clientY) {
+      if (!isInkVeilActive || !inkVeilCanvas) return;
+      const rect = inkVeilCanvas.getBoundingClientRect();
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+
+      if (x < 0 || x > rect.width || y < 0 || y > rect.height) return;
+
+      const ctx = inkVeilCanvas.getContext("2d");
+      ctx.save();
+      ctx.globalCompositeOperation = "destination-out";
+
+      const brushRadius = Math.max(55, Math.min(rect.width, rect.height) / 7.2);
+      const grad = ctx.createRadialGradient(x, y, 0, x, y, brushRadius);
+      grad.addColorStop(0, "rgba(0, 0, 0, 1)");
+      grad.addColorStop(0.7, "rgba(0, 0, 0, 0.9)");
+      grad.addColorStop(1, "rgba(0, 0, 0, 0)");
+
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(x, y, brushRadius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      const cellWidth = rect.width / SCRATCH_GRID_COLS;
+      const cellHeight = rect.height / SCRATCH_GRID_ROWS;
+      const radiusSq = brushRadius * brushRadius;
+
+      const minCol = Math.max(0, Math.floor((x - brushRadius) / cellWidth));
+      const maxCol = Math.min(SCRATCH_GRID_COLS - 1, Math.floor((x + brushRadius) / cellWidth));
+      const minRow = Math.max(0, Math.floor((y - brushRadius) / cellHeight));
+      const maxRow = Math.min(SCRATCH_GRID_ROWS - 1, Math.floor((y + brushRadius) / cellHeight));
+
+      for (let r = minRow; r <= maxRow; r++) {
+        const cy = (r + 0.5) * cellHeight;
+        for (let c = minCol; c <= maxCol; c++) {
+          const idx = r * SCRATCH_GRID_COLS + c;
+          if (scratchGrid[idx] === 0) {
+            const cx = (c + 0.5) * cellWidth;
+            const distSq = (cx - x) * (cx - x) + (cy - y) * (cy - y);
+            if (distSq <= radiusSq) {
+              scratchGrid[idx] = 1;
+              scratchClearedCount++;
+            }
+          }
+        }
+      }
+
+      const ratio = scratchClearedCount / TOTAL_SCRATCH_CELLS;
+
+      if (ratio >= 0.70 && isInkVeilActive) {
+        isInkVeilActive = false;
+        inkVeilCanvas.style.pointerEvents = "none";
+        if (inkVeilHint) {
+          inkVeilHint.style.opacity = "0";
+          setTimeout(() => inkVeilHint.classList.add("hidden"), 600);
+        }
+        inkVeilCanvas.style.opacity = "0";
+        playMagicChime();
+        showToast("✨ 마법 양피지가 걷히며 지도가 완전히 드러났습니다!");
+        setTimeout(() => {
+          inkVeilCanvas.classList.add("hidden");
+        }, 1000);
+      }
+    }
+
+    function handleVeilScratch(e) {
+      if (!isInkVeilActive || !isMapRevealed) return;
+      if (e.touches && e.touches.length > 0) {
+        for (let i = 0; i < e.touches.length; i++) {
+          revealInkAt(e.touches[i].clientX, e.touches[i].clientY);
+        }
+      } else {
+        revealInkAt(e.clientX, e.clientY);
+      }
+    }
+
+    if (inkVeilCanvas) {
+      inkVeilCanvas.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        handleVeilScratch(e);
+      }, { passive: false });
+
+      inkVeilCanvas.addEventListener("touchmove", (e) => {
+        e.preventDefault();
+        handleVeilScratch(e);
+      }, { passive: false });
+
+      inkVeilCanvas.addEventListener("pointerdown", (e) => {
+        handleVeilScratch(e);
+      });
+
+      inkVeilCanvas.addEventListener("pointermove", (e) => {
+        handleVeilScratch(e);
+      });
+    }
+
+    if (containerEl) {
+      containerEl.addEventListener("mousemove", (e) => {
+        if (isMapRevealed && isInkVeilActive) {
+          revealInkAt(e.clientX, e.clientY);
+        }
+      });
+    }
 
     function revealMaraudersMap() {
       if (isMapRevealed) return;
       isMapRevealed = true;
       playMagicChime();
+      resetInkVeil();
       marauderTeaser.classList.add("hidden");
       if (marauderCloseSpell) marauderCloseSpell.classList.add("hidden");
       marauderSpell.classList.remove("hidden");
@@ -1589,6 +1939,10 @@
       playWandWoosh();
       closeDrawer();
 
+      if (inkVeilCanvas) {
+        inkVeilCanvas.style.pointerEvents = "none";
+      }
+
       maraudersOverlay.classList.remove("hidden");
       maraudersOverlay.classList.add("opacity-0", "scale-105");
       maraudersOverlay.classList.remove("pointer-events-none");
@@ -1603,6 +1957,7 @@
       });
 
       showToast("📜 마법의 장난 끝! (Mischief Managed)");
+      resetInkVeil();
       setTimeout(() => {
         if (!isMapRevealed) {
           if (marauderCloseSpell) marauderCloseSpell.classList.add("hidden");
@@ -1617,7 +1972,6 @@
       concealMaraudersMap();
     });
 
-    // Broom Flight Simulation
     document.getElementById("flySimBtn").addEventListener("click", () => {
       if (!selectedSpot) return;
       stopAutoRotation(false);
@@ -1661,14 +2015,19 @@
       requestAnimationFrame(step);
     });
 
-    // Copy Trip summary
     document.getElementById("copyTripBtn").addEventListener("click", () => {
       if (!selectedSpot) return;
       const text = `[예언자 일보 특별 스크랩 - ${selectedSpot.nameKo}]\n• 공식 기록: ${selectedSpot.milestone}\n• 마법 탐방기: ${selectedSpot.desc}\n• 현장 편지: ${selectedSpot.letter}`;
-      navigator.clipboard.writeText(text).then(() => showToast("양피지 기록이 클립보드에 복사되었습니다."));
+      
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      showToast("양피지 기록이 클립보드에 복사되었습니다.");
     });
 
-    // Search Box
     const searchInput = document.getElementById("spotSearch");
     const searchDropdown = document.getElementById("searchDropdown");
     const clearSearchBtn = document.getElementById("clearSearchBtn");
@@ -1745,21 +2104,25 @@
       const drawer = document.getElementById("travelDrawer");
       if (drawer && !drawer.classList.contains("-translate-x-full") && !drawer.contains(e.target)) {
         if (
-          !e.target.closest(".marker-node") &&
-          !e.target.closest(".dest-card") &&
-          !e.target.closest(".search-item") &&
-          !e.target.closest("#photoLightbox") &&
-          !e.target.closest("#adminAuthModal") &&
-          !e.target.closest("#addMediaModal") &&
-          !e.target.closest("#letterModal") &&
-          !e.target.closest("#maraudersOverlay")
+          e.target.closest(".marker-node") ||
+          e.target.closest("circle") ||
+          e.target.closest("text") ||
+          e.target.closest("line") ||
+          e.target.closest("rect") ||
+          e.target.closest(".dest-card") ||
+          e.target.closest(".search-item") ||
+          e.target.closest("#photoLightbox") ||
+          e.target.closest("#adminAuthModal") ||
+          e.target.closest("#addMediaModal") ||
+          e.target.closest("#letterModal") ||
+          e.target.closest("#maraudersOverlay")
         ) {
-          closeDrawer();
+          return;
         }
+        closeDrawer();
       }
     });
 
-    // Admin Mode & Photo Upload Handlers
     function updateAdminUI() {
       const adminBtn = document.getElementById("adminToggleBtn");
       const icon = document.getElementById("adminToggleIcon");
@@ -1816,7 +2179,6 @@
     document.getElementById("closeAdminAuthModalBtn").addEventListener("click", () => document.getElementById("adminAuthModal").classList.add("hidden"));
     document.getElementById("cancelAdminAuthBtn").addEventListener("click", () => document.getElementById("adminAuthModal").classList.add("hidden"));
 
-    // Bulk upload modals
     const addMediaModal = document.getElementById("addMediaModal");
     document.getElementById("addMediaPromptBtn").addEventListener("click", () => {
       document.getElementById("uploadStatusMsg").classList.add("hidden");
@@ -1861,6 +2223,52 @@
       }, 700);
     });
 
+    // Tab switching in Media Modal
+    const tabLocalFileBtn = document.getElementById("tabLocalFileBtn");
+    const tabWebUrlBtn = document.getElementById("tabWebUrlBtn");
+    const bulkUploadView = document.getElementById("bulkUploadView");
+    const urlUploadView = document.getElementById("urlUploadView");
+
+    tabLocalFileBtn.addEventListener("click", () => {
+      tabLocalFileBtn.className = "flex-1 py-1.5 text-xs font-black text-[#841c1c] border-b-2 border-[#841c1c] bg-[#ede0c4]";
+      tabWebUrlBtn.className = "flex-1 py-1.5 text-xs font-bold text-[#5c4026] hover:bg-[#ede0c4]/60 transition";
+      bulkUploadView.classList.remove("hidden");
+      urlUploadView.classList.add("hidden");
+    });
+
+    tabWebUrlBtn.addEventListener("click", () => {
+      tabWebUrlBtn.className = "flex-1 py-1.5 text-xs font-black text-[#841c1c] border-b-2 border-[#841c1c] bg-[#ede0c4]";
+      tabLocalFileBtn.className = "flex-1 py-1.5 text-xs font-bold text-[#5c4026] hover:bg-[#ede0c4]/60 transition";
+      urlUploadView.classList.remove("hidden");
+      bulkUploadView.classList.add("hidden");
+    });
+
+    document.getElementById("saveNewMediaBtn").addEventListener("click", async () => {
+      if (!selectedSpot) return;
+      const urlInput = document.getElementById("newMediaUrl");
+      const captionInput = document.getElementById("newMediaCaption");
+      const url = urlInput.value.trim();
+      const caption = captionInput.value.trim() || "보도 아카이브";
+
+      if (!url) {
+        showToast("유효한 웹 주소를 입력하세요.");
+        return;
+      }
+
+      await savePhotoToDB({
+        destId: selectedSpot.id,
+        type: "image",
+        url: url,
+        caption: caption
+      });
+
+      urlInput.value = "";
+      captionInput.value = "";
+      addMediaModal.classList.add("hidden");
+      await renderDrawerPhotos(selectedSpot);
+      showToast("새로운 보도 사진 링크가 등록되었습니다!");
+    });
+
     // Letter editing
     const letterModal = document.getElementById("letterModal");
     document.getElementById("editLetterBtn").addEventListener("click", () => {
@@ -1892,9 +2300,22 @@
         await initDB();
         updateAdminUI();
 
+        // 1. World Geometries
         const res = await fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json");
         const topoData = await res.json();
         worldGeoJsonData = topojson.feature(topoData, topoData.objects.countries);
+
+        // 2. South Korea Provinces
+        try {
+          const krRes = await fetch("https://cdn.jsdelivr.net/gh/southkorea/southkorea-maps@master/kostat/2018/json/skorea-provinces-2018-topo-simple.json");
+          if (krRes.ok) {
+            const krTopo = await krRes.json();
+            const objKey = Object.keys(krTopo.objects)[0];
+            koreaGeoJsonData = topojson.feature(krTopo, krTopo.objects[objKey]);
+          }
+        } catch (e) {
+          console.warn("Detailed Korea map fallback:", e);
+        }
 
         buildCarousel();
         initProjection("2d");
