@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>호그와트 비밀지도 & 예언자 일보 특별판 (The Marauder's Map & Daily Prophet)</title>
+  <title>호그와트 비밀지도 & 예언자 일보 특별판 (The Marauder's Map)</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- D3.js and TopoJSON -->
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
-  <!-- Google Fonts: UnifrakturMaguntia, Playfair Display, Cinzel, Noto Serif KR, MedievalSharp -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Noto+Serif+KR:wght@400;600;700;900&family=UnifrakturMaguntia&family=IM+Fell+DW+Pica:ital@0;1&family=MedievalSharp&display=swap" rel="stylesheet">
@@ -24,19 +24,6 @@
             serif: ['"Noto Serif KR"', '"IM Fell DW Pica"', 'serif'],
             cinzel: ['"Cinzel"', 'serif'],
             marauder: ['"MedievalSharp"', '"Cinzel"', 'serif']
-          },
-          colors: {
-            parchment: {
-              50: '#fbf7ee',
-              100: '#f5ecd6',
-              200: '#ebdab4',
-              300: '#dfc48e',
-              400: '#d0ac68',
-              500: '#b8924b',
-              800: '#4d391b',
-              900: '#2d200f',
-              950: '#1a1106',
-            }
           }
         }
       }
@@ -60,7 +47,6 @@
       box-shadow: inset 0 0 70px rgba(70, 45, 15, 0.35);
     }
 
-    /* Marauder's Map Secret Parchment Texture */
     .marauders-paper {
       background-color: #dfcaa5;
       background-image: 
@@ -70,7 +56,6 @@
       box-shadow: inset 0 0 100px rgba(45, 25, 10, 0.75);
     }
 
-    /* Moving Magical Photograph Sheen */
     @keyframes prophetMovingPhoto {
       0% { filter: sepia(0.55) contrast(1.1) brightness(0.96); }
       50% { filter: sepia(0.25) contrast(1.2) brightness(1.05); }
@@ -102,37 +87,22 @@
       100% { transform: translateY(50%) rotate(25deg); }
     }
 
-    /* Glowing Flight Route */
     @keyframes magicFlightDash {
-      to {
-        stroke-dashoffset: -32;
-      }
+      to { stroke-dashoffset: -32; }
     }
     .magic-flight-active {
-      stroke-dasharray: 3, 2.5;
-      animation: magicFlightDash 1.4s linear infinite;
+      stroke-dasharray: 4, 3;
+      animation: magicFlightDash 1.3s linear infinite;
     }
 
-    /* Pulsing Aura Rings */
     @keyframes magicAuraPulse {
-      0% { r: 4px; opacity: 0.9; }
-      100% { r: 24px; opacity: 0; }
+      0% { r: 5px; opacity: 0.95; }
+      100% { r: 26px; opacity: 0; }
     }
     .magic-aura-pulse {
       animation: magicAuraPulse 2.2s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
     }
 
-    /* Marauder Footprints Walking Animation */
-    @keyframes footstepWalk {
-      0%, 100% { opacity: 0.15; transform: scale(0.9); }
-      50% { opacity: 0.9; transform: scale(1.1); }
-    }
-    .marauder-foot-1 { animation: footstepWalk 1.6s infinite 0s ease-in-out; }
-    .marauder-foot-2 { animation: footstepWalk 1.6s infinite 0.4s ease-in-out; }
-    .marauder-foot-3 { animation: footstepWalk 1.6s infinite 0.8s ease-in-out; }
-    .marauder-foot-4 { animation: footstepWalk 1.6s infinite 1.2s ease-in-out; }
-
-    /* Marauder Ink Bloom Glow */
     @keyframes incantationBloom {
       0% { opacity: 0; transform: scale(0.96) translateY(6px); filter: blur(2px); }
       50% { opacity: 1; transform: scale(1.02) translateY(0); filter: blur(0px); text-shadow: 0 0 18px rgba(132, 28, 28, 0.6); }
@@ -142,26 +112,17 @@
       animation: incantationBloom 1.2s forwards cubic-bezier(0.25, 1, 0.5, 1);
     }
 
-    .parchment-scrollbar::-webkit-scrollbar {
-      height: 4px;
-      width: 4px;
-    }
-    .parchment-scrollbar::-webkit-scrollbar-track {
-      background: rgba(80, 50, 20, 0.08);
-    }
-    .parchment-scrollbar::-webkit-scrollbar-thumb {
-      background: #8b6b44;
-      border-radius: 4px;
-    }
+    .parchment-scrollbar::-webkit-scrollbar { height: 4px; width: 4px; }
+    .parchment-scrollbar::-webkit-scrollbar-track { background: rgba(80, 50, 20, 0.08); }
+    .parchment-scrollbar::-webkit-scrollbar-thumb { background: #8b6b44; border-radius: 4px; }
 
     .drop-cap::first-letter {
       float: left;
       font-family: 'Cinzel', serif;
-      font-size: 2.6rem;
+      font-size: 2.5rem;
       line-height: 0.85;
       padding-top: 4px;
       padding-right: 8px;
-      padding-bottom: 2px;
       color: #7f1d1d;
       font-weight: 900;
     }
@@ -180,24 +141,19 @@
 <body class="h-screen w-screen flex flex-col overflow-hidden bg-[#120c06]">
 
   <!-- ============================================================ -->
-  <!-- 🪄 HOGWARTS MARAUDER'S MAP FULL-SCREEN SECRET OVERLAY        -->
+  <!-- 🪄 HOGWARTS MARAUDER'S MAP FULL-SCREEN OVERLAY               -->
   <!-- ============================================================ -->
-  <div id="maraudersOverlay" class="fixed inset-0 z-[100] marauders-paper flex flex-col items-center justify-center p-4 cursor-pointer select-none transition-all duration-[2200ms] ease-in-out">
-    
-    <!-- Antique Ornate Frame -->
-    <div class="relative max-w-xl w-full border-4 border-[#3b2513] p-6 sm:p-10 text-center shadow-[0_0_50px_rgba(20,10,5,0.8)] bg-[#ede0c4]/80 backdrop-blur-xs rounded-sm pointer-events-none">
+  <div id="maraudersOverlay" class="fixed inset-0 z-[100] marauders-paper flex flex-col items-center justify-center p-4 cursor-pointer select-none transition-all duration-[2000ms] ease-in-out">
+    <div class="relative max-w-xl w-full border-4 border-[#3b2513] p-6 sm:p-10 text-center shadow-[0_0_50px_rgba(20,10,5,0.8)] bg-[#ede0c4]/85 rounded-sm pointer-events-none">
       
-      <!-- Corner Decorative Ornaments -->
       <div class="absolute -top-3 -left-3 text-[#5c3e21] text-lg font-cinzel">✦</div>
       <div class="absolute -top-3 -right-3 text-[#5c3e21] text-lg font-cinzel">✦</div>
       <div class="absolute -bottom-3 -left-3 text-[#5c3e21] text-lg font-cinzel">✦</div>
       <div class="absolute -bottom-3 -right-3 text-[#5c3e21] text-lg font-cinzel">✦</div>
 
-      <!-- State 1: Before Wand Tap (Teaser) -->
+      <!-- State 1: Teaser -->
       <div id="marauderTeaser" class="flex flex-col items-center gap-3">
-        <div class="w-16 h-16 rounded-full border-2 border-[#543b22] bg-[#dfcaa5] flex items-center justify-center text-3xl shadow-inner mb-1">
-          🪄
-        </div>
+        <div class="w-16 h-16 rounded-full border-2 border-[#543b22] bg-[#dfcaa5] flex items-center justify-center text-3xl shadow-inner mb-1">🪄</div>
         <p class="font-cinzel text-xs tracking-widest text-[#735334] uppercase font-bold">
           Messrs Moony, Wormtail, Padfoot & Prongs
         </p>
@@ -205,41 +161,46 @@
           The Marauder's Map
         </h2>
         <div class="w-24 h-0.5 bg-[#841c1c] mx-auto my-1"></div>
-        <p class="font-serif italic text-xs sm:text-sm text-[#4d3520] max-w-md">
-          “낡은 마법 양피지가 굳게 접혀 있습니다.<br>지팡이 끝을 대고 양피지를 가볍게 터치하세요.”
+        <p class="font-serif italic text-xs sm:text-sm text-[#4d3520] max-w-md leading-relaxed">
+          “낡은 마법 양피지가 굳게 접혀 있습니다.<br>
+          지팡이 끝을 대고 양피지를 가볍게 터치하세요.”
         </p>
-
-        <!-- Pulsing Touch Prompt -->
         <div class="mt-4 px-4 py-2 border-2 border-dashed border-[#841c1c] bg-[#fbf5e6]/80 rounded-sm animate-pulse flex items-center gap-2">
           <span class="text-sm">👆</span>
-          <span class="font-headline font-bold text-xs text-[#841c1c]">화면을 클릭 또는 터치하여 마법 지도를 펼치세요</span>
+          <span class="font-headline font-bold text-xs text-[#841c1c]">화면을 터치하여 마법 지도를 펼치세요</span>
         </div>
       </div>
 
-      <!-- State 2: Active Incantation When Tapped -->
-      <div id="marauderSpell" class="hidden flex flex-col items-center gap-3 incantation-reveal">
-        <!-- Walking Footprints -->
-        <div class="flex items-center justify-center gap-4 text-xl sm:text-2xl text-[#841c1c] my-1">
-          <span class="marauder-foot-1">👣</span>
-          <span class="marauder-foot-2">👣</span>
-          <span class="marauder-foot-3">👣</span>
-          <span class="marauder-foot-4">👣</span>
+      <!-- State 2: Active Spell -->
+      <div id="marauderSpell" class="hidden flex flex-col items-center gap-2 incantation-reveal">
+        <div class="flex items-center justify-center gap-3 text-2xl text-[#841c1c] my-1">
+          <span>🐾</span><span>👣</span><span>🐾</span><span>👣</span>
         </div>
-
         <p class="font-cinzel text-xs tracking-widest text-[#841c1c] font-black uppercase">
           ✦ 마법의 주문이 잉크로 피어오릅니다 ✦
         </p>
-
         <h3 class="font-headline italic text-lg sm:text-2xl font-black text-[#661111] leading-snug">
           “나는 천하의 멍텅구리임을 엄숙하게 선언합니다”
         </h3>
-
         <p class="font-cinzel text-[11px] sm:text-xs text-[#4d3520] font-bold tracking-wider">
           “I solemnly swear that I am up to no good.”
         </p>
-
         <div class="mt-2 text-[10px] text-[#785b3f] font-serif animate-bounce">
-          📜 마법 지도의 봉인이 풀리고 있습니다...
+          📜 국내와 해외의 비밀 발자국들이 모습을 드러냅니다...
+        </div>
+      </div>
+
+      <!-- State 3: Mischief Managed -->
+      <div id="marauderCloseSpell" class="hidden flex flex-col items-center gap-2 incantation-reveal">
+        <div class="text-3xl text-[#841c1c] my-1">✨ 📜 ✨</div>
+        <h3 class="font-headline italic text-lg sm:text-2xl font-black text-[#661111] leading-snug">
+          “마법의 장난 끝!”
+        </h3>
+        <p class="font-cinzel text-[11px] sm:text-xs text-[#4d3520] font-bold tracking-wider">
+          “Mischief Managed.”
+        </p>
+        <div class="mt-2 text-[10px] text-[#785b3f] font-serif">
+          양피지가 다시 백지로 봉인되었습니다.
         </div>
       </div>
 
@@ -254,10 +215,10 @@
       <div class="flex items-center gap-2">
         <span class="text-[#841c1c] font-black">✦ 마법부 공인 특보 ✦</span>
         <span class="hidden sm:inline">|</span>
-        <span class="hidden sm:inline">제 714호 • 호그와트 & 마법교통국 승인</span>
+        <span id="headerSubNotice" class="hidden sm:inline">국제 포트키 원정대 해외 특파 일지</span>
       </div>
-      <div class="flex items-center gap-2 sm:gap-3">
-        <span>2024~2026 연간판</span>
+      <div class="flex items-center gap-2">
+        <span id="headerChronicleTag">2024~2026 통합판</span>
         <span class="px-1.5 py-0.2 bg-[#841c1c] text-[#fbf7ee] text-[9px] font-bold rounded-sm tracking-widest">7 GALLEONS</span>
       </div>
     </div>
@@ -268,24 +229,34 @@
           <span>𝕯</span>
         </div>
         <div>
-          <h1 class="font-prophet text-2xl sm:text-3xl md:text-4xl text-[#1a1106] tracking-tighter leading-none flex items-center gap-2">
+          <h1 class="font-prophet text-2xl sm:text-3xl md:text-4xl text-[#1a1106] tracking-tighter leading-none">
             The Daily Prophet
           </h1>
           <p class="font-headline italic text-[11px] sm:text-xs text-[#523d27] font-semibold tracking-wide">
-            예언자 일보: 머글 세계 방랑 일지와 7번의 마법 비행 항로
+            예언자 일보: 머글 세계 방랑 일지와 마법 발자국
           </p>
         </div>
       </div>
 
-      <!-- Header Search and Tools -->
+      <!-- Realm Switching Tabs (Overseas first on left, Domestic second on right) -->
+      <div class="flex items-center gap-1.5 bg-[#dfcaa5] p-1 border-2 border-[#543b22] rounded-sm shadow-inner">
+        <button id="tabOverseasBtn" class="realm-tab-btn px-3 py-1 text-xs font-black rounded-sm bg-[#3b2513] text-[#fbf7ee] shadow transition flex items-center gap-1.5">
+          <span>🧹</span>
+          <span>국제 포트키 원정</span>
+        </button>
+        <button id="tabDomesticBtn" class="realm-tab-btn px-3 py-1 text-xs font-bold rounded-sm text-[#4a331c] hover:bg-[#cbaf80] transition flex items-center gap-1.5">
+          <span>🚂</span>
+          <span>호그와트 근교</span>
+        </button>
+      </div>
+
+      <!-- Controls & Search -->
       <div class="flex items-center gap-1.5 sm:gap-2 w-full md:w-auto justify-end flex-wrap sm:flex-nowrap">
-        
-        <!-- Search Input -->
-        <div class="relative w-40 sm:w-56 shrink-0">
+        <div class="relative w-36 sm:w-48 shrink-0">
           <input 
-            id="countrySearch" 
+            id="spotSearch" 
             type="text" 
-            placeholder="여행지·도시·명소 검색..." 
+            placeholder="명소·도시·기록 검색..." 
             class="w-full pl-6 pr-5 py-1 text-xs bg-[#fdf9f0] border-2 border-[#543b22] text-[#24170d] placeholder-[#8c745c] rounded-sm focus:outline-none focus:border-[#841c1c] transition font-serif"
           />
           <span class="absolute left-1.5 top-1 text-xs">📜</span>
@@ -293,22 +264,9 @@
           <div id="searchDropdown" class="hidden absolute left-0 right-0 top-full mt-1 bg-[#f4ecd8] border-2 border-[#3b2513] shadow-2xl max-h-56 overflow-y-auto parchment-scrollbar z-50 text-xs"></div>
         </div>
 
-        <!-- Mischief Managed Re-seal Button -->
-        <button id="hideMapBtn" class="px-2 py-1 text-xs font-bold bg-[#4a331c] hover:bg-[#684727] text-[#f5ecd6] rounded-sm border border-[#231509] flex items-center gap-1 transition whitespace-nowrap shrink-0 shadow-sm" title="지도를 다시 봉인합니다">
-          <span>📜</span>
-          <span class="hidden sm:inline">장난 끝!</span>
-        </button>
-
-        <!-- Route Toggle Button -->
-        <button id="toggleAllRoutesBtn" class="px-2 py-1 text-xs font-bold bg-[#3b2513] hover:bg-[#52351c] text-[#f4ecd8] rounded-sm border border-[#231509] flex items-center gap-1 transition whitespace-nowrap shrink-0">
-          <span id="allRoutesIndicator" class="w-1.5 h-1.5 rounded-full bg-[#f59e0b]"></span>
-          <span>비행 궤적</span>
-        </button>
-
-        <!-- Admin Toggle Button -->
-        <button id="adminToggleBtn" class="px-2 py-1 text-xs font-bold bg-[#841c1c] hover:bg-[#992222] text-[#fbf7ee] rounded-sm border border-[#4a0d0d] flex items-center gap-1 transition whitespace-nowrap shrink-0 shadow-sm" title="특파원 권한 인증">
-          <span id="adminToggleIcon">🔒</span>
-          <span id="adminToggleLabel">방문자</span>
+        <!-- Discretely sized lock-only Admin toggle button -->
+        <button id="adminToggleBtn" class="w-6 h-6 rounded-full bg-[#3b2513]/15 hover:bg-[#841c1c]/80 text-[#543b22] hover:text-[#fbf7ee] border border-[#543b22]/30 flex items-center justify-center transition shrink-0 opacity-40 hover:opacity-100" title="특파원 권한 인증">
+          <span id="adminToggleIcon" class="text-[11px] leading-none">🔒</span>
         </button>
       </div>
     </div>
@@ -319,44 +277,30 @@
   <!-- ============================================================ -->
   <div class="relative flex-1 w-full h-[calc(100vh-4.5rem)] overflow-hidden bg-[#150f08] flex items-center justify-center p-0 sm:p-2">
     
-    <!-- 4:3 Map Frame Area -->
-    <div id="mapContainer" class="map-frame-4-3 overflow-hidden prophet-paper border-y-2 sm:border-2 border-[#3e2b19] shadow-[0_0_35px_rgba(0,0,0,0.85)]">
+    <div id="mapContainer" class="map-frame-4-3 overflow-hidden prophet-paper border-y-2 sm:border-2 border-[#3e2b19] shadow-[0_0_35px_rgba(0,0,0,0.85)] relative">
       
       <!-- D3 Interactive SVG Canvas -->
       <svg id="mapSvg" class="w-full h-full cursor-grab active:cursor-grabbing block"></svg>
 
-      <!-- View Controls: 2D first, 3D Globe second -->
-      <div class="absolute top-3 left-3 z-20 flex items-center gap-1 bg-[#ede0c4]/90 border-2 border-[#3b2513] p-1 shadow-xl rounded-sm">
+      <!-- Prominent "Mischief Managed" Floating Stamp Button -->
+      <button id="hideMapBtn" class="absolute top-3 right-3 z-20 group flex items-center gap-1.5 px-3 py-1.5 bg-[#841c1c] hover:bg-[#661111] text-[#fbf7ee] rounded-sm border-2 border-[#4a0d0d] shadow-[0_4px_12px_rgba(0,0,0,0.45)] hover:shadow-[0_4px_16px_rgba(132,28,28,0.6)] transition-all transform hover:scale-105 active:scale-95 font-headline font-black text-xs tracking-wider" title="지도를 다시 백지로 봉인합니다 (Mischief Managed)">
+        <span class="text-sm transition-transform group-hover:rotate-12">📜</span>
+        <span class="font-bold">마법의 장난 끝!</span>
+      </button>
+
+      <!-- View Controls (2D vs 3D Globe - Overseas Mode) -->
+      <div id="viewControls" class="absolute top-3 left-3 z-20 flex items-center gap-1 bg-[#ede0c4]/90 border-2 border-[#3b2513] p-1 shadow-xl rounded-sm">
         <span class="text-[10px] font-bold text-[#5c3e21] px-1 font-cinzel">VIEW:</span>
-        <button data-proj="naturalEarth" class="proj-btn px-2.5 py-1 text-xs font-black rounded-sm bg-[#3b2513] text-[#fbf7ee] shadow transition">
-          2D
+        <button data-proj="2d" class="proj-btn px-2.5 py-1 text-xs font-black rounded-sm bg-[#3b2513] text-[#fbf7ee] shadow transition">
+          2D 지도
         </button>
-        <button data-proj="orthographic" class="proj-btn px-2.5 py-1 text-xs font-bold rounded-sm bg-[#dfcaa5] hover:bg-[#cbaf80] text-[#342211] transition">
+        <button data-proj="3d" id="globeBtn" class="proj-btn px-2.5 py-1 text-xs font-bold rounded-sm bg-[#dfcaa5] hover:bg-[#cbaf80] text-[#342211] transition">
           3D 지구본
         </button>
-
         <div class="h-4 w-px bg-[#8a6843] mx-0.5"></div>
-
         <button id="autoRotateBtn" class="hidden flex items-center gap-1 px-2 py-1 text-xs font-bold rounded-sm bg-[#dfcaa5] hover:bg-[#cbaf80] text-[#841c1c] transition" title="마법 자전 회전">
           <span class="w-1.5 h-1.5 rounded-full bg-[#841c1c] animate-ping"></span>
           <span id="rotateBtnLabel">자전 ON</span>
-        </button>
-      </div>
-
-      <!-- Chronicle Year Filter Tabs (Desktop) -->
-      <div class="absolute top-3 right-3 z-20 hidden sm:flex flex-wrap items-center gap-1 bg-[#ede0c4]/90 border-2 border-[#3b2513] p-1 shadow-xl rounded-sm">
-        <span class="text-[10px] font-bold text-[#841c1c] px-1 font-cinzel">CHRONICLE:</span>
-        <button class="filter-btn active px-2.5 py-1 text-[11px] rounded-sm bg-[#3b2513] text-[#fef9ee] font-bold border border-[#2b1809] transition" data-category="all">
-          전체 특보 (7곳)
-        </button>
-        <button class="filter-btn px-2 py-1 text-[11px] rounded-sm bg-[#dfcaa5] text-[#342211] hover:bg-[#cbaf80] font-bold border border-transparent transition" data-category="2024">
-          2024년
-        </button>
-        <button class="filter-btn px-2 py-1 text-[11px] rounded-sm bg-[#dfcaa5] text-[#342211] hover:bg-[#cbaf80] font-bold border border-transparent transition" data-category="2025">
-          2025년
-        </button>
-        <button class="filter-btn px-2 py-1 text-[11px] rounded-sm bg-[#dfcaa5] text-[#342211] hover:bg-[#cbaf80] font-bold border border-transparent transition" data-category="2026">
-          2026년
         </button>
       </div>
 
@@ -367,83 +311,73 @@
         <button id="resetViewBtn" class="w-7 h-7 sm:w-8 sm:h-8 rounded-sm bg-[#dfcaa5] hover:bg-[#3b2513] text-[#2b1809] hover:text-[#fbf7ee] flex items-center justify-center transition text-xs font-black border border-[#8a6843]" title="초기 시점 ↺">↺</button>
       </div>
 
-      <!-- Bottom Travel Destination Carousel (Ultra-slim 1-line on mobile) -->
+      <!-- Bottom Destinations Index Carousel -->
       <div class="absolute bottom-1 sm:bottom-3 inset-x-1 sm:inset-x-4 z-20">
         <div class="bg-[#2b1a0e] text-[#e8d5b5] px-2 py-0.5 text-[8.5px] sm:text-[10px] font-bold uppercase tracking-wider flex items-center justify-between border-t-2 border-x-2 border-[#543b22] rounded-t-sm shadow-md">
           <span class="flex items-center gap-1 truncate">
             <span>✦</span>
-            <span class="truncate">예언자 일보 7대 세계 특파 기사 전면 색인</span>
+            <span id="carouselHeaderTitle" class="truncate">호그와트 & 호그스미드 근교 마법 여정 색인</span>
           </span>
-          <span class="text-[#d97706] text-[8px] sm:text-[10px] font-mono shrink-0 ml-1">● 7/7</span>
+          <span id="carouselCountBadge" class="text-[#d97706] text-[8px] sm:text-[10px] font-mono shrink-0 ml-1">● 10 Spots</span>
         </div>
-        <div id="destCarousel" class="flex overflow-x-auto sm:grid sm:grid-cols-7 gap-1 sm:gap-1.5 p-1 sm:p-2 bg-[#ede0c4]/98 border-2 border-[#2b1a0e] shadow-2xl parchment-scrollbar">
-          <!-- Populated dynamically -->
+        <div id="destCarousel" class="flex overflow-x-auto gap-1 sm:gap-1.5 p-1 sm:p-2 bg-[#ede0c4]/98 border-2 border-[#2b1a0e] shadow-2xl parchment-scrollbar">
+          <!-- Dynamic cards populated here -->
         </div>
       </div>
 
       <!-- Hover Tooltip -->
-      <div id="mapTooltip" class="pointer-events-none absolute z-40 hidden -translate-x-1/2 -translate-y-full px-3 py-2 bg-[#fdfaf3] text-[#1c1209] border-2 border-[#3b2513] shadow-[4px_4px_0px_#3b2513] text-xs transition-opacity duration-150">
+      <div id="mapTooltip" class="pointer-events-none absolute z-40 hidden -translate-x-1/2 -translate-y-full px-3 py-1.5 bg-[#fdfaf3] text-[#1c1209] border-2 border-[#3b2513] shadow-[4px_4px_0px_#3b2513] text-xs transition-opacity duration-150">
         <div class="font-headline font-bold text-xs text-[#841c1c] flex items-center gap-1.5 border-b border-[#3b2513]/20 pb-0.5 mb-1">
           <span id="tooltipIcon">🪶</span>
-          <span id="tooltipTitle">특종 목적지</span>
+          <span id="tooltipTitle">스팟 명칭</span>
         </div>
-        <div id="tooltipSub" class="text-[#4f3c2b] text-[10px] font-serif">상세 여정 기록</div>
+        <div id="tooltipSub" class="text-[#4f3c2b] text-[10px] font-serif">상세 요약</div>
       </div>
 
       <!-- Detailed Travel Dossier Drawer -->
-      <div id="travelDrawer" class="absolute top-14 left-2 sm:left-4 z-30 max-w-sm w-[94%] sm:w-[420px] max-h-[calc(100%-4.5rem)] overflow-y-auto parchment-scrollbar bg-[#fbf5e6] rounded-sm p-3.5 sm:p-4 shadow-[8px_8px_0px_rgba(20,10,5,0.7)] border-4 border-[#2b1a0e] transition-all duration-300 transform -translate-x-full opacity-0 pointer-events-none flex flex-col gap-2.5">
+      <div id="travelDrawer" class="absolute top-12 left-2 sm:left-4 z-30 max-w-sm w-[94%] sm:w-[410px] max-h-[calc(100%-4.5rem)] overflow-y-auto parchment-scrollbar bg-[#fbf5e6] rounded-sm p-3.5 sm:p-4 shadow-[8px_8px_0px_rgba(20,10,5,0.7)] border-4 border-[#2b1a0e] transition-all duration-300 transform -translate-x-full opacity-0 pointer-events-none flex flex-col gap-2.5">
         
-        <!-- Drawer Header -->
+        <!-- Header -->
         <div class="flex items-start justify-between">
           <div class="flex items-center gap-2.5">
             <div class="w-12 h-12 rounded-sm border-2 border-[#3b2513] bg-[#e4cfad] p-1 flex items-center justify-center text-3xl shadow-inner magical-moving-frame shrink-0">
-              <span id="drawerFlag">🇨🇭</span>
+              <span id="drawerFlag">🚂</span>
             </div>
             <div>
               <div class="flex items-center gap-1.5">
-                <span id="drawerCategoryBadge" class="text-[9px] px-1.5 py-0.2 bg-[#841c1c] text-[#fbf7ee] font-bold tracking-wider">
-                  특종 제1면
+                <span id="drawerBadge" class="text-[9px] px-1.5 py-0.2 bg-[#841c1c] text-[#fbf7ee] font-bold tracking-wider">
+                  호그와트 공인
                 </span>
-                <span id="drawerSeason" class="text-[10px] text-[#6d4d2f] font-bold">2025년 1월호</span>
+                <span id="drawerMilestone" class="text-[10px] text-[#6d4d2f] font-bold">기록</span>
               </div>
-              <h3 id="drawerNameKo" class="font-headline font-black text-base sm:text-lg text-[#1f1309] leading-tight mt-0.5">스위스</h3>
-              <p id="drawerNameEn" class="font-cinzel text-[10px] text-[#63482f] tracking-wide">Switzerland Grand Tour</p>
+              <h3 id="drawerNameKo" class="font-headline font-black text-base sm:text-lg text-[#1f1309] leading-tight mt-0.5">명소 명칭</h3>
+              <p id="drawerNameEn" class="font-cinzel text-[10px] text-[#63482f] tracking-wide">Place English Subtitle</p>
             </div>
           </div>
           <button id="closeDrawerBtn" class="text-[#3b2513] hover:text-[#841c1c] font-black text-base p-1" title="닫기">✕</button>
         </div>
 
-        <!-- Ministry Stamp Strip -->
+        <!-- Ministry Stamp -->
         <div class="flex items-center justify-between text-[9px] text-[#735334] font-bold border-t border-b border-[#3b2513]/30 py-1">
-          <span>마법부 인가 특파원 보고서</span>
+          <span>마법부 인가 특파원 수첩</span>
           <span class="text-[#841c1c]">✦ OFFICIAL GAZETTE ✦</span>
         </div>
 
-        <!-- Visited Cities & Route Order -->
+        <!-- Visited Details / Course -->
         <div class="bg-[#f0e3c8] p-2 sm:p-2.5 border-2 border-[#543b22]">
-          <span class="text-[10px] font-black text-[#841c1c] uppercase tracking-wider block mb-1.5 flex items-center gap-1 font-headline">
-            <span>📜</span> 연계 방문 마법 도시 코스
-          </span>
-          <div id="drawerCityRoute" class="flex flex-wrap items-center gap-1 text-xs text-[#2c1a0e] font-serif font-bold">
-            <!-- Dynamic route tags -->
-          </div>
-        </div>
-
-        <!-- Editorial Story Description -->
-        <div>
-          <span class="text-[11px] font-black text-[#2e1d0f] block mb-1 font-headline border-b border-[#2e1d0f]/30 pb-0.5">
-            기자의 현장 특파 기록
+          <span class="text-[10px] font-black text-[#841c1c] uppercase tracking-wider block mb-1 flex items-center gap-1 font-headline">
+            <span>📜</span> 마법 탐방 성격 및 코스
           </span>
           <p id="drawerDesc" class="text-xs text-[#352518] leading-relaxed font-serif drop-cap bg-[#f7efdc] p-2 border border-[#806342]/40">
             <!-- Narrative story -->
           </p>
         </div>
 
-        <!-- Key Spots -->
+        <!-- Spots Tags -->
         <div>
-          <span class="text-[10px] font-black text-[#5c4026] block mb-1 font-headline">핵심 잠입 명소</span>
+          <span class="text-[10px] font-black text-[#5c4026] block mb-1 font-headline">핵심 잠입 거점 & 키워드</span>
           <div id="drawerSpots" class="flex flex-wrap gap-1">
-            <!-- Spots badges -->
+            <!-- Badges -->
           </div>
         </div>
 
@@ -472,23 +406,22 @@
               <span>+ 사진 대량 추가</span>
             </button>
           </div>
-
           <div id="drawerGalleryGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 max-h-52 overflow-y-auto parchment-scrollbar p-0.5">
-            <!-- Dynamic cards -->
+            <!-- Dynamic Cards -->
           </div>
           <p class="text-[9px] text-[#785b3f] mt-1.5 text-center italic font-serif">
             * 사진 또는 영상을 클릭하면 마법 확대 렌즈로 감상할 수 있습니다.
           </p>
         </div>
 
-        <!-- Action Buttons -->
+        <!-- Actions -->
         <div class="flex items-center gap-2 pt-1 border-t-2 border-[#2b1a0e]">
           <button id="flySimBtn" class="flex-1 py-1.5 px-3 bg-[#3b2513] hover:bg-[#841c1c] text-[#fbf7ee] rounded-sm text-xs font-bold flex items-center justify-center gap-1.5 shadow transition active:scale-95">
             <span>🧹</span>
-            <span>빗자루 비행 항로 추적</span>
+            <span>마법 이동 궤적 추적</span>
           </button>
           <button id="copyTripBtn" class="py-1.5 px-3 bg-[#e8d7b7] hover:bg-[#d8c199] text-[#2b1a0e] border border-[#523820] rounded-sm text-xs font-bold transition">
-            기사 스크랩
+            기록 복사
           </button>
         </div>
       </div>
@@ -518,7 +451,7 @@
           <button id="closeAdminAuthModalBtn" class="text-xs font-bold text-[#543b22] hover:text-[#841c1c]">✕</button>
         </div>
         <p class="text-[11px] text-[#6d4d2f] font-serif mb-2 leading-relaxed">
-          예언자 일보 수석 특파원 마법 암호를 입력하시면 사진 대량 추가 및 편지 작성 권한이 활성화됩니다.
+          예언자 일보 수석 특파원 마법 암호(alohomora)를 입력하시면 사진 대량 추가 및 편지 작성 권한이 활성화됩니다.
         </p>
         <div class="space-y-1.5">
           <input 
@@ -531,7 +464,7 @@
         </div>
         <div class="flex items-center justify-end gap-2 mt-3.5 pt-2 border-t border-[#3b2513]/20">
           <button id="cancelAdminAuthBtn" class="px-2.5 py-1 text-xs border border-[#543b22] bg-[#e8d7b7] text-[#2b1809] font-bold">취소</button>
-          <button id="submitAdminAuthBtn" class="px-3 py-1 text-xs bg-[#841c1c] text-[#fbf7ee] font-bold shadow">주문 봉인 해제</button>
+          <button id="submitAdminAuthBtn" class="px-3 py-1 text-xs bg-[#841c1c] text-[#fbf7ee] font-bold shadow">봉인 해제</button>
         </div>
       </div>
     </div>
@@ -543,7 +476,6 @@
           <h4 class="font-headline font-black text-sm text-[#1f1309]">보도 미디어 등록 보관소</h4>
           <button id="closeAddMediaModalBtn" class="text-xs font-bold text-[#543b22] hover:text-[#841c1c]">✕</button>
         </div>
-
         <div class="flex border-b border-[#543b22] mb-3">
           <button id="tabLocalFileBtn" class="flex-1 py-1.5 text-xs font-black text-[#841c1c] border-b-2 border-[#841c1c] bg-[#ede0c4]">
             📂 내 기기 사진 대량 업로드
@@ -552,25 +484,16 @@
             🔗 웹 주소(URL) 링크 등록
           </button>
         </div>
-
         <div id="bulkUploadView" class="space-y-2.5">
           <div id="dropZone" class="border-2 border-dashed border-[#8a6843] bg-[#f7efdc] p-5 text-center cursor-pointer hover:bg-[#ebd9b6] hover:border-[#841c1c] transition rounded-xs">
             <span class="text-3xl block mb-1">📸</span>
             <p class="text-xs font-headline font-bold text-[#2e1d0f]">이곳을 클릭하거나 사진 파일들을 끌어다 놓으세요</p>
-            <p class="text-[10px] text-[#6d4d2f] font-serif mt-0.5">여러 장(수십~수백 장)을 한 번에 선택하여 영구 보관할 수 있습니다.</p>
+            <p class="text-[10px] text-[#6d4d2f] font-serif mt-0.5">여러 장을 한 번에 선택하여 보관할 수 있습니다.</p>
             <input id="bulkFileInput" type="file" accept="image/*" multiple class="hidden"/>
           </div>
           <p id="uploadStatusMsg" class="text-[11px] font-bold text-[#841c1c] text-center hidden animate-pulse font-serif"></p>
         </div>
-
         <div id="urlUploadView" class="hidden space-y-2 text-xs font-serif">
-          <div>
-            <label class="block text-[11px] font-bold text-[#523d27] mb-0.5">미디어 종류</label>
-            <select id="newMediaType" class="w-full bg-[#fdf9f0] border-2 border-[#543b22] p-1 text-xs outline-none">
-              <option value="image">사진 (Image URL)</option>
-              <option value="video">영상 (YouTube / MP4 URL)</option>
-            </select>
-          </div>
           <div>
             <label class="block text-[11px] font-bold text-[#523d27] mb-0.5">웹 주소 (URL)</label>
             <input id="newMediaUrl" type="text" placeholder="https://..." class="w-full bg-[#fdf9f0] border-2 border-[#543b22] p-1.5 text-xs outline-none font-mono"/>
@@ -583,14 +506,13 @@
             <button id="saveNewMediaBtn" class="px-3 py-1 text-xs bg-[#841c1c] text-[#fbf7ee] font-bold shadow">URL 등록</button>
           </div>
         </div>
-
         <div class="flex items-center justify-end gap-2 mt-3.5 pt-2 border-t border-[#3b2513]/20">
           <button id="cancelAddMediaBtn" class="px-2.5 py-1 text-xs border border-[#543b22] bg-[#e8d7b7] text-[#2b1809] font-bold">닫기</button>
         </div>
       </div>
     </div>
 
-    <!-- Letter Edit Custom Modal -->
+    <!-- Letter Edit Modal -->
     <div id="letterModal" class="fixed inset-0 z-50 bg-[#171109]/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
       <div class="bg-[#fbf5e6] border-4 border-[#2b1a0e] p-4 max-w-md w-full shadow-2xl rounded-sm">
         <div class="flex items-center justify-between border-b border-[#3b2513]/30 pb-1.5 mb-2.5">
@@ -598,7 +520,7 @@
           <button id="closeLetterModalBtn" class="text-xs font-bold text-[#543b22] hover:text-[#841c1c]">✕</button>
         </div>
         <div>
-          <label class="block text-[11px] font-bold text-[#523d27] mb-1">여행에서 느낀 감상과 기록을 남겨보세요</label>
+          <label class="block text-[11px] font-bold text-[#523d27] mb-1">여행에서 느낀 소중한 감상을 남겨보세요</label>
           <textarea id="letterInputText" rows="6" class="w-full bg-[#fdf9f0] border-2 border-[#543b22] p-2 text-xs outline-none font-serif leading-relaxed" placeholder="“그곳에서 보낸 시간은 마치 마법 같았어...”"></textarea>
         </div>
         <div class="flex items-center justify-end gap-2 mt-3 pt-2 border-t border-[#3b2513]/20">
@@ -618,49 +540,66 @@
   <!-- 📜 JAVASCRIPT LOGIC                                          -->
   <!-- ============================================================ -->
   <script>
-    // Departure Coordinate [Longitude, Latitude] - Seoul
-    const SEOUL_COORDS = [126.9780, 37.5665];
+    // Pure Web Audio API Synthesizer
+    let audioCtx = null;
+    function getAudioCtx() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      return audioCtx;
+    }
 
-    // Admin Passphrase
+    function playMagicChime() {
+      try {
+        const ctx = getAudioCtx();
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.09);
+          gain.gain.setValueAtTime(0.001, ctx.currentTime + idx * 0.09);
+          gain.gain.exponentialRampToValueAtTime(0.14, ctx.currentTime + idx * 0.09 + 0.04);
+          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + idx * 0.09 + 0.65);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + idx * 0.09);
+          osc.stop(ctx.currentTime + idx * 0.09 + 0.7);
+        });
+      } catch (e) {}
+    }
+
+    function playWandWoosh() {
+      try {
+        const ctx = getAudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(320, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 0.3);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.32);
+      } catch (e) {}
+    }
+
+    const SEOUL_COORDS = [126.9780, 37.5665];
+    let currentRealm = 'overseas'; // Start with overseas first
+    let currentProjectionType = '2d';
+    let worldGeoJsonData = null;
+    let selectedSpot = null;
+    let isAutoRotating = false;
+    let rotationTimer = null;
+    let currentRotation = [-150, 0];
+    let zoomBehavior;
+    let currentZoomScale = 1;
     let isAdminMode = false;
     const ADMIN_PASSPHRASE = "alohomora";
 
-    function updateAdminUI() {
-      const adminToggleBtn = document.getElementById("adminToggleBtn");
-      const adminToggleIcon = document.getElementById("adminToggleIcon");
-      const adminToggleLabel = document.getElementById("adminToggleLabel");
-      const addMediaPromptBtn = document.getElementById("addMediaPromptBtn");
-      const editLetterBtn = document.getElementById("editLetterBtn");
-
-      if (isAdminMode) {
-        if (adminToggleBtn) {
-          adminToggleBtn.className = "px-2 py-1 text-xs font-bold bg-[#1e3a24] hover:bg-[#2d5234] text-[#a7f3d0] rounded-sm border border-[#064e3b] flex items-center gap-1 transition whitespace-nowrap shrink-0 shadow-sm";
-        }
-        if (adminToggleIcon) adminToggleIcon.textContent = "🔓";
-        if (adminToggleLabel) adminToggleLabel.textContent = "특파원";
-        if (addMediaPromptBtn) addMediaPromptBtn.classList.remove("hidden");
-        if (editLetterBtn) editLetterBtn.classList.remove("hidden");
-      } else {
-        if (adminToggleBtn) {
-          adminToggleBtn.className = "px-2 py-1 text-xs font-bold bg-[#841c1c] hover:bg-[#992222] text-[#fbf7ee] rounded-sm border border-[#4a0d0d] flex items-center gap-1 transition whitespace-nowrap shrink-0 shadow-sm";
-        }
-        if (adminToggleIcon) adminToggleIcon.textContent = "🔒";
-        if (adminToggleLabel) adminToggleLabel.textContent = "방문자";
-        if (addMediaPromptBtn) addMediaPromptBtn.classList.add("hidden");
-        if (editLetterBtn) editLetterBtn.classList.add("hidden");
-      }
-
-      document.querySelectorAll(".delete-photo-btn").forEach(btn => {
-        if (isAdminMode) {
-          btn.classList.remove("hidden");
-        } else {
-          btn.classList.add("hidden");
-        }
-      });
-    }
-
-    // IndexedDB for Unlimited Image Storage
-    const DB_NAME = "DailyProphetTravelDB";
+    // IndexedDB for Unlimited Photos
+    const DB_NAME = "DailyProphetTravelDB_v2";
     const DB_STORE = "destinationPhotos";
     let dbInstance = null;
 
@@ -682,12 +621,12 @@
       });
     }
 
-    function savePhotoToDB(photoItem) {
+    function savePhotoToDB(item) {
       return new Promise((resolve, reject) => {
         if (!dbInstance) return resolve(null);
         const tx = dbInstance.transaction([DB_STORE], "readwrite");
         const store = tx.objectStore(DB_STORE);
-        const req = store.add(photoItem);
+        const req = store.add(item);
         req.onsuccess = () => resolve(req.result);
         req.onerror = () => reject(req.error);
       });
@@ -716,223 +655,300 @@
       });
     }
 
-    // 7 Travel Records Dataset
-    const DESTINATIONS = [
+    // ============================================================
+    // 🇰🇷 DATASET 1: DOMESTIC DESTINATIONS (10 SPOTS)
+    // ============================================================
+    const DOMESTIC_SPOTS = [
+      {
+        id: "phoenix_park",
+        nameKo: "평창 휘닉스파크",
+        nameEn: "Phoenix Pyeongchang - Official Quidditch Base",
+        badge: "홈 시즌 슬로프",
+        milestone: "수도 없이 많이 간 우리의 성지",
+        flag: "🏂",
+        coords: [128.3242, 37.5815],
+        labelOffset: { x: 12, y: -4 },
+        spots: ["몽블랑 정상 뷰", "익스트림 파크", "야간 라이딩 설원", "베이스 카페 & 핫초코"],
+        desc: "수도 없이 찾아가 눈밭을 가른 우리의 대표 홈그라운드 시즌 스키장! 파우더 스노 위를 가르는 빗자루(스노보드) 훈련이 매 시즌 끊이지 않는 둘만의 비밀 훈련 기지.",
+        letter: "“헤아릴 수 없을 만큼 수없이 달렸던 휘닉스파크의 눈부신 슬로프. 매서운 칼바람도 신나게 활주하던 열정 앞에서는 시원하기만 했지. 야간 보딩 후 먹던 따끈한 간식과 그곳의 설경은 우리에겐 영원한 겨울의 집이야.”",
+        photos: [
+          { type: "image", url: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=600&auto=format&fit=crop", caption: "몽블랑 정상 눈꽃 설원" },
+          { type: "image", url: "https://images.unsplash.com/photo-1517411032315-54ef2cb783bb?w=600&auto=format&fit=crop", caption: "새하얀 슬로프 라이딩" }
+        ]
+      },
+      {
+        id: "yongpyong",
+        nameKo: "평창 용평리조트",
+        nameEn: "Yongpyong Ski Resort - Peak Expedition",
+        badge: "고산 원정 1회",
+        milestone: "발왕산 설산 정복",
+        flag: "❄️",
+        coords: [128.6811, 37.6439],
+        labelOffset: { x: 12, y: 12 },
+        spots: ["발왕산 케이블카", "레인보우 슬로프", "스카이워크 전망대"],
+        desc: "발왕산 자락의 웅장한 설원을 몸소 경험하기 위해 도전했던 잊지 못할 1회의 원정 스키장.",
+        letter: "“발왕산 정상의 차가운 눈꽃 바람을 맞으며 섰던 그날의 설렘! 휘팍과는 또 다른 웅장함과 압도적인 산세를 함께 마주하며 즐겁게 눈 위를 달렸던 특별한 원정.”",
+        photos: [
+          { type: "image", url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&auto=format&fit=crop", caption: "발왕산 고산 설경" }
+        ]
+      },
+      {
+        id: "gangneung",
+        nameKo: "강원도 강릉",
+        nameEn: "Gangneung - Siren Coast & Alchemic Roastery",
+        badge: "2회 탐방 완료",
+        milestone: "바다 & 미식 순례",
+        flag: "🌊",
+        coords: [128.8761, 37.7519],
+        labelOffset: { x: 12, y: 2 },
+        spots: ["안목해변 커피거리", "초당 순두부 마을", "강문해변 포토존", "주문진 파도"],
+        desc: "동해 바다의 시원한 파도와 초당 순두부, 마법의 커피 향이 어우러진 해안 성지순례 여정 (총 2회 방문).",
+        letter: "“두 번이나 찾아갔던 강릉의 푸른 바닷가. 바닷바람을 맞으며 맛본 초당순두부의 고소한 풍미와, 안목해변 카페 창가에 앉아 파도 소리를 들으며 나눈 깊은 이야기들이 생생해.”",
+        photos: [
+          { type: "image", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop", caption: "강릉 동해안 에메랄드 파도" }
+        ]
+      },
+      {
+        id: "seonjaedo",
+        nameKo: "인천 선재도",
+        nameEn: "Seonjaedo - Parting Sea Miracle",
+        badge: "신비한 섬 탐방",
+        milestone: "모세의 기적 목섬",
+        flag: "🏝️",
+        coords: [126.5367, 37.2347],
+        labelOffset: { x: -85, y: -8 },
+        spots: ["목섬 모랫길", "뻘다방 이국적 카페", "서해 낙조 전망대"],
+        desc: "조수간만의 차에 따라 하루에 두 번 바닷물이 갈라지는 목섬의 신비한 모랫길을 걸었던 서해의 낭만 은신처.",
+        letter: "“물이 빠지며 서서히 모습을 드러내던 목섬의 황금빛 모랫길! 뻘다방에서 바라보던 붉은 서해 노을은 마치 남국의 섬에 온 것 같은 착각을 주었지.”",
+        photos: [
+          { type: "image", url: "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=600&auto=format&fit=crop", caption: "선재도 서해 낙조" }
+        ]
+      },
+      {
+        id: "asan_dogo",
+        nameKo: "아산 파라다이스 도고",
+        nameEn: "Asan Dogo Hot Springs - Elixir Spa",
+        badge: "원기 회복 스파",
+        milestone: "치유의 유황 온천",
+        flag: "♨️",
+        coords: [126.9075, 36.7578],
+        labelOffset: { x: 12, y: 8 },
+        spots: ["야외 유황 스파풀", "나이트 스파", "파이어 이벤트 탕"],
+        desc: "마법 포션처럼 피로를 단숨에 씻어내어 준 따뜻한 노천 온천수 스파.",
+        letter: "“추운 공기 속에서 김이 모락모락 피어오르는 따뜻한 온천수에 몸을 담그고, 머리는 상쾌하고 몸은 나른하게 힐링했던 시간. 일상의 피로가 거짓말처럼 녹아내렸어.”",
+        photos: [
+          { type: "image", url: "https://images.unsplash.com/photo-1515488764276-beab7607c1e6?w=600&auto=format&fit=crop", caption: "노천 스파의 온기" }
+        ]
+      },
+      {
+        id: "busan",
+        nameKo: "부산 (해운대 & 기장 아난티)",
+        nameEn: "Busan - Coastal Fortress & Ananti Cove",
+        badge: "2회 탐방 완료",
+        milestone: "해운대 1회 + 아난티 1회",
+        flag: "⛵",
+        coords: [129.1585, 35.1587],
+        labelOffset: { x: 12, y: 0 },
+        spots: ["해운대 해수욕장 백사장", "기장 아난티 코브 & 워터하우스", "해동용궁사 해안", "광안대교 야경"],
+        desc: "남부 항구 도시 급행 여정! 활기찬 해운대 바다를 만끽한 1회, 그리고 바다 절벽 위 럭셔리 휴양지 아난티 코브에서 머물렀던 1회의 완벽한 2회 탐방.",
+        letter: "“해운대 파도 소리를 들으며 모래사장을 걷던 추억과, 기장 아난티의 아늑한 서재와 오션뷰 테라스에서 끝없는 바다를 보며 힐링했던 황홀한 휴식.”",
+        photos: [
+          { type: "image", url: "https://images.unsplash.com/photo-1590559899731-a372a1464e29?w=600&auto=format&fit=crop", caption: "부산 해운대와 해안 야경" }
+        ]
+      },
+      {
+        id: "bukhansan_caravan",
+        nameKo: "북한산 카라반",
+        nameEn: "Bukhansan Caravan - Forbidden Forest Camp",
+        badge: "숲속 야영",
+        milestone: "별빛 글램핑",
+        flag: "🏕️",
+        coords: [126.9850, 37.6608],
+        labelOffset: { x: -80, y: -14 },
+        spots: ["숲속 카라반 글램핑", "바비큐 & 불멍", "북한산 둘레길 아침 산책"],
+        desc: "도심 바로 곁 금지된 숲 자락의 마법 텐트처럼, 북한산 기슭 맑은 공기 속에서 즐긴 낭만 카라반 캠핑.",
+        letter: "“밤이 깊어지면 타닥타닥 타오르는 모닥불 앞에서 마시멜로를 굽고 장작 타는 냄새를 맡으며 나누던 이야기들. 아침새 소리에 눈뜨던 숲속 힐링.”",
+        photos: [
+          { type: "image", url: "https://images.unsplash.com/photo-1510312305653-8ed496efae75?w=600&auto=format&fit=crop", caption: "숲속 캠핑의 모닥불" }
+        ]
+      },
+      {
+        id: "hanam_starfield",
+        nameKo: "하남 스타필드",
+        nameEn: "Hanam Starfield - Grand Muggle Bazaar",
+        badge: "쇼핑 & 미식",
+        milestone: "대형 실내 아지트",
+        flag: "🛍️",
+        coords: [127.2244, 37.5455],
+        labelOffset: { x: 12, y: 14 },
+        spots: ["아쿠아필드 힐링", "고메스트리트 맛집 투어", "스포츠몬스터 & 쇼핑몰"],
+        desc: "사계절 날씨에 구애받지 않고 맛있는 음식과 쇼핑, 엔터테인먼트를 알차게 누렸던 거대 실내 보물창고.",
+        letter: "“비가 오거나 날이 궂을 때마다 손잡고 신나게 돌아다니던 하남 스타필드. 맛있는 거 잔뜩 먹고 소소한 구경거리에 함께 웃었던 다정한 일상들.”",
+        photos: [
+          { type: "image", url: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&auto=format&fit=crop", caption: "활기찬 마켓 플레이스" }
+        ]
+      },
+      {
+        id: "hyehwa",
+        nameKo: "대학로 혜화 데이트",
+        nameEn: "Hyehwa Art Stage - 100 Date Milestone",
+        badge: "❤️ 100회 달성 대기록",
+        milestone: "100번의 마법 같은 막",
+        flag: "🎭",
+        coords: [127.0017, 37.5822],
+        labelOffset: { x: 14, y: -10 },
+        spots: ["마로니에 공원", "대학로 소극장 연극 투어", "낙산공원 성곽길 야경", "골목 단골 카페"],
+        desc: "무려 100번의 만남이 각인된 둘만의 영원한 메인 아지트! 연극과 예술, 사계절의 낭만이 모든 골목마다 숨 쉬는 곳.",
+        letter: "“100번이라는 믿기지 않는 숫자만큼 쌓여있는 우리의 웃음소리. 연극의 감동을 나누며 걷던 마로니에 공원, 낙산공원 성곽길에서 내려다본 서울의 밤 불빛... 혜화의 모든 길목이 우리의 무대였어.”",
+        photos: [
+          { type: "image", url: "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?w=600&auto=format&fit=crop", caption: "낭만의 소극장 거리" }
+        ]
+      },
+      {
+        id: "seoul_all",
+        nameKo: "서울 데이트 전역",
+        nameEn: "Seoul Metropolitan Heart - 300 Date Milestone",
+        badge: "👑 300회 대기록",
+        milestone: "300번의 찬란한 역사",
+        flag: "✨",
+        coords: [126.9780, 37.5665],
+        labelOffset: { x: -85, y: 12 },
+        spots: ["한강 텐트 피크닉 & 라면", "성수·한남 트렌디 골목", "남산타워 뷰", "익선동 & 북촌 한옥길"],
+        desc: "서울 하늘 아래 300번이 넘는 계절을 함께 통과하며 사랑을 쌓아 올린 둘만의 거대한 수도 결계망.",
+        letter: "“봄날의 벚꽃, 여름날의 한강 밤도깨비, 가을의 고궁 돌담길, 겨울의 반짝이는 빌딩 숲... 300번의 하루하루가 모여 만들어낸 우리만의 가장 눈부신 마법의 수도.”",
+        photos: [
+          { type: "image", url: "https://images.unsplash.com/photo-1538485399081-7191377e8241?w=600&auto=format&fit=crop", caption: "서울 도심의 황홀한 야경" }
+        ]
+      }
+    ];
+
+    // ============================================================
+    // 🌐 DATASET 2: OVERSEAS DESTINATIONS (7 SPOTS)
+    // ============================================================
+    const OVERSEAS_SPOTS = [
       {
         id: "niseko",
-        nameKo: "일본 니세코",
+        nameKo: "일본 니세코 (오타루·삿포로)",
         nameEn: "Niseko, Japan (Otaru · Sapporo)",
-        date: "2024.04",
-        year: "2024",
-        country: "일본",
+        badge: "2024.04",
+        milestone: "설국 홋카이도 파우더 스노",
         flag: "🇯🇵",
-        category: "2024",
-        categoryName: "설국 홋카이도 파우더 스노",
         coords: [141.0, 43.0],
-        zoomScale: 8.5,
+        labelOffset: { x: 12, y: -6 },
         cities: ["니세코", "오타루", "삿포로"],
-        indexSub: "니세코, 삿포로, 오타루",
-        subStops: [
-          { name: "니세코", coords: [140.6874, 42.8048], align: "bottom-left" },
-          { name: "오타루", coords: [140.9947, 43.1907], align: "top-left" },
-          { name: "삿포로", coords: [141.3544, 43.0618], align: "right" }
-        ],
-        labelOffset: { x: 12, y: -8 },
-        spots: ["그랜드 히라후 스키 리조트", "요테이산 설경", "오타루 운하 & 오르골당", "삿포로 시계탑 & 미식"],
-        desc: "새하얀 설경이 남아있던 니세코의 파우더 스노부터 낭만적인 오타루 운하의 마법 같은 가스등, 활기찬 삿포로 시내까지 홋카이도의 봄과 겨울 매력을 모두 만끽한 여정.",
-        letter: "“4월에도 발목까지 푹신하게 쌓이는 요테이산의 파우더 스노를 가르며 활주하던 감각은 마법 그 자체였어. 저녁엔 오타루 운하를 걸으며 울려 퍼지는 오르골 소리에 취하고, 삿포로에서 따끈한 삿포로 라멘과 생맥주로 하루를 마무리했지.”",
+        spots: ["그랜드 히라후 스키장", "요테이산 설경", "오타루 운하", "삿포로 미식"],
+        desc: "새하얀 설경이 남아있던 니세코의 파우더 스노부터 낭만적인 오타루 운하, 활기찬 삿포로 시내까지 홋카이도의 봄과 겨울 매력을 모두 만끽한 여정.",
+        letter: "“4월에도 발목까지 푹신하게 쌓이는 요테이산의 파우더 스노를 가르던 감각! 오타루 운하의 마법 같은 가스등과 따끈한 삿포로 라멘의 행복.”",
         photos: [
           { type: "image", url: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=600&auto=format&fit=crop", caption: "니세코 요테이산 설경" },
-          { type: "image", url: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=600&auto=format&fit=crop", caption: "오타루 운하의 가스등" },
-          { type: "image", url: "https://images.unsplash.com/photo-1578637387939-43c525550085?w=600&auto=format&fit=crop", caption: "삿포로 맥주원과 거리" }
+          { type: "image", url: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=600&auto=format&fit=crop", caption: "오타루 운하의 가스등" }
         ]
       },
       {
         id: "phuquoc",
         nameKo: "베트남 푸꾸옥",
         nameEn: "Phu Quoc, Vietnam",
-        date: "2024.07",
-        year: "2024",
-        country: "베트남",
+        badge: "2024.07",
+        milestone: "남국의 에메랄드 바캉스",
         flag: "🇻🇳",
-        category: "2024",
-        categoryName: "여름 남국의 에메랄드 바캉스",
         coords: [103.9630, 10.2899],
-        zoomScale: 3.2,
-        cities: ["푸꾸옥 섬 전체"],
-        indexSub: "푸꾸옥 섬 일주",
+        labelOffset: { x: 12, y: 4 },
+        cities: ["푸꾸옥 섬 일주"],
         spots: ["사오비치", "혼똔섬 해상 케이블카", "그랜드월드", "즈엉동 야시장"],
         desc: "에메랄드빛 바다와 황홀한 일몰, 맛있는 해산물과 함께 여유롭게 쉬어갔던 한여름의 푸꾸옥 휴양.",
-        letter: "“바다 위를 끝없이 날아가는 혼똔섬 케이블카에서 내려다본 푸꾸옥의 에메랄드빛 바다는 잊을 수가 없어. 즈엉동 야시장에서 먹은 가리비 구이와 달콤한 망고 냄새가 아직도 코끝에 맴도는 여름밤.”",
+        letter: "“바다 위를 끝없이 날아가는 케이블카에서 내려다본 푸꾸옥의 코발트빛 바다. 즈엉동 야시장에서 먹던 가리비 구이와 망고의 달콤함.”",
         photos: [
-          { type: "image", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop", caption: "푸꾸옥 사오비치 에메랄드 해변" },
-          { type: "image", url: "https://images.unsplash.com/photo-1534008897995-27a23e859048?w=600&auto=format&fit=crop", caption: "혼똔섬 해상 케이블카" },
-          { type: "image", url: "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?w=600&auto=format&fit=crop", caption: "그랜드월드 베니스 운하 야경" }
+          { type: "image", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop", caption: "푸꾸옥 사오비치" }
         ]
       },
       {
         id: "swiss",
-        nameKo: "스위스",
+        nameKo: "스위스 (5대 도시 대장정)",
         nameEn: "Switzerland Grand Tour",
-        date: "2025.01",
-        year: "2025",
-        country: "스위스",
+        badge: "2025.01",
+        milestone: "겨울 알프스 만년설 일주",
         flag: "🇨🇭",
-        category: "2025",
-        categoryName: "겨울 알프스 만년설 일주",
         coords: [8.15, 46.7],
-        zoomScale: 14.5,
+        labelOffset: { x: 12, y: -4 },
         cities: ["체르마트", "그린델발트", "인터라켄", "루체른", "취리히"],
-        indexSub: "체르마트, 그린델발트, 인터라켄",
-        subStops: [
-          { name: "체르마트", coords: [7.7491, 46.0207], align: "bottom-left" },
-          { name: "그린델발트", coords: [8.0414, 46.6242], align: "right" },
-          { name: "인터라켄", coords: [7.8632, 46.6863], align: "left" },
-          { name: "루체른", coords: [8.3093, 47.0502], align: "top-left" },
-          { name: "취리히", coords: [8.5417, 47.3769], align: "top-right" }
-        ],
         spots: ["마테호른 뷰 (체르마트)", "융프라우요흐", "피르스트 클리프워크", "루체른 카펠교", "취리히 구시가지"],
-        desc: "체르마트(1)의 황금빛 마테호른 아침 햇살을 시작으로, 아이거 북벽 아래 그린델발트(2), 알프스 호수 품은 인터라켄(3), 낭만의 루체른(4), 번화한 취리히(5)까지 1번부터 5번으로 이어진 꿈같은 스위스 겨울 대장정.",
-        letter: "“새벽 공기를 뚫고 마테호른이 붉게 타오르던 순간 숨이 멎는 줄 알았어. 그린델발트의 통나무 샬레 창밖으로 내리는 함박눈을 보며 마신 따뜻한 핫초코, 그리고 호수 도시 루체른 카펠교를 건널 때의 고요함을 영원히 간직하고 싶어.”",
+        desc: "체르마트의 황금빛 마테호른부터 아이거 북벽 아래 그린델발트, 호수 품은 인터라켄, 낭만의 루체른, 번화한 취리히까지 이어진 꿈같은 스위스 겨울 대장정.",
+        letter: "“새벽 공기를 가르며 마테호른이 붉게 타오르던 순간의 감동... 그린델발트 통나무 샬레에서 마시던 핫초코와 호수 위 백조들을 잊을 수 없어.”",
         photos: [
-          { type: "image", url: "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?w=600&auto=format&fit=crop", caption: "체르마트 마테호른 아침 햇살" },
-          { type: "image", url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&auto=format&fit=crop", caption: "융프라우요흐 설원 만년설" },
-          { type: "image", url: "https://images.unsplash.com/photo-1491557345352-5929e343eb89?w=600&auto=format&fit=crop", caption: "그린델발트 아이거 북벽 마을" },
-          { type: "image", url: "https://images.unsplash.com/photo-1527668752968-14dc70a27c95?w=600&auto=format&fit=crop", caption: "루체른 호수와 카펠교" },
-          { type: "image", url: "https://images.unsplash.com/photo-1515488764276-beab7607c1e6?w=600&auto=format&fit=crop", caption: "취리히 리마트 강변 야경" }
+          { type: "image", url: "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?w=600&auto=format&fit=crop", caption: "체르마트 마테호른 아침 햇살" }
         ]
       },
       {
         id: "osaka",
-        nameKo: "일본 오사카",
+        nameKo: "일본 오사카 (도톤보리·USJ)",
         nameEn: "Osaka, Japan",
-        date: "2025.03",
-        year: "2025",
-        country: "일본",
+        badge: "2025.03",
+        milestone: "봄 미식 & 문화 탐방",
         flag: "🇯🇵",
-        category: "2025",
-        categoryName: "봄 미식 & 문화 탐방",
         coords: [135.5023, 34.6937],
-        zoomScale: 6.0,
+        labelOffset: { x: -80, y: 14 },
         cities: ["오사카", "도톤보리"],
-        indexSub: "오사카, 도톤보리",
-        labelOffset: { x: -85, y: 16 },
-        spots: ["도톤보리", "오사카성 봄 풍경", "유니버설 스튜디오 재팬(USJ)", "우메다 공중정원"],
-        desc: "봄기운이 시작될 무렵 다녀온 오사카. 맛있는 간사이 음식들을 마음껏 즐기고 USJ와 활기찬 도톤보리를 거닐었던 여행.",
-        letter: "“도톤보리 강변의 글리코상 앞에서 사진도 남기고, 밤마다 바삭한 쿠시카츠와 타코야키를 먹으며 활기를 충전했어. USJ의 해리포터 마법 세상 성을 실제로 보았을 땐 어린 시절 꿈으로 돌아간 듯했지.”",
+        spots: ["도톤보리 네온사인", "유니버설 스튜디오 USJ", "오사카성 봄 풍경"],
+        desc: "봄기운이 시작될 무렵 다녀온 오사카. 맛있는 간사이 음식들을 즐기고 USJ 해리포터 성을 직접 마주했던 설레는 여정.",
+        letter: "“글리코상 앞에서 익살맞게 포즈도 취하고, USJ 호그와트 성에서 버터맥주를 마실 땐 마법 학교 신입생이 된 기분이었어.”",
         photos: [
-          { type: "image", url: "https://images.unsplash.com/photo-1590559899731-a372a1464e29?w=600&auto=format&fit=crop", caption: "도톤보리 네온사인 거리" },
-          { type: "image", url: "https://images.unsplash.com/photo-1551641506-ee5bf4cb45f1?w=600&auto=format&fit=crop", caption: "오사카성 천수각" },
-          { type: "image", url: "https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?w=600&auto=format&fit=crop", caption: "USJ 해리포터 성 야경" }
+          { type: "image", url: "https://images.unsplash.com/photo-1590559899731-a372a1464e29?w=600&auto=format&fit=crop", caption: "도톤보리 거리" }
         ]
       },
       {
         id: "tokyo",
         nameKo: "일본 도쿄",
         nameEn: "Tokyo, Japan",
-        date: "2025.08",
-        year: "2025",
-        country: "일본",
+        badge: "2025.08",
+        milestone: "여름 메가시티 탐방",
         flag: "🇯🇵",
-        category: "2025",
-        categoryName: "여름 메가시티 탐방",
         coords: [139.6917, 35.6895],
-        zoomScale: 6.0,
+        labelOffset: { x: 12, y: -8 },
         cities: ["도쿄"],
-        indexSub: "도쿄, 시부야, 긴자",
-        labelOffset: { x: 12, y: -6 },
         spots: ["시부야 스크램블", "도쿄타워 야경", "신주쿠", "긴자"],
         desc: "도쿄의 화려한 여름밤 야경과 트렌디한 골목길, 다채로운 도심 문화를 탐방했던 여행.",
-        letter: "“여름날의 붉은 도쿄타워 아래에서 마신 시원한 멜론 소다, 그리고 끝없이 교차하는 시부야 스크램블의 물결 속에서 느낀 메가시티의 두근거리는 에너지!”",
+        letter: "“붉은 도쿄타워 아래서 마신 시원한 음료와, 끝없이 교차하는 시부야 스크램블 속에서 느꼈던 도쿄만의 두근거리는 에너지!”",
         photos: [
-          { type: "image", url: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=600&auto=format&fit=crop", caption: "도쿄타워의 붉은 야경" },
-          { type: "image", url: "https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=600&auto=format&fit=crop", caption: "시부야 스크램블 교차로" },
-          { type: "image", url: "https://images.unsplash.com/photo-1538935732373-f7a495fea3f6?w=600&auto=format&fit=crop", caption: "신주쿠 밤거리 네온" }
+          { type: "image", url: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=600&auto=format&fit=crop", caption: "도쿄타워의 붉은 야경" }
         ]
       },
       {
         id: "canada",
-        nameKo: "캐나다",
-        nameEn: "Canada (Yellowknife · Whistler · Victoria · Vancouver)",
-        date: "2025.12",
-        year: "2025",
-        country: "캐나다",
+        nameKo: "캐나다 (오로라·휘슬러)",
+        nameEn: "Canada (Yellowknife · Whistler · Vancouver)",
+        badge: "2025.12",
+        milestone: "로키 설경 & 오로라 대탐험",
         flag: "🇨🇦",
-        category: "2025",
-        categoryName: "로키 설경 & 오로라 대탐험",
         coords: [-119.5, 54.0],
-        zoomScale: 4.8,
+        labelOffset: { x: 12, y: 0 },
         cities: ["옐로나이프", "휘슬러", "빅토리아", "밴쿠버"],
-        indexSub: "휘슬러, 옐로나이프",
-        subStops: [
-          { name: "옐로나이프", coords: [-114.3718, 62.4540], align: "right" },
-          { name: "휘슬러", coords: [-122.9574, 50.1163], align: "top-right" },
-          { name: "빅토리아", coords: [-123.3656, 48.4284], align: "bottom-left" },
-          { name: "밴쿠버", coords: [-123.1207, 49.2827], align: "top-left" }
-        ],
-        spots: ["옐로나이프 오로라 빌리지(Dancing Aurora)", "휘슬러 블랙콤 스키", "빅토리아 부차트 가든 & 이너하버", "밴쿠버 개스타운 & 스탠리파크"],
-        desc: "북극권 밤하늘에서 초록빛 커튼을 흔드는 환상적인 오로라의 옐로나이프(1)를 시작으로, 세계적인 설산 휘슬러(2), 브리티시컬럼비아의 우아한 정원 도시 빅토리아(3), 활기찬 해안 도시 밴쿠버(4)까지 완벽히 연결한 캐나다 윈터 익스플로러.",
-        letter: "“영하 30도의 매서운 추위도 잊게 만든 옐로나이프의 춤추는 오로라... 밤하늘 전체가 초록빛 물결로 일렁일 때 가슴이 벅차올랐어. 휘슬러 설산에서 보드를 타고, 따뜻한 빅토리아의 앤틱 티룸과 밴쿠버의 크리스마스 마켓까지 감동의 연속이었지.”",
+        spots: ["옐로나이프 오로라 빌리지", "휘슬러 블랙콤 스키", "밴쿠버 개스타운"],
+        desc: "북극권 밤하늘에서 초록빛 커튼을 흔드는 오로라와 세계적인 설산 휘슬러, 밴쿠버까지 누빈 캐나다 윈터 대탐험.",
+        letter: "“영하 30도 혹한 속에서 밤하늘 전체가 초록빛 물결로 춤추던 옐로나이프의 오로라... 평생 잊지 못할 가슴 벅찬 마법의 순간.”",
         photos: [
-          { type: "image", url: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=600&auto=format&fit=crop", caption: "옐로나이프 밤하늘 오로라 댄싱" },
-          { type: "image", url: "https://images.unsplash.com/photo-1517411032315-54ef2cb783bb?w=600&auto=format&fit=crop", caption: "휘슬러 블랙콤 설산 슬로프" },
-          { type: "image", url: "https://images.unsplash.com/photo-1507692049790-de58290a4334?w=600&auto=format&fit=crop", caption: "빅토리아 주회의사당 이너하버 야경" },
-          { type: "image", url: "https://images.unsplash.com/photo-1559511260-66a65e09b245?w=600&auto=format&fit=crop", caption: "밴쿠버 도심과 스탠리 파크" }
+          { type: "image", url: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=600&auto=format&fit=crop", caption: "옐로나이프 춤추는 오로라" }
         ]
       },
       {
         id: "bali",
         nameKo: "인도네시아 발리",
         nameEn: "Bali (Ubud · Nusa Penida · Seminyak)",
-        date: "2026.07",
-        year: "2026",
-        country: "인도네시아",
+        badge: "2026.07",
+        milestone: "열대 낭만 & 비경 휴양",
         flag: "🇮🇩",
-        category: "2026",
-        categoryName: "열대 낭만 & 비경 휴양",
         coords: [115.35, -8.62],
-        zoomScale: 9.5,
+        labelOffset: { x: 12, y: 2 },
         cities: ["우붓", "누사페니다", "스미냑"],
-        indexSub: "우붓, 누사페니다, 스미냑",
-        subStops: [
-          { name: "우붓", coords: [115.2625, -8.5069], align: "top-left" },
-          { name: "누사페니다", coords: [115.5444, -8.7278], align: "right" },
-          { name: "스미냑", coords: [115.1585, -8.6896], align: "bottom-left" }
-        ],
-        spots: ["우붓 테갈라랑 계단식 논과 정글 리조트", "누사페니다 켈링킹 비치(공룡능선) 비경", "스미냑 비치클럽 & 환상적인 선셋"],
-        desc: "7월의 쾌청한 건기 날씨 속에서 정글 감성의 우붓(1)을 시작으로, 경이로운 에메랄드빛 바다 절벽의 누사페니다(2) 섬을 탐험하고, 마지막으로 트렌디한 해변과 황홀한 노을이 펼쳐진 스미냑(3)까지 완벽하게 만끽한 신들의 섬 발리 일주.",
-        letter: "“정글 새소리를 들으며 깨어난 우붓의 아침, 켈링킹 비치의 웅장한 공룡 절벽 아래 펼쳐진 코발트블루 파도, 그리고 스미냑 해변 비치베드에 누워 붉게 물드는 선셋을 바라보며 마신 코코넛 워터... 다시 가고 싶은 지상낙원.”",
+        spots: ["우붓 계단식 논과 정글", "누사페니다 공룡능선 절벽", "스미냑 선셋 비치"],
+        desc: "정글 감성의 우붓, 경이로운 바다 절벽의 누사페니다 섬, 트렌디한 해변과 황홀한 노을의 스미냑까지 만끽한 신들의 섬 발리 일주.",
+        letter: "“정글 새소리를 들으며 깨어나던 우붓의 아침, 켈링킹 비치의 웅장한 공룡 절벽, 스미냑 비치베드에 누워 바라본 붉은 노을의 평화로움.”",
         photos: [
-          { type: "image", url: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&auto=format&fit=crop", caption: "우붓 테갈라랑 계단식 논" },
-          { type: "image", url: "https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=600&auto=format&fit=crop", caption: "누사페니다 켈링킹 비치 공룡능선" },
-          { type: "image", url: "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=600&auto=format&fit=crop", caption: "스미냑 해변의 황금빛 선셋" },
-          { type: "image", url: "https://images.unsplash.com/photo-1555400038-63f5ba517a47?w=600&auto=format&fit=crop", caption: "발리 전통 사원과 연꽃 연못" }
+          { type: "image", url: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&auto=format&fit=crop", caption: "발리 누사페니다 비경" }
         ]
       }
     ];
 
-    // Theme palette
-    const THEMES = {
-      prophet: {
-        ocean: '#e7d8be',
-        land: '#f7efdc',
-        stroke: '#4a331c',
-        graticule: 'rgba(90, 60, 30, 0.14)',
-        highlight: '#841c1c',
-        routeDefault: 'rgba(132, 28, 28, 0.35)',
-        routeActive: '#841c1c',
-        subRoute: '#b87c28',
-        badgeBg: '#fbf5e6',
-        badgeBorder: '#4a331c',
-        badgeText: '#231508'
-      }
-    };
-
-    let currentTheme = 'prophet';
-    let currentCategory = 'all';
-    let showAllRoutes = true;
-    let selectedDest = null;
-
+    // SVG & D3 setup
     const svg = d3.select("#mapSvg");
     const containerEl = document.getElementById("mapContainer");
     let width = containerEl.clientWidth || 800;
@@ -953,43 +969,54 @@
     const markerGroup = svg.append("g").attr("class", "marker-layer");
     const planeSimGroup = svg.append("g").attr("class", "plane-sim-layer");
 
-    let currentProjectionType = "naturalEarth";
     let projection;
     let pathGenerator;
-    let worldGeoJsonData = null;
-    let isAutoRotating = false;
-    let rotationTimer = null;
-    let currentRotation = [-150, 0];
-    let zoomBehavior;
-    let currentZoomScale = 1;
 
-    function createProjection(type) {
-      if (type === "orthographic") {
-        return d3.geoOrthographic()
-          .scale(Math.min(width, height) / 2.3)
-          .translate([width / 2, height / 2])
-          .rotate([-127, -25])
-          .clipAngle(90);
+    function createProjection(realm, projType) {
+      if (realm === 'domestic') {
+        // Detailed Zoomed-in Mercator Map for South Korea
+        return d3.geoMercator()
+          .center([127.8, 36.3])
+          .scale(Math.min(width, height) * 6.5)
+          .translate([width / 2, height / 2]);
       } else {
-        return d3.geoNaturalEarth1()
-          .scale(width / 6.2)
-          .translate([width / 2, height / 2])
-          .rotate([-150, 0]);
+        // Overseas
+        if (projType === '3d') {
+          return d3.geoOrthographic()
+            .scale(Math.min(width, height) / 2.3)
+            .translate([width / 2, height / 2])
+            .rotate([-127, -25])
+            .clipAngle(90);
+        } else {
+          return d3.geoNaturalEarth1()
+            .scale(width / 6.2)
+            .translate([width / 2, height / 2])
+            .rotate([-150, 0]);
+        }
       }
     }
 
-    function initProjection(type) {
-      currentProjectionType = type;
-      projection = createProjection(type);
+    function initProjection(projType = currentProjectionType) {
+      currentProjectionType = projType;
+      projection = createProjection(currentRealm, projType);
       pathGenerator = d3.geoPath().projection(projection);
 
       const autoRotateBtn = document.getElementById("autoRotateBtn");
-      if (type === "orthographic") {
-        autoRotateBtn.classList.remove("hidden");
-        if (isAutoRotating) startAutoRotation();
-      } else {
+      const globeBtn = document.getElementById("globeBtn");
+
+      if (currentRealm === 'domestic') {
+        globeBtn.classList.add("hidden");
         autoRotateBtn.classList.add("hidden");
         stopAutoRotation();
+      } else {
+        globeBtn.classList.remove("hidden");
+        if (projType === '3d') {
+          autoRotateBtn.classList.remove("hidden");
+          if (isAutoRotating) startAutoRotation();
+        } else {
+          autoRotateBtn.classList.add("hidden");
+          stopAutoRotation();
+        }
       }
 
       setupInteractions();
@@ -1000,11 +1027,9 @@
       svg.on(".zoom", null);
       svg.on(".drag", null);
 
-      if (currentProjectionType === "orthographic") {
+      if (currentRealm === 'overseas' && currentProjectionType === '3d') {
         const drag = d3.drag()
-          .on("start", () => {
-            if (isAutoRotating) stopAutoRotation(false);
-          })
+          .on("start", () => { if (isAutoRotating) stopAutoRotation(false); })
           .on("drag", (event) => {
             const rotate = projection.rotate();
             const k = 75 / projection.scale();
@@ -1012,9 +1037,7 @@
             projection.rotate(currentRotation);
             updatePaths();
           })
-          .on("end", () => {
-            if (isAutoRotating) startAutoRotation();
-          });
+          .on("end", () => { if (isAutoRotating) startAutoRotation(); });
 
         svg.call(drag);
 
@@ -1025,7 +1048,6 @@
             projection.scale(baseScale * event.transform.k);
             updatePaths();
           });
-
         svg.call(zoomBehavior).on("dblclick.zoom", null);
 
       } else {
@@ -1047,7 +1069,6 @@
                 return `translate(${ox}, ${oy}) scale(${1 / currentZoomScale})`;
               });
           });
-
         svg.call(zoomBehavior).on("dblclick.zoom", null);
       }
     }
@@ -1059,7 +1080,7 @@
       document.getElementById("rotateBtnLabel").textContent = "자전 ON";
 
       rotationTimer = d3.timer(() => {
-        if (currentProjectionType !== "orthographic") return;
+        if (currentRealm !== 'overseas' || currentProjectionType !== '3d') return;
         currentRotation[0] += 0.2;
         projection.rotate(currentRotation);
         updatePaths();
@@ -1073,14 +1094,15 @@
       }
       if (updateUI) {
         isAutoRotating = false;
-        document.getElementById("autoRotateBtn").classList.remove("text-[#841c1c]");
-        document.getElementById("rotateBtnLabel").textContent = "자전 OFF";
+        const btn = document.getElementById("autoRotateBtn");
+        if (btn) btn.classList.remove("text-[#841c1c]");
+        const lbl = document.getElementById("rotateBtnLabel");
+        if (lbl) lbl.textContent = "자전 OFF";
       }
     }
 
     function renderMap() {
       if (!worldGeoJsonData) return;
-      const theme = THEMES[currentTheme];
 
       landGroup.attr("transform", null);
       oceanGroup.attr("transform", null);
@@ -1090,19 +1112,19 @@
       planeSimGroup.attr("transform", null);
 
       oceanGroup.selectAll("*").remove();
-      if (currentProjectionType === "orthographic") {
+      if (currentRealm === 'overseas' && currentProjectionType === '3d') {
         oceanGroup.append("circle")
           .attr("cx", width / 2)
           .attr("cy", height / 2)
           .attr("r", projection.scale())
-          .attr("fill", theme.ocean)
-          .attr("stroke", theme.stroke)
+          .attr("fill", "#e7d8be")
+          .attr("stroke", "#4a331c")
           .attr("stroke-width", 1.8);
       } else {
         oceanGroup.append("rect")
           .attr("width", width)
           .attr("height", height)
-          .attr("fill", theme.ocean);
+          .attr("fill", "#e7d8be");
       }
 
       graticuleGroup.selectAll("*").remove();
@@ -1111,29 +1133,26 @@
         .datum(graticule)
         .attr("d", pathGenerator)
         .attr("fill", "none")
-        .attr("stroke", theme.graticule)
+        .attr("stroke", "rgba(90, 60, 30, 0.14)")
         .attr("stroke-width", 0.9)
         .attr("stroke-dasharray", "4,3");
 
-      const paths = landGroup.selectAll(".country-path")
-        .data(worldGeoJsonData.features);
-
+      const paths = landGroup.selectAll(".country-path").data(worldGeoJsonData.features);
       paths.enter()
         .append("path")
         .attr("class", "country-path")
         .merge(paths)
         .attr("d", pathGenerator)
-        .attr("fill", theme.land)
-        .attr("stroke", theme.stroke)
-        .attr("stroke-width", 0.7);
-
+        .attr("fill", "#f7efdc")
+        .attr("stroke", "#4a331c")
+        .attr("stroke-width", currentRealm === 'domestic' ? 1.2 : 0.7);
       paths.exit().remove();
 
-      renderRoutesAndMarkers();
+      renderMarkersAndRoutes();
     }
 
     function updatePaths() {
-      if (currentProjectionType === "orthographic") {
+      if (currentRealm === 'overseas' && currentProjectionType === '3d') {
         oceanGroup.select("circle")
           .attr("r", projection.scale())
           .attr("cx", projection.translate()[0])
@@ -1141,142 +1160,58 @@
       }
       graticuleGroup.selectAll("path").attr("d", pathGenerator);
       landGroup.selectAll(".country-path").attr("d", pathGenerator);
-      renderRoutesAndMarkers();
+      renderMarkersAndRoutes();
     }
 
-    function renderRoutesAndMarkers() {
+    function renderMarkersAndRoutes() {
       routeGroup.selectAll("*").remove();
       markerGroup.selectAll("*").remove();
 
-      const theme = THEMES[currentTheme];
-      const filteredDests = DESTINATIONS.filter(d => currentCategory === 'all' || d.category === currentCategory || d.year === currentCategory);
-      const is3D = currentProjectionType === "orthographic";
+      const dataset = currentRealm === 'domestic' ? DOMESTIC_SPOTS : OVERSEAS_SPOTS;
+      const is3D = currentRealm === 'overseas' && currentProjectionType === '3d';
       const scaleFactor = is3D ? 1 : (1 / currentZoomScale);
 
-      // Great circle flight routes
-      filteredDests.forEach(dest => {
-        const isSelected = selectedDest && selectedDest.id === dest.id;
-        if (!showAllRoutes && !isSelected) return;
-
-        const mainTarget = dest.subStops ? dest.subStops[0].coords : dest.coords;
-        const geoLine = {
-          type: "LineString",
-          coordinates: [SEOUL_COORDS, mainTarget]
-        };
-
-        const pathData = pathGenerator(geoLine);
-        if (pathData) {
-          routeGroup.append("path")
-            .datum(geoLine)
-            .attr("d", pathData)
-            .attr("fill", "none")
-            .attr("stroke", isSelected ? theme.routeActive : theme.routeDefault)
-            .attr("stroke-width", isSelected ? 1.0 : 0.6)
-            .attr("class", isSelected ? "magic-flight-active" : "")
-            .attr("filter", isSelected ? "url(#magicArcGlow)" : null)
-            .attr("opacity", isSelected ? 0.95 : 0.45);
-        }
-
-        if (dest.subStops && isSelected) {
-          for (let i = 0; i < dest.subStops.length - 1; i++) {
-            const subLine = {
-              type: "LineString",
-              coordinates: [dest.subStops[i].coords, dest.subStops[i + 1].coords]
-            };
-            const subData = pathGenerator(subLine);
-            if (subData) {
-              routeGroup.append("path")
-                .datum(subLine)
-                .attr("d", subData)
-                .attr("fill", "none")
-                .attr("stroke", theme.subRoute)
-                .attr("stroke-width", 0.75)
-                .attr("stroke-dasharray", "2.5,2")
-                .attr("opacity", 0.9);
-            }
+      // 1. Draw Routes
+      if (currentRealm === 'overseas') {
+        dataset.forEach(dest => {
+          const isSelected = selectedSpot && selectedSpot.id === dest.id;
+          const geoLine = { type: "LineString", coordinates: [SEOUL_COORDS, dest.coords] };
+          const pData = pathGenerator(geoLine);
+          if (pData) {
+            routeGroup.append("path")
+              .datum(geoLine)
+              .attr("d", pData)
+              .attr("fill", "none")
+              .attr("stroke", isSelected ? "#841c1c" : "rgba(132, 28, 28, 0.35)")
+              .attr("stroke-width", isSelected ? 1.8 : 0.8)
+              .attr("class", isSelected ? "magic-flight-active" : "")
+              .attr("filter", isSelected ? "url(#magicArcGlow)" : null)
+              .attr("opacity", isSelected ? 0.95 : 0.5);
           }
-        }
-      });
+        });
+      } else {
+        // Domestic: Connecting links to Seoul
+        dataset.forEach(dest => {
+          if (dest.id === 'seoul_all') return;
+          const isSelected = selectedSpot && selectedSpot.id === dest.id;
+          const geoLine = { type: "LineString", coordinates: [SEOUL_COORDS, dest.coords] };
+          const pData = pathGenerator(geoLine);
+          if (pData) {
+            routeGroup.append("path")
+              .datum(geoLine)
+              .attr("d", pData)
+              .attr("fill", "none")
+              .attr("stroke", isSelected ? "#841c1c" : "rgba(180, 83, 9, 0.25)")
+              .attr("stroke-width", isSelected ? 1.5 : 0.7)
+              .attr("stroke-dasharray", isSelected ? "4,3" : "2,2")
+              .attr("class", isSelected ? "magic-flight-active" : "");
+          }
+        });
+      }
 
-      // Markers & Labels
-      filteredDests.forEach(dest => {
-        const isSelected = selectedDest && selectedDest.id === dest.id;
-
-        if (dest.subStops && isSelected) {
-          dest.subStops.forEach((sub, idx) => {
-            const coords = projection(sub.coords);
-            if (!coords) return;
-
-            if (is3D) {
-              const center = projection.invert([width / 2, height / 2]);
-              if (center && d3.geoDistance(sub.coords, center) > Math.PI / 2) return;
-            }
-
-            const subG = markerGroup.append("g")
-              .attr("class", "cursor-pointer marker-node sub-stop-node")
-              .attr("data-ox", coords[0])
-              .attr("data-oy", coords[1])
-              .attr("transform", `translate(${coords[0]}, ${coords[1]}) scale(${scaleFactor})`);
-
-            subG.append("circle")
-              .attr("r", 4.5)
-              .attr("fill", theme.highlight)
-              .attr("stroke", "#ffffff")
-              .attr("stroke-width", 1.5);
-
-            const labelText = `${idx + 1}. ${sub.name}`;
-            const labelFontSize = 12;
-            const labelWidth = labelText.length * 10.5 + 16;
-            const badgeHeight = 21;
-
-            let bx = 8;
-            let by = -(badgeHeight / 2);
-
-            if (sub.align === "top-left" || sub.align === "left" || sub.align === "bottom-left") {
-              bx = -labelWidth - 8;
-            }
-            if (sub.align === "top-left" || sub.align === "top-right" || sub.align === "top") {
-              by = -badgeHeight - 6;
-            } else if (sub.align === "bottom-left" || sub.align === "bottom-right" || sub.align === "bottom") {
-              by = 6;
-            }
-
-            subG.append("line")
-              .attr("x1", 0)
-              .attr("y1", 0)
-              .attr("x2", bx > 0 ? bx : bx + labelWidth)
-              .attr("y2", by + badgeHeight / 2)
-              .attr("stroke", theme.badgeBorder)
-              .attr("stroke-width", 0.6)
-              .attr("stroke-dasharray", "1.5,1.5");
-
-            subG.append("rect")
-              .attr("x", bx)
-              .attr("y", by)
-              .attr("width", labelWidth)
-              .attr("height", badgeHeight)
-              .attr("rx", 3)
-              .attr("fill", theme.badgeBg)
-              .attr("stroke", theme.badgeBorder)
-              .attr("stroke-width", 1.2)
-              .attr("filter", "drop-shadow(2px 2px 2px rgba(0,0,0,0.4))");
-
-            subG.append("text")
-              .attr("x", bx + 5)
-              .attr("y", by + 15)
-              .attr("fill", theme.badgeText)
-              .attr("font-size", `${labelFontSize}px`)
-              .attr("font-weight", "900")
-              .attr("font-family", "'Noto Serif KR', serif")
-              .attr("class", "cursor-pointer")
-              .on("click", (e) => {
-                e.stopPropagation();
-                selectDestination(dest);
-              })
-              .text(labelText);
-          });
-        }
-
+      // 2. Draw Pins and Badges
+      dataset.forEach(dest => {
+        const isSelected = selectedSpot && selectedSpot.id === dest.id;
         const coords = projection(dest.coords);
         if (!coords) return;
 
@@ -1290,72 +1225,98 @@
           .attr("data-ox", coords[0])
           .attr("data-oy", coords[1])
           .attr("transform", `translate(${coords[0]}, ${coords[1]}) scale(${scaleFactor})`)
-          .on("click", () => selectDestination(dest))
+          .on("click", () => selectSpot(dest))
           .on("mouseenter", (e) => showTooltip(e, dest))
           .on("mouseleave", hideTooltip);
 
+        // Pulse Ring
         if (isSelected) {
           g.append("circle")
-            .attr("r", 14)
+            .attr("r", 15)
             .attr("fill", "none")
-            .attr("stroke", theme.routeActive)
+            .attr("stroke", "#841c1c")
             .attr("stroke-width", 2.2)
             .attr("class", "magic-aura-pulse");
         }
 
+        // Center Pin
         g.append("circle")
-          .attr("r", isSelected ? 7.5 : 5.2)
-          .attr("fill", isSelected ? theme.routeActive : "#b45309")
+          .attr("r", isSelected ? 7 : (dest.id === 'seoul_all' || dest.id === 'hyehwa' ? 6 : 4.8))
+          .attr("fill", isSelected ? "#841c1c" : (dest.id.includes('hyehwa') || dest.id.includes('seoul') ? "#dc2626" : "#b45309"))
           .attr("stroke", "#ffffff")
-          .attr("stroke-width", isSelected ? 2.2 : 1.6);
+          .attr("stroke-width", isSelected ? 2 : 1.5);
 
-        let labelText = `${dest.flag} ${dest.nameKo} [${dest.date}]`;
-        if (dest.id === "canada") labelText = `${dest.flag} 캐나다 (휘슬러·옐로나이프·빅토리아·밴쿠버)`;
-        if (dest.id === "swiss") labelText = `${dest.flag} 스위스 (5대 도시)`;
-        if (dest.id === "bali") labelText = `${dest.flag} 발리 (우붓·누사페니다·스미냑)`;
-        if (dest.id === "niseko") labelText = `${dest.flag} 일본 니세코 (오타루·삿포로)`;
+        // Text Badge Label
+        const lOffset = dest.labelOffset || { x: 10, y: 4 };
+        const labelText = `${dest.flag} ${dest.nameKo}`;
 
-        const isClusteredDetail = (dest.id === "swiss" || dest.id === "bali" || dest.id === "niseko" || dest.id === "canada") && isSelected;
-        
-        if (!isClusteredDetail) {
-          const lOffset = dest.labelOffset || { x: 12, y: 5 };
-          const baseFontSize = isSelected ? 13.5 : 12;
+        // Glow Outline
+        g.append("text")
+          .attr("x", lOffset.x)
+          .attr("y", lOffset.y)
+          .attr("fill", "#fbf7ee")
+          .attr("stroke", "#fbf7ee")
+          .attr("stroke-width", 3.5)
+          .attr("stroke-linejoin", "round")
+          .attr("stroke-linecap", "round")
+          .attr("font-size", isSelected ? "13px" : "11.5px")
+          .attr("font-weight", "900")
+          .attr("font-family", "'Noto Serif KR', serif")
+          .text(labelText);
 
-          g.append("text")
-            .attr("x", lOffset.x)
-            .attr("y", lOffset.y)
-            .attr("fill", "#fbf7ee")
-            .attr("stroke", "#fbf7ee")
-            .attr("stroke-width", 3.5)
-            .attr("stroke-linejoin", "round")
-            .attr("stroke-linecap", "round")
-            .attr("font-size", `${baseFontSize}px`)
-            .attr("font-weight", "900")
-            .attr("font-family", "'Noto Serif KR', serif")
-            .attr("class", "cursor-pointer")
-            .text(labelText);
-
-          g.append("text")
-            .attr("x", lOffset.x)
-            .attr("y", lOffset.y)
-            .attr("fill", isSelected ? theme.highlight : "#1f1309")
-            .attr("font-size", `${baseFontSize}px`)
-            .attr("font-weight", "900")
-            .attr("font-family", "'Noto Serif KR', serif")
-            .attr("class", "cursor-pointer")
-            .text(labelText);
-        }
+        // Fore Text
+        g.append("text")
+          .attr("x", lOffset.x)
+          .attr("y", lOffset.y)
+          .attr("fill", isSelected ? "#841c1c" : "#1f1309")
+          .attr("font-size", isSelected ? "13px" : "11.5px")
+          .attr("font-weight", "900")
+          .attr("font-family", "'Noto Serif KR', serif")
+          .text(labelText);
       });
     }
 
-    function focusOnCoordinates(coords, scale) {
-      if (!coords) return;
-      if (currentProjectionType === "orthographic") {
-        stopAutoRotation(false);
-        const targetRotation = [-coords[0], -coords[1]];
-        d3.transition()
-          .duration(1100)
-          .tween("rotate", () => {
+    function selectSpot(spot, triggerFocus = true) {
+      selectedSpot = spot;
+      playWandWoosh();
+
+      // Highlight card in carousel
+      document.querySelectorAll(".dest-card").forEach(card => {
+        if (card.getAttribute("data-id") === spot.id) {
+          card.classList.add("ring-2", "ring-[#841c1c]", "bg-[#fffcf5]", "shadow-md");
+        } else {
+          card.classList.remove("ring-2", "ring-[#841c1c]", "bg-[#fffcf5]", "shadow-md");
+        }
+      });
+
+      // Populate Drawer
+      const drawer = document.getElementById("travelDrawer");
+      document.getElementById("drawerFlag").textContent = spot.flag;
+      document.getElementById("drawerBadge").textContent = spot.badge || "호그와트 공인";
+      document.getElementById("drawerMilestone").textContent = spot.milestone || "공식 기록";
+      document.getElementById("drawerNameKo").textContent = spot.nameKo;
+      document.getElementById("drawerNameEn").textContent = spot.nameEn;
+      document.getElementById("drawerDesc").textContent = spot.desc;
+
+      const spotsContainer = document.getElementById("drawerSpots");
+      spotsContainer.innerHTML = (spot.spots || []).map(s => `
+        <span class="px-1.5 py-0.5 bg-[#e4cfad] border border-[#523820] text-[#24170d] text-[10px] rounded-xs font-serif font-bold">
+          ✦ ${s}
+        </span>
+      `).join("");
+
+      const letterEl = document.getElementById("drawerLetterContent");
+      letterEl.textContent = spot.letter || "“아직 작성된 현장 편지가 없습니다. [편지 쓰기/수정] 버튼을 눌러 소중한 기억을 남겨보세요.”";
+
+      renderDrawerPhotos(spot);
+
+      drawer.classList.remove("-translate-x-full", "opacity-0", "pointer-events-none");
+
+      if (triggerFocus) {
+        if (currentRealm === 'overseas' && currentProjectionType === '3d') {
+          stopAutoRotation(false);
+          const targetRotation = [-spot.coords[0], -spot.coords[1]];
+          d3.transition().duration(900).tween("rotate", () => {
             const r = d3.interpolate(projection.rotate(), targetRotation);
             return function(t) {
               currentRotation = r(t);
@@ -1363,120 +1324,55 @@
               updatePaths();
             };
           });
-      } else {
-        const p = projection(coords);
-        if (!p) return;
-        const transform = d3.zoomIdentity
-          .translate(width / 2, height / 2)
-          .scale(scale)
-          .translate(-p[0], -p[1]);
-
-        svg.transition()
-          .duration(900)
-          .call(zoomBehavior.transform, transform);
-      }
-    }
-
-    async function selectDestination(dest, triggerFocus = true) {
-      selectedDest = dest;
-
-      document.querySelectorAll(".dest-card").forEach(card => {
-        if (card.getAttribute("data-id") === dest.id) {
-          card.classList.add("ring-2", "ring-[#841c1c]", "bg-[#fffcf5]", "shadow-md");
         } else {
-          card.classList.remove("ring-2", "ring-[#841c1c]", "bg-[#fffcf5]", "shadow-md");
+          const pt = projection(spot.coords);
+          if (pt) {
+            const transform = d3.zoomIdentity
+              .translate(width / 2, height / 2)
+              .scale(currentRealm === 'domestic' ? 2.5 : (spot.zoomScale || 2.2))
+              .translate(-pt[0], -pt[1]);
+            svg.transition().duration(800).call(zoomBehavior.transform, transform);
+          }
         }
-      });
-
-      const drawer = document.getElementById("travelDrawer");
-      document.getElementById("drawerFlag").textContent = dest.flag;
-      document.getElementById("drawerSeason").textContent = `${dest.date} 특별호`;
-      document.getElementById("drawerNameKo").textContent = dest.nameKo;
-      document.getElementById("drawerNameEn").textContent = dest.nameEn;
-      document.getElementById("drawerDesc").textContent = dest.desc;
-
-      const cityRouteContainer = document.getElementById("drawerCityRoute");
-      cityRouteContainer.innerHTML = dest.cities.map((city, idx) => `
-        <span class="inline-flex items-center gap-1 px-1.5 py-0.5 bg-[#dfcaa5] border border-[#8a6843] rounded-xs text-[10px]">
-          <span class="font-mono text-[#841c1c]">${idx + 1}.</span>
-          <span>${city}</span>
-        </span>
-      `).join('<span class="text-[#841c1c] font-black mx-0.5">→</span>');
-
-      const spotsContainer = document.getElementById("drawerSpots");
-      spotsContainer.innerHTML = dest.spots.map(s => `
-        <span class="px-1.5 py-0.5 bg-[#e4cfad] border border-[#523820] text-[#24170d] text-[10px] rounded-xs font-serif font-bold">
-          ✦ ${s}
-        </span>
-      `).join("");
-
-      const letterContentEl = document.getElementById("drawerLetterContent");
-      if (letterContentEl) {
-        letterContentEl.textContent = dest.letter || "“아직 작성된 현장 편지가 없습니다. [편지 쓰기/수정] 버튼을 눌러 소중한 기억을 적어보세요.”";
       }
 
-      await renderDrawerPhotos(dest);
-
-      drawer.classList.remove("-translate-x-full", "opacity-0", "pointer-events-none");
-
-      if (triggerFocus) {
-        focusOnCoordinates(dest.coords, dest.zoomScale || 2.5);
-      }
-
-      renderRoutesAndMarkers();
+      renderMarkersAndRoutes();
     }
 
-    async function renderDrawerPhotos(dest) {
+    async function renderDrawerPhotos(spot) {
       const gallery = document.getElementById("drawerGalleryGrid");
       const countBadge = document.getElementById("photoCountBadge");
+      const dbPhotos = await getPhotosFromDB(spot.id);
+      const combined = [...(spot.photos || []), ...dbPhotos];
+      countBadge.textContent = combined.length;
 
-      const dbPhotos = await getPhotosFromDB(dest.id);
-      const combinedPhotos = [...(dest.photos || []), ...dbPhotos];
-      countBadge.textContent = combinedPhotos.length;
-
-      if (combinedPhotos.length === 0) {
-        gallery.innerHTML = `<div class="col-span-full py-4 text-center text-xs text-[#735334] italic font-serif">현장 미디어를 대기 중입니다...</div>`;
+      if (combined.length === 0) {
+        gallery.innerHTML = `<div class="col-span-full py-4 text-center text-xs text-[#735334] italic font-serif">등록된 현장 사진이 대기 중입니다.</div>`;
         return;
       }
 
-      gallery.innerHTML = combinedPhotos.map((p, idx) => {
-        const isVideo = p.type === "video" || (p.url && (p.url.includes("youtube.com") || p.url.includes("youtu.be") || p.url.endsWith(".mp4")));
-        const isCustom = !!p.id;
-        return `
-          <div class="photo-item group cursor-pointer border border-[#543b22] bg-[#fbf5e6] p-1 rounded-sm shadow hover:shadow-md transition-all hover:scale-[1.02] relative" data-idx="${idx}">
-            <div class="aspect-[4/3] w-full overflow-hidden bg-[#24170d] magical-moving-frame rounded-sm relative">
-              ${isVideo ? `
-                <div class="w-full h-full flex flex-col items-center justify-center bg-[#2b1809] text-[#fbf7ee]">
-                  <span class="text-2xl mb-1">▶️</span>
-                  <span class="text-[8px] font-bold text-[#e8d5b5]">영상 플레이</span>
-                </div>
-              ` : `
-                <img src="${p.url}" alt="${p.caption}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://placehold.co/400x300/3e2b19/f3e9d2?text=Daily+Prophet'">
-              `}
-              <span class="absolute top-1 left-1 px-1 py-0.2 bg-[#3b2513]/80 text-[#fbf7ee] text-[8px] rounded-xs font-mono font-bold">
-                ${isVideo ? '🎬 VIDEO' : '📸 PHOTO'}
-              </span>
-
-              ${isCustom ? `
-                <button class="delete-photo-btn ${isAdminMode ? '' : 'hidden'} absolute top-1 right-1 w-5 h-5 bg-[#841c1c]/90 hover:bg-[#841c1c] text-[#fbf7ee] rounded-xs text-[10px] flex items-center justify-center shadow transition z-10" data-dbid="${p.id}" title="사진 삭제">
-                  🗑️
-                </button>
-              ` : ''}
-            </div>
-            <div class="mt-1 px-0.5">
-              <p class="text-[9px] font-headline font-bold text-[#24170d] truncate leading-tight">${p.caption}</p>
-              <span class="text-[8px] text-[#841c1c] font-cinzel">No. ${idx + 1}</span>
-            </div>
+      gallery.innerHTML = combined.map((p, idx) => `
+        <div class="photo-item group cursor-pointer border border-[#543b22] bg-[#fbf5e6] p-1 rounded-sm shadow hover:shadow-md transition-all hover:scale-[1.02] relative" data-idx="${idx}">
+          <div class="aspect-[4/3] w-full overflow-hidden bg-[#24170d] magical-moving-frame rounded-sm relative">
+            <img src="${p.url}" alt="${p.caption}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://placehold.co/400x300/3e2b19/f3e9d2?text=Daily+Prophet'">
+            <span class="absolute top-1 left-1 px-1 py-0.2 bg-[#3b2513]/80 text-[#fbf7ee] text-[8px] rounded-xs font-mono font-bold">📸 PHOTO</span>
+            ${p.id ? `
+              <button class="delete-photo-btn ${isAdminMode ? '' : 'hidden'} absolute top-1 right-1 w-5 h-5 bg-[#841c1c]/90 hover:bg-[#841c1c] text-[#fbf7ee] rounded-xs text-[10px] flex items-center justify-center shadow transition z-10" data-dbid="${p.id}" title="사진 삭제">🗑️</button>
+            ` : ''}
           </div>
-        `;
-      }).join("");
+          <div class="mt-1 px-0.5">
+            <p class="text-[9px] font-headline font-bold text-[#24170d] truncate leading-tight">${p.caption}</p>
+            <span class="text-[8px] text-[#841c1c] font-cinzel">No. ${idx + 1}</span>
+          </div>
+        </div>
+      `).join("");
 
       gallery.querySelectorAll(".photo-item").forEach(item => {
         item.addEventListener("click", (e) => {
           if (e.target.closest(".delete-photo-btn")) return;
           const idx = parseInt(item.getAttribute("data-idx"), 10);
-          const photo = combinedPhotos[idx];
-          if (photo) openPhotoLightbox(photo, dest.nameKo);
+          const photo = combined[idx];
+          if (photo) openPhotoLightbox(photo, spot.nameKo);
         });
       });
 
@@ -1487,7 +1383,7 @@
           if (dbId) {
             await deletePhotoFromDB(dbId);
             showToast("보도 사진이 삭제되었습니다.");
-            renderDrawerPhotos(dest);
+            renderDrawerPhotos(spot);
           }
         });
       });
@@ -1498,523 +1394,97 @@
       const container = document.getElementById("lightboxMediaContainer");
       document.getElementById("lightboxCaption").textContent = media.caption;
       document.getElementById("lightboxSub").textContent = `예언자 일보 특별 시청각 아카이브 • ${placeName}`;
-
-      const isVideo = media.type === "video" || (media.url && (media.url.includes("youtube.com") || media.url.includes("youtu.be") || media.url.endsWith(".mp4")));
-
-      if (isVideo) {
-        let embedUrl = media.url;
-        if (media.url.includes("youtube.com/watch?v=")) {
-          const videoId = media.url.split("v=")[1]?.split("&")[0];
-          embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-        } else if (media.url.includes("youtu.be/")) {
-          const videoId = media.url.split("youtu.be/")[1]?.split("?")[0];
-          embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-        }
-
-        if (media.url.endsWith(".mp4")) {
-          container.innerHTML = `<video controls autoplay class="w-full max-h-[60vh]"><source src="${media.url}" type="video/mp4"></video>`;
-        } else {
-          container.innerHTML = `<iframe class="w-full aspect-video max-h-[60vh]" src="${embedUrl}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-        }
-      } else {
-        container.innerHTML = `<img src="${media.url}" alt="${media.caption}" class="w-full max-h-[60vh] object-contain block" onerror="this.src='https://placehold.co/600x400/3e2b19/f3e9d2?text=Daily+Prophet'">`;
-      }
-
+      container.innerHTML = `<img src="${media.url}" alt="${media.caption}" class="w-full max-h-[60vh] object-contain block" onerror="this.src='https://placehold.co/600x400/3e2b19/f3e9d2?text=Daily+Prophet'">`;
       lb.classList.remove("hidden");
     }
 
     document.getElementById("closeLightboxBtn").addEventListener("click", () => {
       document.getElementById("photoLightbox").classList.add("hidden");
-      document.getElementById("lightboxMediaContainer").innerHTML = "";
     });
 
     document.getElementById("photoLightbox").addEventListener("click", (e) => {
-      if (e.target.id === "photoLightbox") {
-        document.getElementById("photoLightbox").classList.add("hidden");
-        document.getElementById("lightboxMediaContainer").innerHTML = "";
-      }
+      if (e.target.id === "photoLightbox") document.getElementById("photoLightbox").classList.add("hidden");
     });
 
-    // 🪄 Marauder's Map Reveal & Mischief Managed
-    const maraudersOverlay = document.getElementById("maraudersOverlay");
-    const marauderTeaser = document.getElementById("marauderTeaser");
-    const marauderSpell = document.getElementById("marauderSpell");
-    const marauderCloseSpell = document.getElementById("marauderCloseSpell");
-    const hideMapBtn = document.getElementById("hideMapBtn");
-    const inkVeilCanvas = document.getElementById("inkVeilCanvas");
-    const inkVeilHint = document.getElementById("inkVeilHint");
-    let isMapRevealed = false;
-    let isInkVeilActive = false;
-    let inkEraseStrokeCount = 0;
-
-    // Reset & Initialize the Secret Ink Veil
-    function resetInkVeil() {
-      if (!inkVeilCanvas || !containerEl) return;
-      const rect = containerEl.getBoundingClientRect();
-      inkVeilCanvas.width = rect.width;
-      inkVeilCanvas.height = rect.height;
-      const ctx = inkVeilCanvas.getContext("2d");
-      
-      // Paint parchment covering the map
-      ctx.fillStyle = "#dfcaa5";
-      ctx.fillRect(0, 0, rect.width, rect.height);
-
-      // Fine antique parchment grain
-      ctx.fillStyle = "rgba(70, 45, 15, 0.08)";
-      for (let i = 0; i < 600; i++) {
-        const x = Math.random() * rect.width;
-        const y = Math.random() * rect.height;
-        ctx.fillRect(x, y, 2, 2);
-      }
-
-      inkVeilCanvas.style.opacity = "1";
-      inkVeilCanvas.classList.remove("hidden");
-      if (inkVeilHint) {
-        inkVeilHint.style.opacity = "1";
-        inkVeilHint.classList.remove("hidden");
-      }
-      isInkVeilActive = true;
-      inkEraseStrokeCount = 0;
-    }
-
-    // Scratch / Reveal ink where wand (mouse/touch) moves
-    function revealInkAt(clientX, clientY) {
-      if (!isInkVeilActive || !inkVeilCanvas) return;
-      const rect = inkVeilCanvas.getBoundingClientRect();
-      const x = clientX - rect.left;
-      const y = clientY - rect.top;
-
-      if (x < 0 || x > rect.width || y < 0 || y > rect.height) return;
-
-      const ctx = inkVeilCanvas.getContext("2d");
-      ctx.save();
-      ctx.globalCompositeOperation = "destination-out";
-
-      const brushRadius = Math.max(50, Math.min(rect.width, rect.height) / 7.5);
-      const grad = ctx.createRadialGradient(x, y, 0, x, y, brushRadius);
-      grad.addColorStop(0, "rgba(0, 0, 0, 1)");
-      grad.addColorStop(0.65, "rgba(0, 0, 0, 0.85)");
-      grad.addColorStop(1, "rgba(0, 0, 0, 0)");
-
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(x, y, brushRadius, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-
-      inkEraseStrokeCount++;
-
-      // Fade out the floating tip after user starts waving
-      if (inkEraseStrokeCount > 8 && inkVeilHint && inkVeilHint.style.opacity !== "0") {
-        inkVeilHint.style.opacity = "0";
-        setTimeout(() => inkVeilHint.classList.add("hidden"), 800);
-      }
-
-      // Once user has thoroughly explored and uncovered the map across multiple regions, smoothly dissolve remaining veil much later
-      if (inkEraseStrokeCount > 95) {
-        isInkVeilActive = false;
-        inkVeilCanvas.style.transition = "opacity 2.2s ease-in-out";
-        inkVeilCanvas.style.opacity = "0";
-        setTimeout(() => {
-          inkVeilCanvas.classList.add("hidden");
-        }, 2400);
-      }
-    }
-
-    // Listen to wand movements over the map
-    if (containerEl) {
-      containerEl.addEventListener("mousemove", (e) => {
-        if (isMapRevealed && isInkVeilActive) {
-          revealInkAt(e.clientX, e.clientY);
-        }
+    function closeDrawer() {
+      const drawer = document.getElementById("travelDrawer");
+      if (!drawer || drawer.classList.contains("-translate-x-full")) return;
+      drawer.classList.add("-translate-x-full", "opacity-0", "pointer-events-none");
+      selectedSpot = null;
+      document.querySelectorAll(".dest-card").forEach(c => {
+        c.classList.remove("ring-2", "ring-[#841c1c]", "bg-[#fffcf5]", "shadow-md");
       });
-
-      containerEl.addEventListener("touchmove", (e) => {
-        if (isMapRevealed && isInkVeilActive && e.touches.length > 0) {
-          revealInkAt(e.touches[0].clientX, e.touches[0].clientY);
-        }
-      }, { passive: true });
+      renderMarkersAndRoutes();
     }
 
-    function revealMaraudersMap() {
-      if (isMapRevealed) return;
-      isMapRevealed = true;
-
-      // Prepare ink veil underneath the opening overlay
-      resetInkVeil();
-
-      // 1. Switch to footprint and spell incantation animation
-      marauderTeaser.classList.add("hidden");
-      if (marauderCloseSpell) marauderCloseSpell.classList.add("hidden");
-      marauderSpell.classList.remove("hidden");
-
-      // 2. Allow incantation to bloom, then slowly dissolve overlay over 2.2 seconds
-      setTimeout(() => {
-        maraudersOverlay.classList.add("opacity-0", "scale-105", "pointer-events-none");
-        showToast("🪄 지팡이를 지도 위에서 움직여 비밀 항로를 밝히세요!");
-      }, 1900);
-
-      // Wait until the 2.2s fade-out transition completely finishes before setting display:none
-      setTimeout(() => {
-        maraudersOverlay.classList.add("hidden");
-      }, 4200);
-    }
-
-    function concealMaraudersMap() {
-      if (!isMapRevealed) return;
-      isMapRevealed = false;
+    document.getElementById("closeDrawerBtn").addEventListener("click", (e) => {
+      e.stopPropagation();
       closeDrawer();
+    });
 
-      // Prepare overlay: show "Mischief Managed" state
-      maraudersOverlay.classList.remove("hidden");
-      maraudersOverlay.classList.add("opacity-0", "scale-105");
-      maraudersOverlay.classList.remove("pointer-events-none");
-
-      marauderTeaser.classList.add("hidden");
-      marauderSpell.classList.add("hidden");
-      if (marauderCloseSpell) marauderCloseSpell.classList.remove("hidden");
-
-      // Force layout reflow so the transition will smoothly play
-      void maraudersOverlay.offsetHeight;
-
-      // Smoothly fade the parchment back over the map (2.2s)
-      requestAnimationFrame(() => {
-        maraudersOverlay.classList.remove("opacity-0", "scale-105");
-        maraudersOverlay.classList.add("opacity-100", "scale-100");
-      });
-
-      showToast("📜 마법의 장난 끝! (Mischief Managed)");
-
-      // Reset ink veil underneath so it's ready for the next opening
-      resetInkVeil();
-
-      // After 2.5 seconds, reset the overlay back to Teaser state so user can tap again
-      setTimeout(() => {
-        if (!isMapRevealed) {
-          if (marauderCloseSpell) marauderCloseSpell.classList.add("hidden");
-          marauderTeaser.classList.remove("hidden");
-        }
-      }, 2600);
-    }
-
-    if (maraudersOverlay) {
-      maraudersOverlay.addEventListener("click", revealMaraudersMap);
-      maraudersOverlay.addEventListener("touchstart", (e) => {
-        revealMaraudersMap();
-      }, { passive: true });
-    }
-
-    if (hideMapBtn) {
-      hideMapBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        concealMaraudersMap();
-      });
-    }
-
-    // Admin Toggle & Authentication
-    const adminToggleBtn = document.getElementById("adminToggleBtn");
-    const adminAuthModal = document.getElementById("adminAuthModal");
-    const adminPasswordInput = document.getElementById("adminPasswordInput");
-    const adminAuthError = document.getElementById("adminAuthError");
-    const submitAdminAuthBtn = document.getElementById("submitAdminAuthBtn");
-    const cancelAdminAuthBtn = document.getElementById("cancelAdminAuthBtn");
-    const closeAdminAuthModalBtn = document.getElementById("closeAdminAuthModalBtn");
-
-    if (adminToggleBtn) {
-      adminToggleBtn.addEventListener("click", () => {
-        if (isAdminMode) {
-          isAdminMode = false;
-          updateAdminUI();
-          showToast("🔒 방문자 모드로 전환되었습니다.");
-        } else {
-          adminPasswordInput.value = "";
-          adminAuthError.classList.add("hidden");
-          adminAuthModal.classList.remove("hidden");
-          adminPasswordInput.focus();
-        }
-      });
-    }
-
-    function checkAdminPassphrase() {
-      const val = adminPasswordInput.value.trim();
-      if (val === ADMIN_PASSPHRASE) {
-        isAdminMode = true;
-        updateAdminUI();
-        adminAuthModal.classList.add("hidden");
-        showToast("🔓 특파원 편집 권한이 해제되었습니다!");
-      } else {
-        adminAuthError.classList.remove("hidden");
-      }
-    }
-
-    if (submitAdminAuthBtn) submitAdminAuthBtn.addEventListener("click", checkAdminPassphrase);
-    if (adminPasswordInput) {
-      adminPasswordInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") checkAdminPassphrase();
-      });
-    }
-
-    const closeAdminModal = () => adminAuthModal.classList.add("hidden");
-    if (cancelAdminAuthBtn) cancelAdminAuthBtn.addEventListener("click", closeAdminModal);
-    if (closeAdminAuthModalBtn) closeAdminAuthModalBtn.addEventListener("click", closeAdminModal);
-
-    // Bulk Add Media modal
-    const addMediaPromptBtn = document.getElementById("addMediaPromptBtn");
-    const addMediaModal = document.getElementById("addMediaModal");
-    const closeAddMediaModalBtn = document.getElementById("closeAddMediaModalBtn");
-    const cancelAddMediaBtn = document.getElementById("cancelAddMediaBtn");
-    const saveNewMediaBtn = document.getElementById("saveNewMediaBtn");
-    const tabLocalFileBtn = document.getElementById("tabLocalFileBtn");
-    const tabWebUrlBtn = document.getElementById("tabWebUrlBtn");
-    const bulkUploadView = document.getElementById("bulkUploadView");
-    const urlUploadView = document.getElementById("urlUploadView");
-    const dropZone = document.getElementById("dropZone");
-    const bulkFileInput = document.getElementById("bulkFileInput");
-    const uploadStatusMsg = document.getElementById("uploadStatusMsg");
-
-    if (tabLocalFileBtn && tabWebUrlBtn) {
-      tabLocalFileBtn.addEventListener("click", () => {
-        tabLocalFileBtn.className = "flex-1 py-1.5 text-xs font-black text-[#841c1c] border-b-2 border-[#841c1c] bg-[#ede0c4]";
-        tabWebUrlBtn.className = "flex-1 py-1.5 text-xs font-bold text-[#5c4026] hover:bg-[#ede0c4]/60 transition";
-        bulkUploadView.classList.remove("hidden");
-        urlUploadView.classList.add("hidden");
-      });
-
-      tabWebUrlBtn.addEventListener("click", () => {
-        tabWebUrlBtn.className = "flex-1 py-1.5 text-xs font-black text-[#841c1c] border-b-2 border-[#841c1c] bg-[#ede0c4]";
-        tabLocalFileBtn.className = "flex-1 py-1.5 text-xs font-bold text-[#5c4026] hover:bg-[#ede0c4]/60 transition";
-        urlUploadView.classList.remove("hidden");
-        bulkUploadView.classList.add("hidden");
-      });
-    }
-
-    if (addMediaPromptBtn) {
-      addMediaPromptBtn.addEventListener("click", () => {
-        if (!selectedDest) return;
-        document.getElementById("newMediaUrl").value = "";
-        document.getElementById("newMediaCaption").value = "";
-        uploadStatusMsg.classList.add("hidden");
-        addMediaModal.classList.remove("hidden");
-      });
-    }
-
-    const closeAddModal = () => addMediaModal.classList.add("hidden");
-    if (closeAddMediaModalBtn) closeAddMediaModalBtn.addEventListener("click", closeAddModal);
-    if (cancelAddMediaBtn) cancelAddMediaBtn.addEventListener("click", closeAddModal);
-
-    if (dropZone && bulkFileInput) {
-      dropZone.addEventListener("click", () => bulkFileInput.click());
-
-      dropZone.addEventListener("dragover", (e) => {
-        e.preventDefault();
-        dropZone.classList.add("bg-[#ebd9b6]", "border-[#841c1c]");
-      });
-
-      dropZone.addEventListener("dragleave", () => {
-        dropZone.classList.remove("bg-[#ebd9b6]", "border-[#841c1c]");
-      });
-
-      dropZone.addEventListener("drop", (e) => {
-        e.preventDefault();
-        dropZone.classList.remove("bg-[#ebd9b6]", "border-[#841c1c]");
-        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-          handleBulkFiles(e.dataTransfer.files);
-        }
-      });
-
-      bulkFileInput.addEventListener("change", (e) => {
-        if (e.target.files && e.target.files.length > 0) {
-          handleBulkFiles(e.target.files);
-        }
-      });
-    }
-
-    async function handleBulkFiles(fileList) {
-      if (!selectedDest) return;
-      uploadStatusMsg.classList.remove("hidden");
-      uploadStatusMsg.textContent = `마법 사진 ${fileList.length}장을 양피지에 각인 중...`;
-
-      let processedCount = 0;
-      for (const file of Array.from(fileList)) {
-        if (!file.type.startsWith("image/")) continue;
-
-        await new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.onload = async (event) => {
-            const dataUrl = event.target.result;
-            const caption = file.name.replace(/\.[^/.]+$/, "");
-            await savePhotoToDB({
-              destId: selectedDest.id,
-              type: "image",
-              url: dataUrl,
-              caption: caption
-            });
-            processedCount++;
-            resolve();
-          };
-          reader.readAsDataURL(file);
-        });
-      }
-
-      uploadStatusMsg.textContent = `총 ${processedCount}장의 사진이 보도국 보관소에 각인되었습니다!`;
-      await renderDrawerPhotos(selectedDest);
-      setTimeout(() => {
-        closeAddModal();
-        showToast(`${processedCount}장의 현장 사진이 등록되었습니다!`);
-      }, 900);
-    }
-
-    if (saveNewMediaBtn) {
-      saveNewMediaBtn.addEventListener("click", async () => {
-        if (!selectedDest) return;
-        const type = document.getElementById("newMediaType").value;
-        const url = document.getElementById("newMediaUrl").value.trim();
-        const caption = document.getElementById("newMediaCaption").value.trim() || `${selectedDest.nameKo} 현장 기록`;
-
-        if (!url) {
-          showToast("미디어 웹 주소(URL)를 입력해주세요!");
-          return;
-        }
-
-        await savePhotoToDB({
-          destId: selectedDest.id,
-          type: type,
-          url: url,
-          caption: caption
-        });
-
-        await renderDrawerPhotos(selectedDest);
-        closeAddModal();
-        showToast("새 마법 보도 미디어가 성공적으로 등록되었습니다!");
-      });
-    }
-
-    // Letter Edit
-    const editLetterBtn = document.getElementById("editLetterBtn");
-    const letterModal = document.getElementById("letterModal");
-    const closeLetterModalBtn = document.getElementById("closeLetterModalBtn");
-    const cancelLetterBtn = document.getElementById("cancelLetterBtn");
-    const saveLetterBtn = document.getElementById("saveLetterBtn");
-    const letterInputText = document.getElementById("letterInputText");
-
-    if (editLetterBtn) {
-      editLetterBtn.addEventListener("click", () => {
-        if (!selectedDest) return;
-        letterInputText.value = selectedDest.letter || "";
-        letterModal.classList.remove("hidden");
-      });
-    }
-
-    const closeLetterModal = () => letterModal.classList.add("hidden");
-    if (closeLetterModalBtn) closeLetterModalBtn.addEventListener("click", closeLetterModal);
-    if (cancelLetterBtn) cancelLetterBtn.addEventListener("click", closeLetterModal);
-
-    if (saveLetterBtn) {
-      saveLetterBtn.addEventListener("click", () => {
-        if (!selectedDest) return;
-        selectedDest.letter = letterInputText.value.trim();
-        const letterContentEl = document.getElementById("drawerLetterContent");
-        if (letterContentEl) {
-          letterContentEl.textContent = selectedDest.letter || "“아직 작성된 현장 편지가 없습니다.”";
-        }
-        closeLetterModal();
-        showToast("여행지 편지가 양피지에 안전하게 봉인되었습니다!");
-      });
-    }
-
-    // Broom Flight Simulation
-    function simulateFlightAlongRoute(dest) {
-      stopAutoRotation(false);
-      planeSimGroup.selectAll("*").remove();
-
-      const pathPoints = [SEOUL_COORDS];
-      if (dest.subStops) {
-        dest.subStops.forEach(st => pathPoints.push(st.coords));
-      } else {
-        pathPoints.push(dest.coords);
-      }
-
-      showToast(`🧹 ${dest.nameKo} 빗자루 비행 항로를 추적합니다!`);
-
-      let currentSegment = 0;
-      const plane = planeSimGroup.append("g").attr("class", "magic-broom-marker");
-      plane.append("circle").attr("r", 9).attr("fill", "rgba(132, 28, 28, 0.35)").attr("class", "magic-aura-pulse");
-      plane.append("text")
-        .attr("text-anchor", "middle")
-        .attr("dominant-baseline", "central")
-        .attr("font-size", "15px")
-        .text("🧹");
-
-      function animateSegment() {
-        if (currentSegment >= pathPoints.length - 1) {
-          plane.transition().duration(800).style("opacity", 0).remove();
-          showToast(`🛬 ${dest.nameKo} 안전 착륙! 마법부 보고 완료.`);
-          return;
-        }
-
-        const startPt = pathPoints[currentSegment];
-        const endPt = pathPoints[currentSegment + 1];
-        const interpolator = d3.geoInterpolate(startPt, endPt);
-        const segmentDuration = 2200;
-        const startTime = performance.now();
-
-        function step(now) {
-          const elapsed = now - startTime;
-          const t = Math.min(1, elapsed / segmentDuration);
-          const currentCoord = interpolator(t);
-
-          if (currentProjectionType === "orthographic") {
-            currentRotation = [-currentCoord[0], -currentCoord[1]];
-            projection.rotate(currentRotation);
-            updatePaths();
-          }
-
-          const pos = projection(currentCoord);
-          if (pos) {
-            plane.attr("transform", `translate(${pos[0]}, ${pos[1]})`);
-          }
-
-          if (t < 1) {
-            requestAnimationFrame(step);
-          } else {
-            currentSegment++;
-            setTimeout(animateSegment, 200);
-          }
-        }
-        requestAnimationFrame(step);
-      }
-
-      animateSegment();
-    }
-
-    // Build Carousel (Ultra-compact 1-line on mobile)
+    // Build Bottom Carousel
     function buildCarousel() {
       const carousel = document.getElementById("destCarousel");
-      const filtered = DESTINATIONS.filter(d => currentCategory === 'all' || d.category === currentCategory || d.year === currentCategory);
+      const titleEl = document.getElementById("carouselHeaderTitle");
+      const countEl = document.getElementById("carouselCountBadge");
+      const dataset = currentRealm === 'domestic' ? DOMESTIC_SPOTS : OVERSEAS_SPOTS;
 
-      carousel.innerHTML = filtered.map(d => `
-        <div class="dest-card shrink-0 sm:shrink px-2 py-1 sm:px-2 sm:py-1.5 rounded-sm bg-[#fbf5e6] hover:bg-[#fffcf5] border sm:border-2 border-[#543b22] cursor-pointer shadow transition-all duration-150 flex sm:flex-col items-center sm:items-stretch justify-between gap-1.5 sm:gap-0" data-id="${d.id}">
-          <div class="flex items-center justify-between gap-1 mb-0 sm:mb-0.5 sm:border-b sm:border-[#3b2513]/20 sm:pb-0.5">
-            <span class="text-xs sm:text-base shrink-0">${d.flag}</span>
-            <span class="text-[7.5px] sm:text-[9px] px-1 py-0.2 bg-[#841c1c] text-[#fbf7ee] font-bold rounded-sm shrink-0 leading-none">${d.date}</span>
+      titleEl.textContent = currentRealm === 'domestic' 
+        ? "호그와트 & 호그스미드 근교 마법 여정 전면 색인" 
+        : "국제 포트키 대원정 해외 여정 전면 색인";
+      countEl.textContent = `● ${dataset.length} Spots`;
+
+      carousel.innerHTML = dataset.map(s => `
+        <div class="dest-card shrink-0 px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-sm bg-[#fbf5e6] hover:bg-[#fffcf5] border sm:border-2 border-[#543b22] cursor-pointer shadow transition-all duration-150 min-w-[125px] sm:min-w-[140px]" data-id="${s.id}">
+          <div class="flex items-center justify-between gap-1 mb-0.5 border-b border-[#3b2513]/20 pb-0.5">
+            <span class="text-sm sm:text-base">${s.flag}</span>
+            <span class="text-[7.5px] sm:text-[8.5px] px-1 py-0.2 bg-[#841c1c] text-[#fbf7ee] font-bold rounded-xs leading-none">${s.badge}</span>
           </div>
-          <div class="font-headline font-bold text-[8.5px] sm:text-xs text-[#201308] leading-tight whitespace-nowrap sm:whitespace-normal sm:truncate">
-            ${d.nameKo}
-          </div>
-          <div class="hidden sm:block text-[7.5px] sm:text-[9.5px] text-[#63482f] font-serif truncate mt-0.5" title="${d.indexSub || d.cities.join(', ')}">
-            📍 ${d.indexSub || d.cities[0]}
-          </div>
+          <div class="font-headline font-bold text-[9px] sm:text-xs text-[#201308] truncate leading-tight mt-0.5">${s.nameKo}</div>
+          <div class="text-[8px] sm:text-[9.5px] text-[#63482f] font-serif truncate mt-0.5">📍 ${s.milestone}</div>
         </div>
       `).join("");
 
-      carousel.querySelectorAll(".dest-card").forEach(card => {
-        card.addEventListener("click", () => {
-          const id = card.getAttribute("data-id");
-          const target = DESTINATIONS.find(d => d.id === id);
-          if (target) selectDestination(target);
+      carousel.querySelectorAll(".dest-card").forEach(c => {
+        c.addEventListener("click", () => {
+          const target = dataset.find(d => d.id === c.getAttribute("data-id"));
+          if (target) selectSpot(target);
         });
       });
     }
+
+    // Realm Tab Switcher
+    const tabDomesticBtn = document.getElementById("tabDomesticBtn");
+    const tabOverseasBtn = document.getElementById("tabOverseasBtn");
+    const headerSubNotice = document.getElementById("headerSubNotice");
+
+    tabDomesticBtn.addEventListener("click", () => {
+      if (currentRealm === 'domestic') return;
+      currentRealm = 'domestic';
+      tabDomesticBtn.className = "realm-tab-btn px-3 py-1 text-xs font-black rounded-sm bg-[#3b2513] text-[#fbf7ee] shadow transition flex items-center gap-1.5";
+      tabOverseasBtn.className = "realm-tab-btn px-3 py-1 text-xs font-bold rounded-sm text-[#4a331c] hover:bg-[#cbaf80] transition flex items-center gap-1.5";
+      headerSubNotice.textContent = "호그와트 & 호그스미드 근교 마법 여정 총괄";
+      closeDrawer();
+      currentZoomScale = 1;
+      buildCarousel();
+      initProjection('2d');
+      playMagicChime();
+      showToast("🚂 국내 마법 구역으로 시점을 전환했습니다.");
+    });
+
+    tabOverseasBtn.addEventListener("click", () => {
+      if (currentRealm === 'overseas') return;
+      currentRealm = 'overseas';
+      tabOverseasBtn.className = "realm-tab-btn px-3 py-1 text-xs font-black rounded-sm bg-[#3b2513] text-[#fbf7ee] shadow transition flex items-center gap-1.5";
+      tabDomesticBtn.className = "realm-tab-btn px-3 py-1 text-xs font-bold rounded-sm text-[#4a331c] hover:bg-[#cbaf80] transition flex items-center gap-1.5";
+      headerSubNotice.textContent = "국제 포트키 원정대 해외 특파 일지";
+      closeDrawer();
+      currentZoomScale = 1;
+      buildCarousel();
+      initProjection(currentProjectionType);
+      playMagicChime();
+      showToast("🧹 대륙 간 국제 포트키 항로로 시점을 전환했습니다.");
+    });
 
     // Tooltip
     const tooltip = document.getElementById("mapTooltip");
@@ -2022,10 +1492,10 @@
     const tooltipTitle = document.getElementById("tooltipTitle");
     const tooltipSub = document.getElementById("tooltipSub");
 
-    function showTooltip(event, dest) {
-      tooltipIcon.textContent = dest.flag;
-      tooltipTitle.textContent = `${dest.nameKo} (${dest.date})`;
-      tooltipSub.textContent = `연계 코스: ${dest.cities.join(' → ')}`;
+    function showTooltip(event, spot) {
+      tooltipIcon.textContent = spot.flag;
+      tooltipTitle.textContent = `${spot.nameKo} [${spot.badge}]`;
+      tooltipSub.textContent = spot.milestone || spot.desc.substring(0, 30) + "...";
       tooltip.style.left = `${event.clientX}px`;
       tooltip.style.top = `${event.clientY - 14}px`;
       tooltip.classList.remove("hidden");
@@ -2039,10 +1509,10 @@
       const toast = document.getElementById("toast");
       toast.textContent = msg;
       toast.classList.remove("opacity-0");
-      setTimeout(() => toast.classList.add("opacity-0"), 2800);
+      setTimeout(() => toast.classList.add("opacity-0"), 2600);
     }
 
-    // View Switchers: 2D first, 3D second
+    // View Projection Buttons (2D vs 3D)
     document.querySelectorAll(".proj-btn").forEach(btn => {
       btn.addEventListener("click", (e) => {
         document.querySelectorAll(".proj-btn").forEach(b => {
@@ -2054,170 +1524,208 @@
       });
     });
 
-    document.querySelectorAll(".filter-btn").forEach(btn => {
-      btn.addEventListener("click", (e) => {
-        document.querySelectorAll(".filter-btn").forEach(b => {
-          b.className = "filter-btn px-2 py-1 text-[11px] rounded-sm bg-[#dfcaa5] text-[#342211] hover:bg-[#cbaf80] font-bold border border-transparent transition";
-        });
-        e.target.className = "filter-btn active px-2.5 py-1 text-[11px] rounded-sm bg-[#3b2513] text-[#fef9ee] font-bold border border-[#2b1809] transition";
-        currentCategory = e.target.getAttribute("data-category");
-        buildCarousel();
-        renderRoutesAndMarkers();
-      });
-    });
-
     document.getElementById("autoRotateBtn").addEventListener("click", () => {
-      if (isAutoRotating) {
-        stopAutoRotation(true);
-      } else {
-        startAutoRotation();
-      }
-    });
-
-    document.getElementById("toggleAllRoutesBtn").addEventListener("click", () => {
-      showAllRoutes = !showAllRoutes;
-      const indicator = document.getElementById("allRoutesIndicator");
-      if (showAllRoutes) {
-        indicator.className = "w-1.5 h-1.5 rounded-full bg-[#f59e0b]";
-      } else {
-        indicator.className = "w-1.5 h-1.5 rounded-full bg-[#786149]";
-      }
-      renderRoutesAndMarkers();
+      if (isAutoRotating) stopAutoRotation(true);
+      else startAutoRotation();
     });
 
     document.getElementById("zoomInBtn").addEventListener("click", () => {
-      if (currentProjectionType === "orthographic") {
+      if (currentRealm === 'overseas' && currentProjectionType === '3d') {
         projection.scale(projection.scale() * 1.3);
         updatePaths();
       } else {
-        svg.transition().duration(300).call(zoomBehavior.scaleBy, 1.3);
+        svg.transition().duration(260).call(zoomBehavior.scaleBy, 1.35);
       }
     });
 
     document.getElementById("zoomOutBtn").addEventListener("click", () => {
-      if (currentProjectionType === "orthographic") {
+      if (currentRealm === 'overseas' && currentProjectionType === '3d') {
         projection.scale(projection.scale() / 1.3);
         updatePaths();
       } else {
-        svg.transition().duration(300).call(zoomBehavior.scaleBy, 0.77);
+        svg.transition().duration(260).call(zoomBehavior.scaleBy, 0.75);
       }
     });
 
     document.getElementById("resetViewBtn").addEventListener("click", () => {
-      if (currentProjectionType === "orthographic") {
+      if (currentRealm === 'overseas' && currentProjectionType === '3d') {
         currentRotation = [-127, -25];
-        initProjection("orthographic");
+        initProjection("3d");
       } else {
         currentZoomScale = 1;
-        svg.transition().duration(500).call(zoomBehavior.transform, d3.zoomIdentity);
+        svg.transition().duration(400).call(zoomBehavior.transform, d3.zoomIdentity);
       }
     });
 
-    function closeDrawer() {
-      const drawer = document.getElementById("travelDrawer");
-      if (!drawer || drawer.classList.contains("-translate-x-full")) return;
-      drawer.classList.add("-translate-x-full", "opacity-0", "pointer-events-none");
-      selectedDest = null;
-      document.querySelectorAll(".dest-card").forEach(c => {
-        c.classList.remove("ring-2", "ring-[#841c1c]", "bg-[#fffcf5]", "shadow-md");
-      });
-      renderRoutesAndMarkers();
+    // Marauder Cover Overlay
+    const maraudersOverlay = document.getElementById("maraudersOverlay");
+    const marauderTeaser = document.getElementById("marauderTeaser");
+    const marauderSpell = document.getElementById("marauderSpell");
+    const marauderCloseSpell = document.getElementById("marauderCloseSpell");
+    const hideMapBtn = document.getElementById("hideMapBtn");
+    let isMapRevealed = false;
+
+    function revealMaraudersMap() {
+      if (isMapRevealed) return;
+      isMapRevealed = true;
+      playMagicChime();
+      marauderTeaser.classList.add("hidden");
+      if (marauderCloseSpell) marauderCloseSpell.classList.add("hidden");
+      marauderSpell.classList.remove("hidden");
+
+      setTimeout(() => {
+        maraudersOverlay.classList.add("opacity-0", "scale-105", "pointer-events-none");
+        showToast("🪄 마법의 지도가 완벽하게 펼쳐졌습니다!");
+      }, 1600);
+
+      setTimeout(() => {
+        maraudersOverlay.classList.add("hidden");
+      }, 3600);
     }
 
-    document.getElementById("closeDrawerBtn").addEventListener("click", (e) => {
+    function concealMaraudersMap() {
+      if (!isMapRevealed) return;
+      isMapRevealed = false;
+      playWandWoosh();
+      closeDrawer();
+
+      maraudersOverlay.classList.remove("hidden");
+      maraudersOverlay.classList.add("opacity-0", "scale-105");
+      maraudersOverlay.classList.remove("pointer-events-none");
+      marauderTeaser.classList.add("hidden");
+      marauderSpell.classList.add("hidden");
+      if (marauderCloseSpell) marauderCloseSpell.classList.remove("hidden");
+
+      void maraudersOverlay.offsetHeight;
+      requestAnimationFrame(() => {
+        maraudersOverlay.classList.remove("opacity-0", "scale-105");
+        maraudersOverlay.classList.add("opacity-100", "scale-100");
+      });
+
+      showToast("📜 마법의 장난 끝! (Mischief Managed)");
+      setTimeout(() => {
+        if (!isMapRevealed) {
+          if (marauderCloseSpell) marauderCloseSpell.classList.add("hidden");
+          marauderTeaser.classList.remove("hidden");
+        }
+      }, 2500);
+    }
+
+    maraudersOverlay.addEventListener("click", revealMaraudersMap);
+    hideMapBtn.addEventListener("click", (e) => {
       e.stopPropagation();
-      closeDrawer();
+      concealMaraudersMap();
     });
 
-    // Close drawer when clicking outside
-    document.addEventListener("click", (e) => {
-      const drawer = document.getElementById("travelDrawer");
-      if (!drawer || drawer.classList.contains("-translate-x-full")) return;
-      if (drawer.contains(e.target)) return;
-
-      if (
-        e.target.closest(".marker-node") ||
-        e.target.closest(".dest-card") ||
-        e.target.closest(".search-item") ||
-        e.target.closest("#photoLightbox") ||
-        e.target.closest("#adminAuthModal") ||
-        e.target.closest("#addMediaModal") ||
-        e.target.closest("#letterModal") ||
-        e.target.closest("#maraudersOverlay")
-      ) {
-        return;
-      }
-
-      closeDrawer();
-    });
-
+    // Broom Flight Simulation
     document.getElementById("flySimBtn").addEventListener("click", () => {
-      if (selectedDest) simulateFlightAlongRoute(selectedDest);
+      if (!selectedSpot) return;
+      stopAutoRotation(false);
+      planeSimGroup.selectAll("*").remove();
+
+      const startPt = SEOUL_COORDS;
+      const endPt = selectedSpot.coords;
+      const interpolator = d3.geoInterpolate(startPt, endPt);
+
+      showToast(`🧹 ${selectedSpot.nameKo} 빗자루 비행 항로를 추적합니다!`);
+
+      const plane = planeSimGroup.append("g");
+      plane.append("circle").attr("r", 9).attr("fill", "rgba(132, 28, 28, 0.35)").attr("class", "magic-aura-pulse");
+      plane.append("text").attr("text-anchor", "middle").attr("dominant-baseline", "central").attr("font-size", "15px").text("🧹");
+
+      const duration = 2200;
+      const startTime = performance.now();
+
+      function step(now) {
+        const elapsed = now - startTime;
+        const t = Math.min(1, elapsed / duration);
+        const curr = interpolator(t);
+
+        if (currentRealm === 'overseas' && currentProjectionType === '3d') {
+          currentRotation = [-curr[0], -curr[1]];
+          projection.rotate(currentRotation);
+          updatePaths();
+        }
+
+        const pos = projection(curr);
+        if (pos) plane.attr("transform", `translate(${pos[0]}, ${pos[1]})`);
+
+        if (t < 1) {
+          requestAnimationFrame(step);
+        } else {
+          plane.transition().duration(600).style("opacity", 0).remove();
+          playMagicChime();
+          showToast(`🛬 ${selectedSpot.nameKo} 안전 도착!`);
+        }
+      }
+      requestAnimationFrame(step);
     });
 
+    // Copy Trip summary
     document.getElementById("copyTripBtn").addEventListener("click", () => {
-      if (!selectedDest) return;
-      const text = `[예언자 일보 특별 기사 스크랩 - ${selectedDest.nameKo} (${selectedDest.date})]\n• 기사 헤드라인: ${selectedDest.categoryName}\n• 연계 방문 코스: ${selectedDest.cities.join(' → ')}\n• 주요 방문 명소: ${selectedDest.spots.join(', ')}\n• 특파원 취재 수기: ${selectedDest.desc}`;
-      
-      const el = document.createElement("textarea");
-      el.value = text;
-      document.body.appendChild(el);
-      el.select();
-      document.execCommand("copy");
-      document.body.removeChild(el);
-      showToast("예언자 일보 기사가 클립보드에 스크랩되었습니다!");
+      if (!selectedSpot) return;
+      const text = `[예언자 일보 특별 스크랩 - ${selectedSpot.nameKo}]\n• 공식 기록: ${selectedSpot.milestone}\n• 마법 탐방기: ${selectedSpot.desc}\n• 현장 편지: ${selectedSpot.letter}`;
+      navigator.clipboard.writeText(text).then(() => showToast("양피지 기록이 클립보드에 복사되었습니다."));
     });
 
-    const searchInput = document.getElementById("countrySearch");
+    // Search Box
+    const searchInput = document.getElementById("spotSearch");
     const searchDropdown = document.getElementById("searchDropdown");
     const clearSearchBtn = document.getElementById("clearSearchBtn");
 
     searchInput.addEventListener("input", (e) => {
-      const query = e.target.value.trim().toLowerCase();
-      if (!query) {
+      const q = e.target.value.trim().toLowerCase();
+      if (!q) {
         searchDropdown.classList.add("hidden");
         clearSearchBtn.classList.add("hidden");
         return;
       }
       clearSearchBtn.classList.remove("hidden");
 
-      const filtered = DESTINATIONS.filter(d => 
-        d.nameKo.toLowerCase().includes(query) || 
-        d.nameEn.toLowerCase().includes(query) || 
-        d.country.toLowerCase().includes(query) || 
-        d.cities.some(c => c.toLowerCase().includes(query)) ||
-        (d.spots && d.spots.some(s => s.toLowerCase().includes(query))) ||
-        (d.desc && d.desc.toLowerCase().includes(query))
+      const allSpots = [...DOMESTIC_SPOTS, ...OVERSEAS_SPOTS];
+      const filtered = allSpots.filter(s => 
+        s.nameKo.toLowerCase().includes(q) ||
+        s.nameEn.toLowerCase().includes(q) ||
+        s.milestone.toLowerCase().includes(q) ||
+        (s.spots && s.spots.some(sp => sp.toLowerCase().includes(q))) ||
+        s.desc.toLowerCase().includes(q)
       );
 
       if (filtered.length === 0) {
-        searchDropdown.innerHTML = `<div class="p-2.5 text-xs text-[#63482f] text-center italic">“${e.target.value}” 관련 여행 기사를 찾을 수 없습니다.</div>`;
+        searchDropdown.innerHTML = `<div class="p-2 text-xs text-[#63482f] text-center italic">“${e.target.value}” 관련 기록을 찾을 수 없습니다.</div>`;
       } else {
-        searchDropdown.innerHTML = filtered.map(d => `
-          <div class="search-item px-3 py-2 text-xs flex items-center justify-between hover:bg-[#e4d4b6] cursor-pointer border-b border-[#3b2513]/10 last:border-0 transition" data-id="${d.id}">
-            <div class="flex items-center gap-2">
-              <span class="text-base">${d.flag}</span>
-              <div>
-                <span class="font-bold text-[#201308]">${d.nameKo}</span>
-                <span class="text-[#785b3f] text-[10px] ml-1">(${d.date})</span>
-                <div class="text-[10px] text-[#6d4d2f] truncate max-w-[170px] sm:max-w-[210px]">
-                  코스: ${d.cities.join(' · ')}
+        searchDropdown.innerHTML = filtered.map(s => {
+          const isDom = DOMESTIC_SPOTS.some(d => d.id === s.id);
+          return `
+            <div class="search-item px-3 py-2 text-xs flex items-center justify-between hover:bg-[#e4d4b6] cursor-pointer border-b border-[#3b2513]/10 last:border-0 transition" data-id="${s.id}" data-realm="${isDom ? 'domestic' : 'overseas'}">
+              <div class="flex items-center gap-2">
+                <span class="text-base">${s.flag}</span>
+                <div>
+                  <span class="font-bold text-[#201308]">${s.nameKo}</span>
+                  <span class="text-[#841c1c] text-[10px] ml-1">[${s.badge}]</span>
+                  <div class="text-[10px] text-[#6d4d2f] truncate max-w-[190px]">${s.milestone}</div>
                 </div>
               </div>
+              <span class="px-1.5 py-0.5 bg-[#841c1c] text-[#fbf7ee] text-[9px] font-bold rounded-xs shrink-0">${isDom ? '국내' : '해외'}</span>
             </div>
-            <span class="px-1.5 py-0.5 bg-[#841c1c] text-[#fbf7ee] text-[9px] font-bold rounded-xs shrink-0">보기</span>
-          </div>
-        `).join("");
+          `;
+        }).join("");
 
         searchDropdown.querySelectorAll(".search-item").forEach(item => {
           item.addEventListener("click", () => {
             const destId = item.getAttribute("data-id");
-            const target = DESTINATIONS.find(d => d.id === destId);
-            if (target) {
-              selectDestination(target);
-              searchDropdown.classList.add("hidden");
-              searchInput.value = target.nameKo;
+            const realm = item.getAttribute("data-realm");
+
+            if (realm !== currentRealm) {
+              if (realm === 'domestic') tabDomesticBtn.click();
+              else tabOverseasBtn.click();
             }
+
+            const target = (realm === 'domestic' ? DOMESTIC_SPOTS : OVERSEAS_SPOTS).find(d => d.id === destId);
+            if (target) selectSpot(target);
+
+            searchDropdown.classList.add("hidden");
+            searchInput.value = target.nameKo;
           });
         });
       }
@@ -2234,13 +1742,146 @@
       if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
         searchDropdown.classList.add("hidden");
       }
+      const drawer = document.getElementById("travelDrawer");
+      if (drawer && !drawer.classList.contains("-translate-x-full") && !drawer.contains(e.target)) {
+        if (
+          !e.target.closest(".marker-node") &&
+          !e.target.closest(".dest-card") &&
+          !e.target.closest(".search-item") &&
+          !e.target.closest("#photoLightbox") &&
+          !e.target.closest("#adminAuthModal") &&
+          !e.target.closest("#addMediaModal") &&
+          !e.target.closest("#letterModal") &&
+          !e.target.closest("#maraudersOverlay")
+        ) {
+          closeDrawer();
+        }
+      }
+    });
+
+    // Admin Mode & Photo Upload Handlers
+    function updateAdminUI() {
+      const adminBtn = document.getElementById("adminToggleBtn");
+      const icon = document.getElementById("adminToggleIcon");
+      const addMediaBtn = document.getElementById("addMediaPromptBtn");
+      const editLetterBtn = document.getElementById("editLetterBtn");
+
+      if (isAdminMode) {
+        adminBtn.className = "w-6 h-6 rounded-full bg-[#1e3a24] hover:bg-[#2d5234] text-[#a7f3d0] border border-[#064e3b] flex items-center justify-center transition shrink-0 opacity-90 shadow-sm";
+        icon.textContent = "🔓";
+        addMediaBtn.classList.remove("hidden");
+        editLetterBtn.classList.remove("hidden");
+      } else {
+        adminBtn.className = "w-6 h-6 rounded-full bg-[#3b2513]/15 hover:bg-[#841c1c]/80 text-[#543b22] hover:text-[#fbf7ee] border border-[#543b22]/30 flex items-center justify-center transition shrink-0 opacity-40 hover:opacity-100";
+        icon.textContent = "🔒";
+        addMediaBtn.classList.add("hidden");
+        editLetterBtn.classList.add("hidden");
+      }
+
+      document.querySelectorAll(".delete-photo-btn").forEach(b => {
+        if (isAdminMode) b.classList.remove("hidden");
+        else b.classList.add("hidden");
+      });
+    }
+
+    document.getElementById("adminToggleBtn").addEventListener("click", () => {
+      if (isAdminMode) {
+        isAdminMode = false;
+        updateAdminUI();
+        showToast("🔒 방문자 모드로 전환되었습니다.");
+      } else {
+        document.getElementById("adminPasswordInput").value = "";
+        document.getElementById("adminAuthError").classList.add("hidden");
+        document.getElementById("adminAuthModal").classList.remove("hidden");
+        document.getElementById("adminPasswordInput").focus();
+      }
+    });
+
+    function verifyAdminPass() {
+      if (document.getElementById("adminPasswordInput").value.trim() === ADMIN_PASSPHRASE) {
+        isAdminMode = true;
+        updateAdminUI();
+        document.getElementById("adminAuthModal").classList.add("hidden");
+        playMagicChime();
+        showToast("🔓 특파원 편집 권한이 승인되었습니다!");
+      } else {
+        document.getElementById("adminAuthError").classList.remove("hidden");
+      }
+    }
+
+    document.getElementById("submitAdminAuthBtn").addEventListener("click", verifyAdminPass);
+    document.getElementById("adminPasswordInput").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") verifyAdminPass();
+    });
+    document.getElementById("closeAdminAuthModalBtn").addEventListener("click", () => document.getElementById("adminAuthModal").classList.add("hidden"));
+    document.getElementById("cancelAdminAuthBtn").addEventListener("click", () => document.getElementById("adminAuthModal").classList.add("hidden"));
+
+    // Bulk upload modals
+    const addMediaModal = document.getElementById("addMediaModal");
+    document.getElementById("addMediaPromptBtn").addEventListener("click", () => {
+      document.getElementById("uploadStatusMsg").classList.add("hidden");
+      addMediaModal.classList.remove("hidden");
+    });
+    document.getElementById("closeAddMediaModalBtn").addEventListener("click", () => addMediaModal.classList.add("hidden"));
+    document.getElementById("cancelAddMediaBtn").addEventListener("click", () => addMediaModal.classList.add("hidden"));
+
+    const dropZone = document.getElementById("dropZone");
+    const bulkFileInput = document.getElementById("bulkFileInput");
+    dropZone.addEventListener("click", () => bulkFileInput.click());
+
+    bulkFileInput.addEventListener("change", async (e) => {
+      if (!selectedSpot || !e.target.files.length) return;
+      const status = document.getElementById("uploadStatusMsg");
+      status.classList.remove("hidden");
+      status.textContent = `사진 ${e.target.files.length}장을 저장 중...`;
+
+      let count = 0;
+      for (const file of Array.from(e.target.files)) {
+        if (!file.type.startsWith("image/")) continue;
+        await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = async (evt) => {
+            await savePhotoToDB({
+              destId: selectedSpot.id,
+              type: "image",
+              url: evt.target.result,
+              caption: file.name.replace(/\.[^/.]+$/, "")
+            });
+            count++;
+            resolve();
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+      status.textContent = `${count}장의 사진이 보관소에 저장되었습니다!`;
+      await renderDrawerPhotos(selectedSpot);
+      setTimeout(() => {
+        addMediaModal.classList.add("hidden");
+        showToast(`${count}장의 사진이 성공적으로 등록되었습니다!`);
+      }, 700);
+    });
+
+    // Letter editing
+    const letterModal = document.getElementById("letterModal");
+    document.getElementById("editLetterBtn").addEventListener("click", () => {
+      if (!selectedSpot) return;
+      document.getElementById("letterInputText").value = selectedSpot.letter || "";
+      letterModal.classList.remove("hidden");
+    });
+    document.getElementById("closeLetterModalBtn").addEventListener("click", () => letterModal.classList.add("hidden"));
+    document.getElementById("cancelLetterBtn").addEventListener("click", () => letterModal.classList.add("hidden"));
+    document.getElementById("saveLetterBtn").addEventListener("click", () => {
+      if (!selectedSpot) return;
+      selectedSpot.letter = document.getElementById("letterInputText").value.trim();
+      document.getElementById("drawerLetterContent").textContent = selectedSpot.letter || "“작성된 편지가 없습니다.”";
+      letterModal.classList.add("hidden");
+      showToast("현장 편지가 성공적으로 저장되었습니다!");
     });
 
     window.addEventListener("resize", () => {
-      const c = document.getElementById("mapContainer");
-      if (c) {
-        width = c.clientWidth;
-        height = c.clientHeight;
+      if (containerEl) {
+        width = containerEl.clientWidth;
+        height = containerEl.clientHeight;
         svg.attr("viewBox", `0 0 ${width} ${height}`);
         initProjection(currentProjectionType);
       }
@@ -2256,11 +1897,9 @@
         worldGeoJsonData = topojson.feature(topoData, topoData.objects.countries);
 
         buildCarousel();
-        initProjection("naturalEarth");
-        selectedDest = null;
-        renderRoutesAndMarkers();
+        initProjection("2d");
       } catch (err) {
-        console.error("Failed to load map data:", err);
+        console.error("데이터 로드 실패:", err);
       }
     }
 
